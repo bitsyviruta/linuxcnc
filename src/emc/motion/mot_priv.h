@@ -159,6 +159,10 @@ typedef struct {
     hal_bit_t *coord_error;	/* RPA: TRUE if coord mode error */
     hal_bit_t *on_soft_limit;	/* RPA: TRUE if outside a limit */
 
+    hal_bit_t *dryrun_start;/* experimental input */
+    hal_bit_t *dryrun_stop;	/* experimental input */
+    hal_bit_t *is_dryrun;   /* experimental output */
+
     hal_s32_t *program_line;    /* RPA: program line causing current motion */
     hal_s32_t *motion_type;	/* RPA: type (feed/rapid) of currently commanded motion */
     hal_float_t *current_vel;   /* RPI: velocity magnitude in machine units */

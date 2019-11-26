@@ -1,0 +1,17 @@
+g0x0y0z0
+
+#<feedrate> = 100
+    #<zmin> =  -1
+    #<xmax> =  10
+    #<ymax> =   2
+f#<feedrate>
+
+g1z#<zmin>
+g1x#<xmax>
+g1y#<ymax>
+
+g1x0
+g1y0
+
+g0z0
+m2

@@ -357,6 +357,10 @@ static int init_hal_io(void)
     if ((retval = hal_pin_bit_newf(HAL_IN, &(emcmot_hal_data->tp_reverse), mot_comp_id, "motion.tp-reverse")) < 0) goto error;
     if ((retval = hal_pin_bit_newf(HAL_IN, &(emcmot_hal_data->enable), mot_comp_id, "motion.enable")) != 0) goto error;
 
+    if ((retval = hal_pin_bit_newf(HAL_IN, &(emcmot_hal_data->dryrun_start), mot_comp_id, "motion.dryrun-start")) != 0) goto error;
+    if ((retval = hal_pin_bit_newf(HAL_IN, &(emcmot_hal_data->dryrun_stop),  mot_comp_id, "motion.dryrun-stop")) != 0) goto error;
+    if ((retval = hal_pin_bit_newf(HAL_OUT, &(emcmot_hal_data->is_dryrun), mot_comp_id, "motion.is-dryrun")) != 0) goto error;
+
     /* export motion-synched digital output pins */
     /* export motion digital input pins */
     for (n = 0; n < num_dio; n++) {

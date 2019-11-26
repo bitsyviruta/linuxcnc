@@ -105,6 +105,14 @@ These pins are controlled by the M62 through M65 words.
 Distance remaining in the current move
 
 .TP
+\fBmotion.dryrun\-start\fR IN BIT
+Pulse to request dryrun start
+
+.TP
+\fBmotion.dryrun\-end\fR IN BIT
+Pulse to request dryrun end
+
+.TP
 \fBmotion.enable\fR IN BIT
 If this bit is driven FALSE, motion stops, the machine is placed in the "machine off" state, and a message is displayed for the operator. For normal motion, drive this bit TRUE.
 
@@ -147,6 +155,10 @@ mode whenever motion is enabled.
 \fBmotion.in\-position\fR OUT BIT
 TRUE if the machine is in position (ie, not currently moving towards
 the commanded position).
+
+.TP
+\fBmotion.is\-dryrun\fR OUT BIT
+TRUE if dryrun is active
 
 .TP
 \fBmotion.motion\-enabled\fR OUT BIT

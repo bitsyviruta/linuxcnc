@@ -1,0 +1,7 @@
+net :dryrun-start <= pyvcp.dryrun-start
+net :dryrun-start => motion.dryrun-start
+net :dryrun-stop  <= pyvcp.dryrun-stop
+net :dryrun-stop  => motion.dryrun-stop
+
+net :is-dryrun     <= motion.is-dryrun
+net :is-dryrun     => pyvcp.dryrun-led

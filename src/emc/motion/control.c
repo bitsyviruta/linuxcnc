@@ -26,6 +26,7 @@
 #include "config.h"
 #include "motion_types.h"
 #include "homing.h"
+#include "dryrun.h"
 
 // Mark strings for translation, but defer translation to userspace
 #define _(s) (s)
@@ -273,22 +274,44 @@ void emcmotController(void *arg, long period)
 #ifdef EDEBUG
     dbg_ct++;
 #endif
-    read_homing_in_pins(ALL_JOINTS);
-    process_inputs();
-    do_forward_kins();
-    process_probe_inputs();
-    check_for_faults();
-    set_operating_mode();
-    handle_jjogwheels();
-    handle_ajogwheels();
-    do_homing_sequence();
-    do_homing();
-    get_pos_cmds(period);
-    compute_screw_comp();
-    plan_external_offsets();
-    output_to_hal();
-    write_homing_out_pins(ALL_JOINTS);
-    update_status();
+
+    dryrun_manage();
+
+    if (dryrun_active() ) {
+        read_homing_in_pins(ALL_JOINTS);
+        dryrun_process_inputs(); //joints: pos_fb=pos_cmd
+        do_forward_kins();
+        process_probe_inputs();
+        check_for_faults();
+        set_operating_mode();
+        handle_jjogwheels();
+        handle_ajogwheels();
+        do_homing_sequence();
+        do_homing();
+        get_pos_cmds(period);
+        if (dryrun_end() ) {dryrun_restore();}
+        compute_screw_comp();
+        plan_external_offsets();
+        dryrun_output_to_hal(); // outputs as required
+        dryrun_update_status(); // updates as required
+    } else {
+        read_homing_in_pins(ALL_JOINTS);
+        process_inputs();
+        do_forward_kins();
+        process_probe_inputs();
+        check_for_faults();
+        set_operating_mode();
+        handle_jjogwheels();
+        handle_ajogwheels();
+        do_homing_sequence();
+        do_homing();
+        get_pos_cmds(period);
+        compute_screw_comp();
+        plan_external_offsets();
+        output_to_hal();
+        write_homing_out_pins(ALL_JOINTS);
+        update_status();
+    }
     /* here ends the core of the controller */
     emcmotStatus->heartbeat++;
     /* set tail to head, to indicate work complete */
@@ -444,6 +467,7 @@ static void process_inputs(void)
 	}
 	/* update following error flag */
 	if (abs_ferror > joint->ferror_limit) {
+            dryrun_show(0,"FERROR()");
 	    SET_JOINT_FERROR_FLAG(joint, 1);
 	} else {
 	    SET_JOINT_FERROR_FLAG(joint, 0);
@@ -481,7 +505,7 @@ static void process_inputs(void)
 		if (*(emcmot_hal_data->spindle[spindle_num].spindle_orient)) {
 			if (*(emcmot_hal_data->spindle[spindle_num].spindle_orient_fault)) {
 				emcmotStatus->spindle_status[spindle_num].orient_state = EMCMOT_ORIENT_FAULTED;
-				*(emcmot_hal_data->spindle[spindle_num].spindle_orient) = 0;
+				if (!dryrun_active()) {*(emcmot_hal_data->spindle[spindle_num].spindle_orient) = 0;}
 				emcmotStatus->spindle_status[spindle_num].orient_fault =
 						*(emcmot_hal_data->spindle[spindle_num].spindle_orient_fault);
 				reportError(_("fault %d during orient in progress"),
@@ -490,8 +514,8 @@ static void process_inputs(void)
 				tpAbort(&emcmotDebug->coord_tp);
 				SET_MOTION_ERROR_FLAG(1);
 			} else if (*(emcmot_hal_data->spindle[spindle_num].spindle_is_oriented)) {
-				*(emcmot_hal_data->spindle[spindle_num].spindle_orient) = 0;
-				*(emcmot_hal_data->spindle[spindle_num].spindle_locked) = 1;
+				if (!dryrun_active()) {*(emcmot_hal_data->spindle[spindle_num].spindle_orient) = 0;}
+				if (!dryrun_active()) {*(emcmot_hal_data->spindle[spindle_num].spindle_locked) = 1;}
 				emcmotStatus->spindle_status[spindle_num].locked = 1;
 				emcmotStatus->spindle_status[spindle_num].brake = 1;
 				emcmotStatus->spindle_status[spindle_num].orient_state = EMCMOT_ORIENT_COMPLETE;
@@ -835,7 +859,7 @@ static void set_operating_mode(void)
 #endif
         if (*(emcmot_hal_data->eoffset_limited)) {
             reportError("Starting beyond Soft Limits");
-            *(emcmot_hal_data->eoffset_limited) = 0;
+            if (!dryrun_active()) {*(emcmot_hal_data->eoffset_limited) = 0;}
         }
         initialize_external_offsets();
         tpSetPos(&emcmotDebug->coord_tp, &emcmotStatus->carte_pos_cmd);
@@ -865,7 +889,6 @@ static void set_operating_mode(void)
     /* check for entering teleop mode */
     if (emcmotDebug->teleoperating && !GET_MOTION_TELEOP_FLAG()) {
 	if (GET_MOTION_INPOS_FLAG()) {
-
 	    /* update coordinated emcmotDebug->coord_tp position */
 	    tpSetPos(&emcmotDebug->coord_tp, &emcmotStatus->carte_pos_cmd);
 	    /* drain the cubics so they'll synch up */
@@ -882,7 +905,6 @@ static void set_operating_mode(void)
 	    /* Initialize things to do when starting teleop mode. */
 	    SET_MOTION_TELEOP_FLAG(1);
 	    SET_MOTION_ERROR_FLAG(0);
-
             kinematicsForward(positions, &emcmotStatus->carte_pos_cmd, &fflags, &iflags);
             // entering teleop (INPOS), remove ext offsets
             sync_teleop_tp_to_carte_pos(-1);
@@ -963,7 +985,7 @@ static void set_operating_mode(void)
     } else {
 	emcmotStatus->motion_state = EMCMOT_MOTION_FREE;
     }
-} //set_operating_mode
+} // set_operating_mode()
 
 static void handle_jjogwheels(void)
 {
@@ -1441,7 +1463,6 @@ static void get_pos_cmds(long period)
             ext_offset_teleop_limit = 0;
             ext_offset_coord_limit = 0; //in case was set in prior coord motion
         }
-
         sync_carte_pos_to_teleop_tp(+1); // teleop
 
 	/* the next position then gets run through the inverse kins,
@@ -1574,9 +1595,9 @@ static void get_pos_cmds(long period)
         }
     }
     if (ext_offset_teleop_limit || ext_offset_coord_limit) {
-        *(emcmot_hal_data->eoffset_limited) = 1;
+        if (!dryrun_active()) {*(emcmot_hal_data->eoffset_limited) = 1;}
     } else {
-        *(emcmot_hal_data->eoffset_limited) = 0;
+        if (!dryrun_active()) {*(emcmot_hal_data->eoffset_limited) = 0;}
     }
 } // get_pos_cmds()
 
@@ -2245,7 +2266,7 @@ static void plan_external_offsets(void)
     int new_eoffset_counts, delta;
     static int last_eoffset_enable[EMCMOT_MAX_AXIS];
 
-    *(emcmot_hal_data->eoffset_active) = 0; //set if any enabled
+    if (!dryrun_active()) {*(emcmot_hal_data->eoffset_active) = 0;} //set if any enabled
 
     for (axis_num = 0; axis_num < EMCMOT_MAX_AXIS; axis_num++) {
         axis = &axes[axis_num];
@@ -2269,7 +2290,7 @@ static void plan_external_offsets(void)
         // Use stopping criterion of simple_tp.c:
         ext_offset_epsilon = TINY_DP(axis->ext_offset_tp.max_acc,servo_period);
         if (fabs(*(axis_data->external_offset)) > ext_offset_epsilon) {
-           *(emcmot_hal_data->eoffset_active) = 1;
+           if (!dryrun_active()) {*(emcmot_hal_data->eoffset_active) = 1;}
         }
         if ( !*(axis_data->eoffset_enable) ) {
             axis->ext_offset_tp.enable = 0;
