@@ -1,18 +1,19 @@
-TODO for the joints_axes branch
+TODO para la rama joint_axes
 
-* clean up joints/axes throughout the whole code (lots of parts already done)
-* define a unified jogging way (both for joints and axes)
-* implement joint-limits for carthesian moves (requires simulating the speed in userspace)
-* update configs
-(and many other probably..)
+* limpieza de articulaciones/ejes a lo largo de todo el código (muchas partes ya hechas)
+* definir una forma unificada de jogging (tanto para articulaciones como para ejes)
+* Implementar límites de articulacion para movimientos cartesianos (requiere simular la velocidad en espacio de usuario)
+* actualizar configuraciones
+(y muchos otros probablemente ..)
 
-TODO     sort out axis/joints issues: 
-	    * limits need to be imposed on joints (tricky with kins)
-	    * ini changes 
-	    * clean out code (on all different levels, when joints are involved, call them joints..)
-    -- this work is taking place on the joints_axes3 branch
+TODO     resolver problemas de ejes/articulaciones:
+        * deben imponerse límites en las articulaciones (complicado con las cinematicas)
+        * cambios en ini
+        * limpieza del codigo (en todos los diferentes niveles, cuando las articulaciones están involucradas,llamarlas 
+          asi ...)
+    -- este trabajo se realiza en la rama joint_axes3
 
-TODO     Convert all hardware drivers to use canonical homing, 
+TODO     Convertir todos los controladores de hardware para usar el homing canónico,
 
-Fixes in HAL modules:
-TODO     canonical interfaces and naming conventions
+Correcciones en módulos HAL:
+TODO     interfaces canónicas y convenciones de nomenclatura
