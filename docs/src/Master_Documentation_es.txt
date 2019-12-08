@@ -1,24 +1,35 @@
 :lversion: {sys: cat ../VERSION}
 LinuxCNC V{lversion}, {localdate}
 =================================
-:lang: en
+:lang: es
 
-Contents
-========
+= Contenidoss
 
 :masterdir: {indir}
 
-image::common/images/emc2-intro.*[]
+:leveloffset: 0
 
-The LinuxCNC Team
-
-include::common/overleaf.txt[]
-
-= Using LinuxCNC
+= Acerca de LinuxCNC
 
 :leveloffset: 1
 
-= General Info
+= Introducción
+
+image::common/images/emc2-intro.*[]
+
+include::common/overleaf.txt[]
+
+= Historia de LinuxCNC
+
+include::common/emc-history.txt[]
+
+:leveloffset: 0
+
+= Usando LinuxCNC
+
+:leveloffset: 1
+
+= Información General
 
 :leveloffset: 2
 
@@ -27,6 +38,8 @@ include::user/user-foreword.txt[]
 include::user/user-intro.txt[]
 
 include::user/user-concepts.txt[]
+
+include::user/starting-linuxcnc.txt[]
 
 include::gcode/machining-center.txt[]
 
@@ -40,9 +53,11 @@ include::common/linux-faq.txt[]
 
 include::lathe/lathe-user.txt[]
 
+include::plasma/plasma-cnc-primer.txt[]
+
 :leveloffset: 1
 
-= User Interfaces
+= Interfaces de Usuario
 
 :leveloffset: 2
 
@@ -54,11 +69,15 @@ include::gui/ngcgui.txt[]
 
 include::gui/touchy.txt[]
 
+include::gui/gscreen.txt[]
+
 include::gui/tklinuxcnc.txt[]
+
+include::plasma/plasmac-user-guide.txt[]
 
 :leveloffset: 1
 
-= Programming
+= Programación
 
 :leveloffset: 2
 
@@ -82,7 +101,7 @@ include::gui/image-to-gcode.txt[]
 
 :leveloffset: 1
 
-= Tool Compensation
+= Compensación de Herramientas
 
 :leveloffset: 2
 
@@ -96,7 +115,7 @@ include::gui/tooledit.txt[]
 
 :leveloffset: 1
 
-= General Info
+= Información General
 
 :leveloffset: 2
 
@@ -104,15 +123,13 @@ include::config/integrator-concepts.txt[]
 
 include::install/latency-test.txt[]
 
-include::user/starting-linuxcnc.txt[]
-
 include::motion/tweaking-steppers.txt[]
 
 include::config/stepper-diagnostics.txt[]
 
 :leveloffset: 1
 
-= Configuration
+= Configuración
 
 :leveloffset: 2
 
@@ -134,7 +151,7 @@ include::config/stepper.txt[]
 
 :leveloffset: 1
 
-= Control Panels
+= Paneles de Control
 
 :leveloffset: 2
 
@@ -144,19 +161,21 @@ include::gui/pyvcp-examples.txt[]
 
 include::gui/gladevcp.txt[]
 
-include::gui/gscreen.txt[]
-
 :leveloffset: 1
 
-= User Interfaces
+= Interfaces de Usuario
 
 :leveloffset: 2
+
+include::gui/panelui.txt[]
 
 include::gui/halui.txt[]
 
 include::hal/halui-examples.txt[]
 
 include::config/python-interface.txt[]
+
+include::gui/vismach.txt[]
 
 :leveloffset: 1
 
@@ -192,7 +211,7 @@ include::drivers/vfs11.txt[]
 
 :leveloffset: 1
 
-= Driver Examples
+= Ejemplos de Drivers
 
 :leveloffset: 2
 
@@ -226,6 +245,8 @@ include::hal/intro.txt[]
 
 include::hal/basic-hal.txt[]
 
+include::hal/twopass.txt[]
+
 include::hal/tutorial.txt[]
 
 include::hal/general-ref.txt[]
@@ -249,17 +270,21 @@ include::hal/comp.txt[]
 include::hal/halmodule.txt[]
 
 
+:leveloffset: 0
+
+= Temas Avanzados
+
 :leveloffset: 1
-
-= Advanced Topics
-
-:leveloffset: 2
 
 include::motion/kinematics.txt[]
 
+include::motion/5-axis-kinematics.txt[]
+
 include::motion/pid-theory.txt[]
 
-:leveloffset: 1
+include::motion/external-offsets.txt[]
+
+include::code/rs274.txt[]
 
 :leveloffset: 0
 
@@ -267,7 +292,7 @@ include::common/glossary.txt[]
 
 include::common/gpld-copyright.txt[]
 
-// = Index
+// = Indice
 
 // vim: set syntax=asciidoc:
 

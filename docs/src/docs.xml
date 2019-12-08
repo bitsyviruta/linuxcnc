@@ -100,101 +100,97 @@
 <doc name="xref" title="Cross Reference Index"/>
 </docgroup>
 
-<docgroup lang="es" index="index_es.html">
-<doc name="html_gcode_es" title="Référence G Code, aide rapide"/>
+<docgroup lang = "es" index="index_es.html">
+<doc name="html_gcode_es" title="Referencia rápida de código G">
 
-<doc name="common/overleaf.html" title="Texte de la page couverture (en anglais)"/>
-<doc name="common/System_Requirements_es.html" title="Configuration requise"/>
-<doc name="common/Getting_EMC_es.html" title="Où trouver EMC2"/>
-<doc name="common/Updating_EMC_es.html" title="Mise à jour d'EMC2"/>
-<doc name="quickstart/stepper_quickstart_es.html" title="Démarrage rapide"/>
-<doc name="config/stepconf_es.html" title="L'assistant de configuration StepConf"/>
-<doc name="config/pncconf_es.html" title="L'assistant de configuration PncConf (pour les machines utilisant Mesa)"/>
-<doc name="config/copy_and_run_es.html" title="Copier et exécuter"/>
-<doc name="common/Linux_FAQ_es.html" title="Petite FAQ Linux"/>
-<doc name="common/gpld-copyright.html" title="Copyright et Licence de la documentation (en anglais)"/>
+<doc name="common_emc2-intro" title="Imagen al dorso"/>
+<doc name="common_overleaf_es" title="Texto al dorso"/>
+<doc name="common_System_Requirements_es" title="Requisitos del sistema"/>
+<doc name="common_Getting_EMC_es" title="Obtener LinuxCNC"/>
+<doc name="common_Updating_EMC_es" title="Actualizar LinuxCNC"/>
+<doc name="quickstart_stepper_quickstart_es" title="Inicio rápido para stepper "/>
+<doc name="config_stepconf_es" title="Asistente de configuración para máquinas basadas en steppers"/>
+<doc name="config_pncconf_es" title="Asistente de configuración apuntar y clic (para máquinas que usan Mesa)"/>
+<doc name="config_copy_and_run_es" title="Copiar y ejecutar"/>
+<doc name="common_Linux_FAQ_es" title="FAQ's sobre Linux"/>
+<doc name="common_GPLD_Copyright" title="Licencia de copyright y documentación"/>
 
-<doc name="common/overleaf.html" title="Texte de la page couverture (en anglais)"/>
-<doc name="common/userforeword_es.html" title="Avant-propos"/>
-<doc name="common/user_intro_es.html" title="Introduction"/>
-<doc name="common/User_Concepts_es.html" title="Concepts importantes pour l'utilisateur"/>
-<doc name="gui/axis_es.html" title="GUI: Axis"/>
-<doc name="gui/touchy_es.html" title="GUI: Touchy"/>
-<doc name="gui/ngcgui_es.html" title="GUI: NGCGUI"/>
-<doc name="gui/tklinuxcnc_es.html" title="GUI: TkLinuxCNC"/>
-<doc name="gui/mini_es.html" title="GUI: Mini"/>
-<doc name="common/machining_center_es.html" title="Informations Centre d'usinage"/>
-<doc name="gcode/overview_es.html" title="Aperçu gcode"/>
-<doc name="gcode/coordinates_es.html" title="Les systèmes de coordonnées"/>
-<doc name="gcode/tool_compensation_es.html" title="Les compensations d'outil"/>
-<doc name="gcode/main_es.html" title="Le langage Gcode EMC2"/>
-<doc name="gcode/mill_canned_es.html" title="Les cycles préprogrammés"/>
-<doc name="lathe/lathe-user_es.html" title="Informations spécifiques aux tours"/>
-<doc name="gcode/rs274ngc_es.html" title="Le language G-code RS274/NGC"/>
-<doc name="examples/gcode_es.html" title="Exemples en G-code"/>
-<doc name="gui/image-to-gcode_es.html" title="Les fonctionnalités d'Image-to-gcode"/>
-<doc name="common/Glossary_es.html" title="Glossaire"/>
-<doc name="common/GPLD_Copyright.html" title="Copyright et Licence de la documentation (en anglais)"/>
+<doc name="common_overleaf_es" title="Texto al dorso"/>
+<doc name="common_user-foreword_es" title="Prólogo"/>
+<doc name="common_user-intro_es" title="Introducción"/>
+<doc name="common_user-concepts_es" title="Conceptos importantes para el usuario"/>
+<doc name="gui_axis_es" title="GUI: Axis"/>
+<doc name="gui_touchy_es" title="GUI: Touchy"/>
+<doc name="gui_ngcgui_es" title="GUI: NGCGUI"/>
+<doc name="gui_tklinuxcnc_es" title="GUI: TkLinuxCNC"/>
+<doc name="gui_mini_es" title="GUI: Mini"/>
+<doc name="common_machining_center_es" title="Información del centro de mecanizado"/>
+<doc name="gcode_overview_es" title="Descripción general del Codigo G"/>
+<doc name="gcode_coordinates_es" title="Coordenadas en Codigo G"/>
+<doc name="gcode_tool-compensation_es" title="Compensación de herramienta en Codigo G"/>
+<doc name="gcode_main_es" title="El lenguaje Codigo G en LinuxCNC"/>
+<doc name="gcode_mill_canned_es" title="Ejemplos de ciclo fijo de fresa en Codigo G"/>
+<doc name="lathe_lathe-user_es" title="Información para el usuario de torno"/>
+<doc name="plasma_plasmac-user-guide_es" title="Guía del usuario de PlasmaC"/>
+<doc name="plasma_plasma-cnc-primer_es" title="Plasma CNC Primer"/>
+<doc name="gcode_rs274ngc_es" title="RS-274/NGC y Codigo G"/>
+<doc name="examples_gcode_es" title="Ejemplos de Codigo G"/>
+<doc name="gui_image-to-gcode_es" title="Imagen a Codigo G"/>
+<doc name="common_glossary_es" title="Glosario"/>
+<doc name="common_GPLD_Copyright_es" title="Licencia de copyright y documentación"/>
 
-<doc name="common/overleaf.html" title="Texte de la page couverture (en anglais)"/>
-<doc name="hal/intro_es.html" title="Introduction à HAL"/>
-<doc name="hal/tutorial_es.html" title="Le tutoriel de HAL"/>
-<doc name="hal/general_ref_es.html" title="Documentation générale de HAL"/>
-<doc name="hal/tools_es.html" title="Outils et utilitaires pour HAL"/>
-<doc name="hal/basic_hal_es.html" title="Les bases de HAL"/>
-<doc name="hal/halshow_es.html" title="Les fonctionnalités de Halshow"/>
-<doc name="hal/components_es.html" title="Exemples pour HAL"/>
-<doc name="hal/rtcomps_es.html" title="Les composants temps réel"/>
-<doc name="hal/parallel_port_es.html" title="Pilotes de port parallèle"/>
-<doc name="gui/halui_es.html" title="halui"/>
-<doc name="hal/hal-examples_es.html" title="Exemples pour HAL"/>
-<doc name="hal/comp_es.html" title="Comp: un outil de création de composants HAL"/>
-<doc name="hal/halmodule_es.html" title="Créer un espace utilisateur en Python avec le module 'hal'"/>
-<doc name="drivers/AX5214H_es.html" title="Pilote AX5214H"/>
-<doc name="drivers/GS2_es.html" title="Pilote GS2"/>
-<doc name="drivers/hostmot2_es.html" title="Pilote HostMot2"/>
-<doc name="drivers/m5i20_es.html" title="Pilote Mesa 5i20 (obsolète, l'utilisation du pilote HostMot2)"/>
-<doc name="drivers/motenc_es.html" title="Pilote Motenc Driver"/>
-<doc name="drivers/opto22_es.html" title="Pilote Opto22 Driver"/>
-<doc name="drivers/pico_ppmc_es.html" title="Pilote Pico PPMC Driver"/>
-<doc name="drivers/pluto_p_es.html" title="Pilote Pluto-P Driver"/>
-<doc name="drivers/servo_to_go_es.html" title="Pilote Servo-To-Go Driver"/>
-<doc name="common/GPLD_Copyright.html" title="Copyright et Licence de la documentation (en anglais)"/>
+<doc name="common_overleaf_es" title="Texto al dorso"/>
+<doc name="hal_intro_es" title="Introducción"/>
+<doc name="hal_tutorial_es" title="Tutorial avanzado de HAL"/>
+<doc name="hal_general-ref_es" title="Referencia general"/>
+<doc name="hal_tools_es" title="Herramientas HAL"/>
+<doc name="hal_basic-hal_es" title="Información básica de HAL"/>
+<doc name="hal_halshow_es" title="Halshow"/>
+<doc name="hal_components_es" title="Componentes HAL"/>
+<doc name="hal_parallel_port_es" title="Controladores de puerto paralelo"/>
+<doc name="gui_halui_es" title="Interfaz de usuario HAL"/>
+<doc name="hal_hal-examples_es" title="Ejemplos HAL"/>
+<doc name="hal_comp_es" title="Comp: una herramienta para crear componentes HAL"/>
+<doc name="hal_halmodule_es" title="Creación de componentes Python de espacio de usuario con el módulo 'hal'"/>
+<doc name="drivers_ax5214h_es" title="Controlador AX5214H"/>
+<doc name="drivers_gs2_es" title="Controlador GS2"/>
+<doc name="drivers_hostmot2_es" title="Controlador HostMot2"/>
+<doc name="drivers_motenc_es" title="Controlador Motenc"/>
+<doc name="drivers_opto22_es" title="Controlador Opto22"/>
+<doc name="drivers_pico-ppmc_es" title="Controlador Pico PPMC"/>
+<doc name="drivers_pluto-p_es" title="Controlador Pluto-P"/>
+<doc name="drivers_servo-to-go_es" title="Controlador Servo-To-Go"/>
+<doc name="drivers_gm_es" title="Controlador general Mechatronics GM6-PCI"/>
+<doc name="common_gpld-copyright_es" title="Licencia de copyright y documentación"/>
 
-<doc name="common/overleaf.html" title="Texte de la page couverture (en anglais)"/>
-<doc name="common/Integrator_Concepts_es.html" title="Concepts intégrateurs importants"/>
-<doc name="install/Latency_Test_es.html" title="Test de latence"/>
-<doc name="config/ini_config_es.html" title="La configuration en détail"/>
-<doc name="config/ini_homing_es.html" title="Configuration des prises d'origine"/>
-<doc name="config/lathe_config_es.html" title="Tour de configuration"/>
-<doc name="config/emc2hal_es.html" title="Interface entre LinuxCNC et HAL"/>
-<doc name="config/stepper_es.html" title="Configuration pas à pas"/>
-<doc name="hal/pyvcp_es.html" title="Panneaux de commande virtuel Python (pyVCP)"/>
-<doc name="hal/pyvcp_examples_es.html" title="exemples pyVCP"/>
-<doc name="gui/gladevcp_es.html" title="Panneaux de commande virtuel Glade"/>
-<doc name="motion/kinematics_es.html" title="Notions de cinématique"/>
-<doc name="motion/tweaking_steppers_es.html" title="Réglage des moteurs pas à pas"/>
-<doc name="motion/pid_theory_es.html" title="Théorie du PID"/>
-<doc name="ladder/ladder_intro_es.html" title="Introduction au langage Ladder"/>
-<doc name="ladder/classic_ladder_es.html" title="ClassicLadder"/>
-<doc name="ladder/ladder_examples_es.html" title="Exemples ClassicLadder"/>
-<doc name="examples/pci_parallel_port_es.html" title="Exemple Ajouter un port parallèle PCI"/>
-<doc name="examples/spindle_es.html" title="Exemple contrôler la vitesse de la broche"/>
-<doc name="examples/mpg_es.html" title="Exemple Utiliser une manivelle électronique"/>
-<doc name="examples/gs2_example_es.html" title="Exemple GS2"/>
-<doc name="common/Stepper_Diagnostics_es.html" title="Pas à pas de diagnostic"/>
-<doc name="common/Linux_FAQ_es.html" title="Petite FAQ Linux"/>
-<doc name="common/Glossary_es.html" title="Glossaire"/>
-<doc name="common/GPLD_Copyright.html" title="Copyright et Licence de la documentation (en anglais)"/>
+<doc name="common_overleaf" title="Texto al dorso"/>
+<doc name="common_integrator-concepts_es" title="Conceptos importantes para el integrador"/>
+<doc name="install_Latency_Test_es" title="Prueba de latencia"/>
+<doc name="config_ini-config_es" title="Configuración básica"/>
+<doc name="config_ini-homing_es" title="Configuración de homing"/>
+<doc name="config_lathe-config_es" title="Configuración de torno"/>
+<doc name="config_core-components_es" title="Interfaz LinuxCNC a HAL"/>
+<doc name="config_stepper_es" title="Configuración de steppers"/>
+<doc name="hal_pyvcp_es" title="Paneles Python de control virtual (pyVCP)"/>
+<doc name="hal_pyvcp-examples_es" title="Ejemplos de pyVCP"/>
+<doc name="gui_gladevcp_es" title="Panel Glade de control virtual"/>
+<doc name="gui_gscreen_es" title="Gscreen"/>
+<doc name="motion_kinematics_es" title="Cinemática"/>
+<doc name="motion_tweaking_steppers_es" title="Afinación de Steppers"/>
+<doc name="motion_pid_theory_es" title="Teoría PID"/>
+<doc name="ladder_ladder_intro_es" title="Introducción a ladder"/>
+<doc name="ladder_classic_ladder_es" title="ClassicLadder"/>
+<doc name="ladder_ladder_examples_es" title="Ejemplos de ClassicLadder"/>
+<doc name="examples_pci-parallel-port_es" title="Puerto paralelo PCI"/>
+<doc name="examples_spindle_es" title="Ejemplo de husillo"/>
+<doc name="examples_mpg_es" title="Ejemplo de MPG"/>
+<doc name="examples_gs2-example_es" title="Ejemplo GS2"/>
+<doc name="common_stepper-diagnostics_es" title="Inicio rápido steppers"/>
+<doc name="common_Linux_FAQ_es" title="FAQ's sobre Linux"/>
+<doc name="common_glossary_es" title="Glosario"/>
+<doc name="common_gpld-copyright_es" title="Licencia de copyright y documentación"/>
 
-<doc name="common/overleaf.html" title="Texte de la page couverture (en anglais)"/>
-<doc name="code/code-notes.html" title="Notes sur le code (en anglais)"/>
-<doc name="code/nml-messages.html" title="Messages LNM (en anglais)"/>
-<doc name="code/style-guide.html" title="Guide de style (en anglais)"/>
-<doc name="common/Glossary.html" title="Glossaire (en anglais)"/>
-<doc name="common/GPLD_Copyright.html" title="Copyright et Licence de la documentation (en anglais)"/>
-	
-<doc name="./xref_es.html" title="Indice de référence croisée"/>
+<doc name="xref_es" title="Índice de referencia cruzada"/>
 </docgroup>
 
 <docgroup lang="fr" index="index_fr.html">

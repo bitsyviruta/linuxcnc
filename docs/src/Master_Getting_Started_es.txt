@@ -1,11 +1,10 @@
 :lversion: {sys: cat ../VERSION}
-Primeros pasos V{lversion}, {localdate}
-=======================================
+Empezando V{lversion}, {localdate}
+========================================
 :lang: es
-:ascii-ids:
 :masterdir: {indir}
 
-The LinuxCNC Team
+El Equipo LinuxCNC
 
 :leveloffset: 1
 
@@ -13,13 +12,15 @@ image::common/images/emc2-intro.*[]
 
 include::common/overleaf.txt[]
 
-include::getting-started/about-linuxcnc-es.txt[]
+include::getting-started/about-linuxcnc.txt[]
 
-include::getting-started/system-requirements-es.txt[]
+include::getting-started/system-requirements.txt[]
 
-include::getting-started/getting-linuxcnc-es.txt[]
+include::getting-started/getting-linuxcnc.txt[]
 
-include::getting-started/updating-linuxcnc-es.txt[]
+include::getting-started/updating-linuxcnc.txt[]
+
+include::common/glossary.txt[]
 
 include::common/gpld-copyright.txt[]
 
