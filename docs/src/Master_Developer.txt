@@ -1,12 +1,12 @@
 :lversion: {sys: cat ../VERSION}
-Developer Manual V{lversion}, {localdate}
+Manual del Desarrollador  V{lversion}, {localdate}
 =========================================
 
-:lang: en
+:lang: es
 :masterdir: {indir}
 
 
-== Introduction
+== Introducción
 
 image::common/images/emc2-intro.*[]
 
