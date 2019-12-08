@@ -1,7 +1,7 @@
 :lversion: {sys: cat ../VERSION}
-Informacion para Integradores V{lversion}, {localdate}
+Integrator Information V{lversion}, {localdate}
 ===============================================
-:lang: es
+:lang: en
 :masterdir: {indir}
 
 :leveloffset: 1
