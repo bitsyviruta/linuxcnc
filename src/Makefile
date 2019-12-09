@@ -1,5 +1,5 @@
-# buster gcc (Debian 8.3.0-6) emits many warnings
-# use at your own risk
+# buster gcc (Debian 8.3.0-6) emite muchas advertencias
+# Úselo bajo su propio riesgo
 ifeq ($(origin SUPPRESS_WARNINGS), undefined)
 else
   QUIETFLAGS    ?=
@@ -18,22 +18,22 @@ endif
 EXTRAFLAGS :=
 EXTRA_DEBUG ?=
 
-# see http://www.cmcrossroads.com/ask-mr-make/6535-tracing-rule-execution-in-gnu-make
-# to trace make execution of make in more detail:
+# Ver http://www.cmcrossroads.com/ask-mr-make/6535-tracing-rule-execution-in-gnu-make
+# para rastrear la ejecución de make con más detalle:
 # make VV=1
 ifeq ("$(origin VV)", "command line")
     OLD_SHELL := $(SHELL)
     SHELL = $(warning Building $@$(if $<, (from $<))$(if $?, ($? newer)))$(OLD_SHELL)
 endif
 
-# Delete the default suffix rules
+# Eliminar las reglas de sufijo predeterminadas
 .SUFFIXES:
 .PHONY: default userspace modules clean modclean depclean install python pythonclean cscope cscopeclean
 
-# A "trivial build" is one which should not include dependency information
-# either because it should be usable before dependency information can be
-# generated or when it is invalid (clean, docclean) or when running as root
-# when the user must guarantee in advance that everything is built
+# Una "compilación trivial" es aquella que no debe incluir información de dependencia,
+# ya sea porque debe ser utilizable antes de que se pueda generar información de dependencia
+# o cuando no sea válida (clean, docclean) o cuando se ejecute como root cuando el usuario
+# debe garantizar de antemano que todo está construído
 # (setuid, install)
 ifeq ($(MAKECMDGOALS),)
 TRIVIAL_BUILD=no
@@ -46,16 +46,16 @@ endif
 endif
 
 
-# Beautify output
+# Embellecer salida
 # ---------------------------------------------------------------------------
 #
-# A simple variant is to prefix commands with $(Q) - that's useful
-# for commands that shall be hidden in non-verbose mode.
+# Una variante simple es prefijar comandos con $(Q) - eso es útil
+# para comandos que estarán ocultos en modo no detallado.
 #
 #	$(Q)ln $@ :<
 #
-# If BUILD_VERBOSE equals 0 then the above command will be hidden.
-# If BUILD_VERBOSE equals 1 then the above command is displayed.
+# Si BUILD_VERBOSE es igual a 0, el comando anterior estará oculto.
+# Si BUILD_VERBOSE es igual a 1, se muestra el comando anterior.
 
 ifeq ("$(origin V)", "command line")
   BUILD_VERBOSE = $(V)
@@ -99,28 +99,29 @@ cc-option = $(shell if $(CC) $(CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
 	     > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
 
 ifeq ($(origin KERNELRELEASE),undefined)
-# When KERNELRELEASE is not defined, this is the userspace build.
-# The "modules" target is the gateway to the kernel module build.
+# Cuando KERNELRELEASE no está definido, esta es la construcción de espacio de usuario.
+# El objetivo "modules" es la puerta de entrada a la compilación de módulos del núcleo.
 default: userspace modules
 ifeq ($(RUN_IN_PLACE),yes)
 ifneq ($(BUILD_SYS),uspace)
-	@if [ -f ../bin/linuxcnc_module_helper ]; then if ! [ `id -u` = 0 -a -O ../bin/linuxcnc_module_helper -a -u ../bin/linuxcnc_module_helper ]; then $(VECHO) "You now need to run 'sudo make setuid' in order to run in place."; fi; fi
+	@if [ -f ../bin/linuxcnc_module_helper ]; then if ! [ `id -u` = 0 -a -O ../bin/linuxcnc_module_helper -a -u ../bin/linuxcnc_module_helper ]; then $(VECHO) "Ahora necesita ejecutar 'sudo make setuid' para ejecutar RIP".; fi; fi
 else
-	@if [ -f ../bin/rtapi_app ]; then if ! [ `id -u` = 0 -a -O  ../bin/rtapi_app -a -u ../bin/rtapi_app ]; then $(VECHO) "You now need to run 'sudo make setuid' in order to run in place with access to hardware."; fi; fi
+	@if [ -f ../bin/rtapi_app ]; then if ! [ `id -u` = 0 -a -O  ../bin/rtapi_app -a -u ../bin/rtapi_app ]; then $(VECHO) "Ahora debe ejecutar 'sudo make setuid' para ejecutar RIP con acceso al hardware."; fi; fi
 endif
 endif
 
 
-# Print 'entering' all the time
+# imprimir 'entering' siempre
 MAKEFLAGS += w
 
-# Create the variables with := so that subsequent += alterations keep it
-# as a "substitute at assignment time" variable
+# Cree las variables con := para que las siguientes modificaciones += lo mantengan
+# como variable "sustituto en el momento de la asignación"
 TARGETS :=
 PYTARGETS :=
 GENERATED_MANPAGES :=
 
 # Submakefiles from each of these directories will be included if they exist
+# Se incluirán submakefiles de cada uno de estos directorios, si existen
 SUBDIRS := \
     libnml/linklist libnml/cms libnml/rcs libnml/inifile libnml/os_intf \
     libnml/nml libnml/buffer libnml/posemath libnml \
@@ -153,18 +154,20 @@ ULAPISRCS := rtapi/$(RTPREFIX)_ulapi.c
 
 # Each item in INCLUDES is transformed into a -I directive later on
 # The top directory is always included
+# Cada elemento en INCLUDES se transforma en una directiva -I más adelante
+# El directorio superior siempre se incluye
 INCLUDES := .
 
 USERSRCS :=
 PROGRAMS :=
 
-# When used like $(call TOxxx, ...) these turn a list of source files
-# into the corresponding list of object files, dependency files,
-# or both.  When a source file has to be compiled with special flags,
-# TOOBJSDEPS is used.  Confusingly, TOOBJSDEPS includes preprocessed source
-# file names, but this is what allows 'make src.i' to produce proper
-# preprocessed source when src.c needs a customized compile flag.
-# See Submakefile.skel for an example.
+# Cuando se usa como $(call TOxxx, ...) estos convierten una lista de archivos 
+# fuente en la lista correspondiente de archivos de objeto, archivos de dependencia o ambos.
+# Cuando un archivo fuente tiene que ser compilado con banderas especiales, se usa TOOBJSDEPS. 
+# Confusamente, TOOBJSDEPS incluye nombres de archivos fuente preprocesados, pero esto es 
+# lo que permite que 'make src.i' produzca una fuente preprocesada adecuada cuando src.c necesita un indicador de 
+# compilación personalizado.
+# Ver Submakefile.skel para un ejemplo.
 TOOBJS = $(patsubst %.cc,objects/%.o,$(patsubst %.c,objects/%.o,$(1)))
 TODEPS = $(patsubst %.cc,objects/%.d,$(patsubst %.c,objects/%.d,$(1)))
 TOOBJSDEPS = $(call TOOBJS,$(1)) $(call TODEPS, $(1)) $(patsubst %.cc,%.ii,$(patsubst %.c,%.i,$(1)))
@@ -172,22 +175,21 @@ TOOBJSDEPS = $(call TOOBJS,$(1)) $(call TODEPS, $(1)) $(patsubst %.cc,%.ii,$(pat
 SUBMAKEFILES := $(patsubst %,%/Submakefile,$(SUBDIRS))
 -include $(wildcard $(SUBMAKEFILES))
 
-# This checks that all the things listed in USERSRCS are either C files
-# or C++ files
+# Esto comprueba que todo lo enumerado en USERSRCS son archivos C o archivos C ++
 ASSERT_EMPTY = $(if $(1), $(error "Should be empty but is not: $(1)"))
 $(call ASSERT_EMPTY,$(filter-out %.c %.cc, $(USERSRCS)))
 
 $(call TOOBJS,$(PYSRCS)) : EXTRAFLAGS += -fPIC -fno-strict-aliasing
 USERSRCS += $(PYSRCS)
 
-# Find the list of object files for each type of source file
+# Encuentra la lista de archivos de objetos para cada tipo de archivo fuente
 CUSERSRCS := $(filter %.c,$(USERSRCS))
 CXXUSERSRCS := $(filter %.cc,$(USERSRCS))
 CUSEROBJS := $(call TOOBJS,$(CUSERSRCS))
 CXXUSEROBJS += $(call TOOBJS,$(CXXUSERSRCS))
 
 ifeq ($(TRIVIAL_BUILD),no)
-# Find the dependency filenames, then include them all
+# Encuentra los nombres de archivo de dependencia, luego inclúye todos
 DEPS := $(sort $(patsubst %.o,%.d,$(CUSEROBJS) $(CXXUSEROBJS)))
 READ_DEPS = $(wildcard $(DEPS))
 $(shell $(VECHO) 1>&2 Reading $(words $(READ_DEPS))/$(words $(DEPS)) dependency files)
@@ -196,7 +198,7 @@ UNREAD_DEPS = $(filter-out $(READ_DEPS), $(DEPS))
 $(shell $(VECHO) 1>&2 Done reading dependencies)
 endif
 
-# Each directory in $(INCLUDES) is passed as a -I directory when compiling.
+# Cada directorio en $ (INCLUDES) se pasa como un directorio -I al compilar.
 INCLUDE := $(patsubst %,-I%, $(INCLUDES)) -I$(RTDIR)/include
 INCLUDE += -I$(INCLUDEPY)
 INCLUDE += $(LIBTIRPC_CFLAGS)
@@ -214,7 +216,7 @@ else
 LDFLAGS := -Wl,-rpath-link,../lib $(LIBTIRPC_LIBS)
 endif
 
-# Rules to make .o (object) files
+# Reglas para hacer archivos .o (objetos)
 $(sort $(CUSEROBJS)) : objects/%.o: %.c
 	$(ECHO) Compiling $<
 	@mkdir -p $(dir $@)
@@ -231,7 +233,7 @@ $(sort $(CXXUSEROBJS)) : objects/%.o: %.cc
 		-MP -MD -MF "${@:.o=.d}" -MT "$@" \
 		$< -o $@
 
-# Rules to make .i (preprocessed) files
+# Reglas para archivos .i (preprocesados)
 $(sort $(patsubst %.c,%.i,$(CUSERSRCS))): %.i: %.c
 	$(ECHO) Preprocessing $< to $@
 	$(Q)$(CC) -dD $(CFLAGS) $(EXTRAFLAGS) -E $< -o $@
@@ -249,7 +251,7 @@ config.h.in: configure.ac
 
 config.status: configure
 	if [ -f config.status ]; then ./config.status --recheck; else \
-	    echo 1>&2 "*** linuxcnc is not configured.	Run './configure' with appropriate flags."; \
+	    echo 1>&2 "*** linuxcnc no esta configurado. Ejecute './configure' las opciones apropiadas."; \
 	    exit 1; \
 	fi
 endif
@@ -275,10 +277,10 @@ $(INFILES): %: %.in config.status
 
 default: $(INFILES)
 
-# For each file to be copied to ../include, its location in the source tree
-# is listed here.  Note that due to $(INCLUDE), defined above, the include
-# files in the source tree are the ones used when building linuxcnc.  The copy
-# in ../include is used when building external components of linuxcnc.
+# Para cada archivo que se copiará a ../include, su ubicación en el árbol de origen
+# se enumera aquí. Tenga en cuenta que debido al $(INCLUDE), definido anteriormente,
+# los archivos include en el árbol de origen son los que se utilizan al construir 
+# linuxcnc. La copia en ../include se usa al construir componentes externos de linuxcnc.
 HEADERS := \
     config.h \
     emc/ini/emcIniFile.hh \
@@ -393,20 +395,20 @@ HEADERS := \
     rtapi/rtapi_errno.h \
     rtapi/rtapi_string.h
 
-# the "headers" target installs all the header files in ../include
+# el objetivo "headers" instala todos los archivos de encabezado en ../include
 .PHONY: headers
 HEADERS := $(patsubst %,../include/%,$(foreach h,$(HEADERS),$(notdir $h)))
 headers: $(HEADERS)
 
-# install header files as part of the build
+# instalar archivos de encabezado como parte de la compilación
 TARGETS += headers
 
-# Add converting of %.po files
+# Agregar conversión de archivos %.po
 TARGETS += $(patsubst po/%.po, ../share/locale/%/LC_MESSAGES/linuxcnc.mo, $(wildcard po/*.po))
 TARGETS += $(patsubst po/gmoccapy/%.po, ../share/locale/%/LC_MESSAGES/gmoccapy.mo, $(wildcard po/gmoccapy/*.po))
 TARGETS += $(patsubst po/%.po, objects/%.msg, $(wildcard po/*.po))
 
-# tooledit as standalone app:
+# tooledit como aplicacion independiente:
 TARGETS += ../bin/tooledit
 ../bin/tooledit: Makefile
 	$(Q)rm -f $@
@@ -415,7 +417,7 @@ TARGETS += ../bin/tooledit
 	$(Q)(echo "standalone_tooledit")>>$@
 	$(Q)chmod +x $@
 
-# ngcgui as standalone app:
+# ngcgui como aplicacion independiente:
 TARGETS += ../bin/ngcgui
 ../bin/ngcgui: Makefile
 	$(Q)rm -f $@
@@ -424,7 +426,7 @@ TARGETS += ../bin/ngcgui
 	$(Q)(echo "::ngcgui::standalone_ngcgui")>>$@
 	$(Q)chmod +x $@
 
-# pyngcgui as standalone app:
+# pyngcgui como aplicacion independiente:
 TARGETS += ../bin/pyngcgui
 ../bin/pyngcgui: Makefile
 	$(Q)rm -f $@
@@ -433,7 +435,7 @@ TARGETS += ../bin/pyngcgui
 	$(Q)(echo "pyngcgui.standalone_pyngcgui()")>>$@
 	$(Q)chmod +x $@
 
-# gremlin_view as standalone app:
+# gremlin_view como aplicacion independiente:
 TARGETS += ../bin/gremlin_view
 ../bin/gremlin_view: Makefile
 	$(Q)rm -f $@
@@ -442,7 +444,7 @@ TARGETS += ../bin/gremlin_view
 	$(Q)(echo "gremlin_view.standalone_gremlin_view()")>>$@
 	$(Q)chmod +x $@
 
-# halshow as standalone app:
+# halshow como aplicacion independiente:
 TARGETS += ../bin/halshow
 ../bin/halshow: Makefile
 	$(Q)rm -f $@
@@ -450,7 +452,7 @@ TARGETS += ../bin/halshow
 	$(Q)(echo "source $(EMC2_TCL_LIB_DIR)/bin/halshow.tcl")>>$@
 	$(Q)chmod +x $@
 
-# And make userspace depend on $(TARGETS)
+# make userspace depende de $(TARGETS)
 userspace: $(TARGETS)
 
 pythonclean:
@@ -460,9 +462,9 @@ python: $(PYTARGETS)
 userspace: python
 clean: docclean pythonclean cscopeclean
 
-# This is the gateway into the crazy world of "kbuild", the linux 2.6 system
-# for building kernel modules.	Other kernel module build styles need to be
-# accomodated here.
+# Esta es la puerta de entrada al loco mundo de "kbuild", el sistema Linux 2.6
+# para construir módulos de kernel. Aquí se deben incluir otros estilos de 
+# compilación del módulos del núcleo.
 ifeq ($(BUILD_SYS),kbuild)
 
 modules:
@@ -471,10 +473,9 @@ modules:
 	-cp Module.symvers *$(MODULE_EXT) ../rtlib/
 endif
 
-# These rules clean things up.	'modclean' cleans files generated by 'modules'
-# (except that it doesn't remove the modules that were copied to rtlib)
-# 'clean' cleans everything but dependency files, and 'depclean' cleans them
-# too.
+# Estas reglas limpian las cosas. 'modclean' limpia los archivos generados por 'módulos' 
+# (excepto que no elimina los módulos que se copiaron en rtlib) 
+# 'clean' limpia todo menos los archivos de dependencia, y 'depclean' también los limpia.
 modclean:
 	find -name '.*.cmd' -or -name '*.ko' -or -name '*.mod.c' -or -name '*.mod.o' | xargs rm -f
 	-rm -rf .tmp_versions
@@ -493,9 +494,9 @@ clean: depclean modclean
 	-rm -f ../rtlib/*.$(MODULE_EXT)
 	-rm -f hal/components/conv_*.comp
 
-# So that nothing is built as root, this rule does not depend on the touched
-# files (Note that files in depends/ might be rebuilt, and there's little that
-# can be done about it)
+# Para que nada se construya como root, esta regla no depende de los archivos ""touched"" 
+# (tenga en cuenta que los archivos en depends/ podrían ser reconstruidos, y hay poco 
+# que se pueda hacer al respecto)
 setuid:
 ifeq ($(BUILD_SYS),uspace)
 	chown root ../bin/rtapi_app
@@ -509,9 +510,9 @@ endif
 	chown root ../bin/linuxcnc_module_helper
 	chmod 4750 ../bin/linuxcnc_module_helper
 
-# These rules allows a header file from this directory to be installed into
-# ../include.  A pair of rules like these will exist in the Submakefile
-# of each file that contains headers.
+# Estas reglas permiten instalar un archivo de encabezado desde este directorio
+# en ../include. Un par de reglas como estas existirán en el Submakefile de
+# cada archivo que contenga encabezados.
 $(patsubst %,../include/%,$(wildcard *.h)): ../include/%.h: %.h
 	$(Q)-cp $^ $@
 $(patsubst %,../include/%,$(wildcard *.hh)): ../include/%.hh: %.hh
@@ -553,13 +554,13 @@ TCL_BIN=$(call GLOB,../tcl/bin/*.tcl) ../tcl/bin/popimage
 
 ifeq ($(DESTDIR),)
 install:
-	$(Q)echo "'make install' is only supported for building packages,"
-	$(Q)echo "and it doesn't look like that is what is going on because"
-	$(Q)echo "you have not set DESTDIR."
+        $(Q)echo "'make install' solo es compatible para crear paquetes"
+        $(Q)echo "y no parece que eso sea lo que está sucediendo porque"
+        $(Q)echo "no ha establecido DESTDIR.""
 	$(Q)exit 99
 else
 install: install-kernel-dep install-kernel-indep
-	$(ECHO) "Installed in $(DESTDIR) with prefix $(prefix)"
+	$(ECHO) "Instalado en $(DESTDIR) con prefix $(prefix)"
 endif
 
 install-dirs:
@@ -607,7 +608,8 @@ install-kernel-indep: install-dirs
 	$(FILE) ../*.png ../*.gif $(DESTDIR)$(datadir)/linuxcnc
 	$(FILE) ../lib/hallib/*   $(DESTDIR)$(datadir)/linuxcnc/hallib
 
-	# install all the sample configs, including subdirs (tar is required on debian systems, and common on others)
+        # instalar todas las configuraciones de muestra, incluidas los subdirectorios 
+        # (se requiere tar en los sistemas debian y común en otros)
 	$(DIR) $(DESTDIR)$(sampleconfsdir)
 	((cd ../configs && tar --exclude CVS --exclude .cvsignore --exclude .gitignore -cf - .) | (cd $(DESTDIR)$(sampleconfsdir) && tar -xf -))
 
@@ -760,9 +762,9 @@ ifneq ($(KERNELRELEASE),)
 include $(BASEPWD)/hal/components/Submakefile
 endif
 
-# KERNELRELEASE is nonempty, therefore we are building modules using the
-# "kbuild" system.  $(BASEPWD) is used here, instead of relative paths, because
-# that's what kbuild seems to require
+# KERNELRELEASE no está vacío, por lo tanto, estamos creando módulos utilizando 
+# el sistema "kbuild". $(BASEPWD) se usa aquí, en lugar de rutas relativas, porque
+# eso es lo que parece requerir kbuild
 
 EXTRA_CFLAGS := $(filter-out -ffast-math,$(RTFLAGS)) -D__MODULE__ -I$(BASEPWD)/../include -I$(BASEPWD) -I$(BASEPWD)/libnml/linklist \
 	-I$(BASEPWD)/libnml/cms -I$(BASEPWD)/libnml/rcs -I$(BASEPWD)/libnml/inifile \
@@ -788,21 +790,21 @@ ifdef SEQUENTIAL_SUPPORT
 EXTRA_CFLAGS += -DSEQUENTIAL_SUPPORT
 endif
 
-# For each module, there's an addition to obj-m or obj-$(CONFIG_foo)
-# plus a definition of foo-objs, which contains the full path to the
-# object file(s) that the module contains.  Unfortunately, this setup pollutes
-# the source directory with object files and other temporaries, but I can't
-# find a way around it.
+# Para cada módulo, hay una adición a obj-m u obj-$(CONFIG_foo)
+# más una definición de foo-objs, que contiene la ruta completa a los 
+# archivos objeto que contiene el módulo. Desafortunadamente, esta configuración contamina
+# el directorio fuente con archivos objeto y otros temporales, pero no puedo
+# encontrar una forma de evitarlo.
 
-# Subdirectory:  rtapi
+# Subdirectorio:  rtapi
 ifneq ($(BUILD_SYS),uspace)
 obj-$(CONFIG_RTAPI) += rtapi.o
 rtapi-objs := rtapi/$(RTPREFIX)_rtapi.o
 endif
 
-# Subdirectory: rtapi/examples (unneeded?)
+# Subdirectorio: rtapi/examples (innecesario?)
 
-# Subdirectory: hal/components
+# Subdirectorio: hal/components
 obj-$(CONFIG_BOSS_PLC) += boss_plc.o
 boss_plc-objs := hal/components/boss_plc.o $(MATHSTUB)
 obj-$(CONFIG_DEBOUNCE) += debounce.o
@@ -846,7 +848,7 @@ streamer-objs := hal/components/streamer.o $(MATHSTUB)
 obj-$(CONFIG_SAMPLER) += sampler.o
 sampler-objs := hal/components/sampler.o $(MATHSTUB)
 
-# Subdirectory: hal/drivers
+# Subdirectorio: hal/drivers
 obj-$(CONFIG_HAL_PARPORT) += hal_parport.o
 hal_parport-objs := hal/drivers/hal_parport.o $(MATHSTUB)
 ifneq ($(BUILD_SYS),uspace)
@@ -876,7 +878,7 @@ hal_gm-objs := hal/drivers/hal_gm.o $(MATHSTUB)
 obj-$(CONFIG_HAL_PPMC) += hal_ppmc.o
 hal_ppmc-objs := hal/drivers/hal_ppmc.o $(MATHSTUB)
 
-#Don't attempt to build Pi / Beaglebone GPIO for RTAI
+# No intentar construir Pi/Beaglebone GPIO para RTAI
 ifeq ($(BUILD_SYS),uspace)
 obj-$(CONFIG_HAL_BB_GPIO) += hal_bb_gpio.o
 hal_bb_gpio-objs  :=			\
@@ -1056,7 +1058,7 @@ modules: $(patsubst %.o,../rtlib/%.so,$(obj-m))
 
 RTFLAGS += -fno-strict-aliasing -fwrapv
 
-# Rules to make .o (object) files
+# Reglas para hacer archivos .o (objeto)
 $(sort $(RTOBJS)) : objects/rt%.o : %.c
 	$(ECHO) Compiling realtime $<
 	@rm -f $@
@@ -1072,7 +1074,7 @@ modules: $(patsubst %,../rtlib/%,$(obj-m))
 RTOBJS := $(sort $(foreach mod,$(obj-m),$(call TORTOBJS,$(mod))))
 RTDEPS := $(sort $(patsubst objects/%.o,depends/%.d, $(RTOBJS)))
 
-# Rules to make .o (object) files
+# Reglas para archivos .o (objeto)
 $(sort $(RTOBJS)) : objects/rt%.o : %.c
 	$(ECHO) Compiling realtime $<
 	@rm -f $@
@@ -1163,8 +1165,8 @@ $(shell $(VECHO) 1>&2 Done reading realtime dependencies)
 endif
 endif
 
-# Phony so that it is always rebuilt when requested, not because it
-# shouldn't exist as a file
+# Phony para que siempre se reconstruya cuando se solicite, no porque
+# no debería existir como un archivo
 .PHONY: tags
 tags:
 	ctags-exuberant \
@@ -1203,8 +1205,8 @@ swish:
 		$(dir $(BASEPWD))docs/src \
 		$(dir $(BASEPWD))docs/man/man1
 
-# When you depend on objects/var-ZZZ you are depending on the contents of the
-# variable ZZZ, which is assumed to depend on a Makefile, a Submakefile, or
+# Cuando se depende de objects/var-ZZZ, se esta dependiendo del contenido de
+# variable ZZZ, que se supone que depende de un Makefile, un Submakefile o
 # Makefile.inc
 objects/var-%: Makefile $(wildcard $(SUBMAKEFILES)) Makefile.inc
 	@mkdir -p $(dir $@)
