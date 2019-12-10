@@ -1,8 +1,8 @@
-# This is a skeleton makefile for a subdirectory
+# Este es un archivo plantilla para un subdirectorio
 
-# FOOSRCS is a nice way to collect some source file names.  Use $(patsubst) or
-# $(addprefix) if you are listing a bunch of files from a subdirectory and
-# would like to save a few keystrokes.
+# FOOSRCS es una buena manera de recopilar algunos nombres de archivos de origen. Use $(patsubst) o
+# $(addprefix) si está enumerando un grupo de archivos de un subdirectorio y
+# quisiera ahorrarse algunas pulsaciones de teclas.
 FOOSRCS := \
 	path/src.cc
 USERSRCS += $(FOOSRCS)
@@ -10,15 +10,18 @@ USERSRCS += $(FOOSRCS)
 # This next line causes things in FOOSRCS to be compiled with an extra
 # preprocessor symbol defined.  EXTRAFLAGS can be used to specify any C
 # compiler flag.
+# La siguiente línea hace que las cosas en FOOSRCS se compilen con un
+# símbolo de preprocesador extra definido. EXTRAFLAGS se pueden usar para especificar 
+# cualquier bandera C del compilador.
 $(call TOOBJSDEPS, $(FOOSRCS)) : EXTRAFLAGS = -Dfoo
 
-# This is how the binary 'foo' is linked.
+# Asi se linka el binario 'foo'.
 ../bin/foo: $(call TOOBJS, $(FOOSRCS)) ../lib/libemc.a ../lib/libnml.so.0
 	$(CXX) -o $@ $^ 
 userspace: ../bin/foo
 
-# See emc/rs274ngc/Submakefile for an example of creating a shared library
-# or allowing headers to be copied to ../include.
+# Consulte emc/rs274ngc/Submakefile para ver un ejemplo de cómo crear una biblioteca compartida
+# o permitir que los encabezados se copien a ../include.
 
-# See rtapi/Submakefile for an example of how to make some other kind of
-# file (in this case, ../scripts/rtapi.conf)
+# Ver rtapi/Submakefile para un ejemplo de cómo hacer algún otro tipo de
+# archivo (en este caso, ../scripts/rtapi.conf).
