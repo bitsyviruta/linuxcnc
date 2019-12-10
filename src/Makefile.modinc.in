@@ -10,26 +10,26 @@
 # install
 #   Installs the modules
 
-# An example Makefile using Makefile.modinc to build one kernel module from a
-# single source file would read:
+# Un ejemplo de Makefile usando Makefile.modinc para construir un módulo de kernel a partir de
+# un solo archivo fuente se leería:
 # 
 # obj-m += example.o
 # include .../Makefile.modinc
 
-# An example Makefile using Makefile.modinc to build one kernel module from
-# several source files would read:
+# Un ejemplo de Makefile usando Makefile.modinc para construir un módulo de kernel a partir de
+# varios archivos fuente se leería:
 # 
 # obj-m += complex.o
 # complex-objs := complex1.o complex2.o complex_main.o
 # include .../Makefile.modinc
 
-# Currently this Makefile is only suitable for 'kbuild' and 'uspace' systems,
-# but there is no technical reason it cannot be extended to pre-kbuild systems.
+# Actualmente este Makefile solo es adecuado para sistemas 'kbuild' y 'uspace',
+# pero no hay ninguna razón técnica para que no se pueda extender a los sistemas anteriores a kbuild.
 
-# When there is a single module and it consists of a single source file, an
-# easier way to build modules is to invoke 'comp':
+# Cuando hay un solo módulo y consta de un único archivo fuente, una
+# forma más fácil de construir módulos es invocar 'comp':
 #  comp --compile example.c
-# or
+# o
 #  comp --install example.c
 
 ifeq ("$(origin V)", "command line")

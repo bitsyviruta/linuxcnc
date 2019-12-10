@@ -4,7 +4,7 @@
 #
 
 
-# Directories
+# Directorios
 #############
 
 prefix=@prefix@
@@ -13,9 +13,9 @@ exec_prefix=@exec_prefix@
 EMC2_HOME=@EMC2_HOME@
 LIB_DIR=@EMC2_HOME@/lib
 
-#used for install stuff
-#but have them here as reference
-#build system only uses EMC2_RTLIB_DIR when creating rtapi.conf
+#utilizado para instalar cosas
+#pero los tenemos aquí como referencia
+#build system solo usa EMC2_RTLIB_DIR al crear rtapi.conf
 EMC2_BIN_DIR=@EMC2_BIN_DIR@
 EMC2_TCL_DIR=@EMC2_TCL_DIR@
 EMC2_HELP_DIR=@EMC2_HELP_DIR@
@@ -28,15 +28,15 @@ REALTIME=@REALTIME@
 EMC2_IMAGEDIR=@EMC2_IMAGE_DIR@
 
 
-MODULE_EXT=@MODEXT@ # module extension, used when insmod'ing
+MODULE_EXT=@MODEXT@ # extension de modulos, usado con insmod
 
-# used for building
+# usados para la construccion
 RTDIR     = @RTDIR@
 RTARCH    = @RTARCH@
 ULAPI_CFLAGS = @ULAPI_CFLAGS@
 ULAPI_LDFLAGS = @ULAPI_LDFLAGS@
 
-# Standard configure directories
+#directorios configure estandar
 # do we really need these?
 bindir = @bindir@
 sbindir = @sbindir@
@@ -54,7 +54,7 @@ moduledir = @MODULE_DIR@
 rip_moduledir = @RIP_MODULE_DIR@
 kernelvers = @KERNEL_VERS@
 
-# i18n variables:
+# variables i18n:
 
 package = @PACKAGE@
 localedir = @LOCALEDIR@
@@ -69,7 +69,7 @@ ncfilesdir = ${prefix}/share/linuxcnc/ncfiles
 tcldir = ${prefix}/lib/tcltk/linuxcnc
 
 
-# /Standard configure directories
+# /directorios configure estandar
 
 RUN_IN_PLACE = @RUN_IN_PLACE@
 RTPREFIX = @RTPREFIX@
@@ -89,24 +89,24 @@ CC = @CC@
 MANDB = @MANDB@
 HIDRAW_H_USABLE = @HIDRAW_H_USABLE@
 
-# readline support for halcmd
+# soporte readline para halcmd
 READLINE_LIBS =  @READLINE_LIBS@
 
-# flags for libudev
+# banderas para libudev
 LIBUDEV_CFLAGS = @LIBUDEV_CFLAGS@
 LIBUDEV_LIBS = @LIBUDEV_LIBS@
 
-# flags for glib
+# banderas para glib
 GLIB_CFLAGS = @GLIB_CFLAGS@
 GLIB_LIBS = @GLIB_LIBS@
 
-# local flags for GTK include
+# banderas locales para include GTK
 GTK_VERSION = @GTK_VER@
 GTK_CFLAGS = @GTK_CFLAGS@
 GTK_LIBS = @GTK_LIBS@
 HAVE_GNOMEPRINT = @HAVE_GNOMEPRINT@
 
-# tcl tk cflags, includes and libs
+# tcl tk cflags, includes y libs
 TCL_DBGX=@TCL_DBGX@
 TK_DBGX=@TK_DBGX@
 TCL_CFLAGS=@TCL_CFLAGS@ @TK_CFLAGS@
@@ -150,29 +150,29 @@ YAPPS = @YAPPS@
 #
 
 
-#### BEGIN CONFIG ####
+#### Comienzo de CONFIG ####
 
-# To disable compilation of any particular module,
-# edit the following lines replacing "m" with "n".
-#
-# In time, we may have some fancy dohicky to set
-# these options at compile time.
+# Para deshabilitar la compilación de cualquier módulo en particular,
+# edite las siguientes líneas reemplazando "m" por "n".
+# #
+# Con el tiempo, podemos tener algo sofisticado para configurar
+# estas opciones en tiempo de compilación.
 
-# usually you need rtapi,
-# so you probably don't want to change this
+# usualmente necesitas rtapi,
+# así que probablemente no quiera cambiar esto
 CONFIG_RTAPI=m
 
-# rtapi examples
+# ejemplos rtapi
 CONFIG_RTAPI_EXAMPLES_EXTINT=m
 CONFIG_RTAPI_EXAMPLES_FIFO=m
 CONFIG_RTAPI_EXAMPLES_SEM=m
 CONFIG_RTAPI_EXAMPLES_SHMEM=m
 CONFIG_RTAPI_EXAMPLES_TIMER=m
 
-# emc motion module
+# modulo motion 
 CONFIG_MOTMOD=m
 
-# HAL components
+# componentes HAL
 CONFIG_BLOCKS=m
 CONFIG_BOSS_PLC=m
 CONFIG_DEBOUNCE=m
@@ -198,7 +198,7 @@ CONFIG_MODMATH=m
 CONFIG_STREAMER=m
 CONFIG_SAMPLER=m
 
-# HAL drivers
+# drivers HAL drivers
 CONFIG_UPARPORT=m
 CONFIG_HAL_PARPORT=m
 CONFIG_PROBE_PARPORT=m
@@ -236,5 +236,5 @@ PYTHON_CPPFLAGS=@PYTHON_CPPFLAGS@
 PYTHON_LIBS=@PYTHON_LIBS@
 SITEPY=@SITEPY@
 YAPPS=@YAPPS@
-#### END CONFIG ####
+#### FIN CONFIG ####
 
