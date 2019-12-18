@@ -1,12 +1,12 @@
 eoffsets.ini
 
-Usage:
+Uso:
   1) Estop OFF  (F1)
-  2) Machine ON (F2)
-  3) HOME All   (Ctrl-Home)
-  4) Explore external offset functionality
-     using the sim_pin gui to alter the
-     per-axis hal pins:
+  2) Maquina ON (F2)
+  3) HOME Todos   (Ctrl-Home)
+  4) Explora la funcionalidad de offset externo 
+     utilizando la gui sim_pin para alterar los pines 
+     hal por eje:
 
      e:xcounts  (sig to => axis.x.eoffset-counts)
      e:ycounts  (sig to => axis.y.eoffset-counts)
@@ -14,13 +14,13 @@ Usage:
      e:clearall (sig to => axis.*.eoffset-clear)
      
 -------------------------------------------
-Note: The external offset interface is
-similar to the interface for wheel jogging:
+Nota: La interfaz externa de desplazamiento es 
+      similar a la interfaz para jogging de volante:
 
-Input hal pins:
+Pines Input hal:
   axis.L.eoffset-enable (bit)
   axis.L.eoffset-clear (bit)
   axis.L.eoffset-scale  (float)
   axis.L.eoffset-counts (s32)
 
-Requested offset == counts*scale
+Offset requerido == counts*scale

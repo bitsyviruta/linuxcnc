@@ -1,22 +1,21 @@
-#
-# Use this NML config on the computer running the GUI in a networked emc2
-# system. The host IP address should be changed to point to the computer
-# that is running the realtime code. Change the NML_FILE in emc.ini to
-# client.nml and (after the server side is running) run the GUI with:
+# Use esta configuración NML en la computadora que ejecuta la GUI en un sistema emc2 en red.
+# La dirección IP del host debe cambiarse para que apunte a la computadora
+# que ejecuta el código en tiempo real. Cambie NML_FILE en emc.ini a
+# client.nml y (después de ejecutar el lado del servidor) ejecute la GUI con:
 #
 #        tcl/tkemc.tcl -ini emc.ini
 #
-# Note: tkemc.tcl does not need to be run as 'root'.
+# Not: tkemc.tcl no necesita ser ejecutado como 'root'.
 
 # Buffers
 # Name                  Type    Host             size    neut?   (old)   buffer# MP ---
 
-# Top-level buffers to EMC
+# buffers Top-level EMC
 B emcCommand            SHMEM   192.168.0.4       8192    0       0       1       16 1001 TCP=5005 xdr queue confirm_write serial
 B emcStatus             SHMEM   192.168.0.4       10240   0       0       2       16 1002 TCP=5005 xdr
 B emcError              SHMEM   192.168.0.4       8192    0       0       3       16 1003 TCP=5005 xdr queue
 
-# Processes
+# Procesos
 # Name          Buffer          Type    Host              Ops     server? timeout master? cnum
 
 P xemc          emcCommand      REMOTE   192.168.0.4       W       0       10.0    0       10

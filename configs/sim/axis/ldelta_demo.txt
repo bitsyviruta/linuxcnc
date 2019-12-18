@@ -1,10 +1,10 @@
 ldelta_demo
 
-linear delta kins (Rostock)
+Cinematica delta lineal (Rostock)
 
-Demo includes simple popups to simulate 
-jogging using HAL pins:
+La demostración incluye ventanas emergentes simples para simular
+jogging usando pines HAL:
 
-Joints (FREE) jogging (012 wheel and halui)
+Articulaciones (FREE) jogging (012 wheel y halui)
 
-Axis (TELEOP) jogging (xyz wheel and halui)
+Ejes (TELEOP) jogging (xyz wheel y halui)

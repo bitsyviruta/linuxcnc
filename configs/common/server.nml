@@ -1,25 +1,25 @@
 #
-# Use this NML config on the computer running the realtime parts of emc2
-# in a networked system. The host address should point to the computer
-# running the GUI (although this is not critical).
-# Change the NML_FILE in emc.ini to server.nml. 
-# Start emc2 normally, and then run the GUI client.
+# Use esta configuración NML en la computadora que ejecuta las partes en tiempo real de emc2
+# en un sistema en red. La dirección del host debe apuntar a la computadora
+# ejecutando la GUI (aunque esto no es crítico).
+# Cambie NML_FILE en emc.ini a server.nml.
+# Inicie emc2 normalmente y luego ejecute el cliente GUI.
 
 # Buffers
 # Name                  Type    Host            size    neut?   (old)   buffer# MP ---
 
-# Top-level buffers to EMC
+# buffers Top-level EMC
 B emcCommand            SHMEM   localhost       8192    0       0       1       16 1001 TCP=5005 xdr queue confirm_write serial
 B emcStatus             SHMEM   localhost       10240   0       0       2       16 1002 TCP=5005 xdr
 B emcError              SHMEM   localhost       8192    0       0       3       16 1003 TCP=5005 xdr queue
 
-# These are for the IO controller, EMCIO
+# Controladores IO, EMCIO
 B toolCmd               SHMEM   localhost       1024    0       0       4       16 1004 TCP=5005 xdr
 B toolSts               SHMEM   localhost       4096    0       0       5       16 1005 TCP=5005 xdr
 B spindleCmd            SHMEM   localhost       1024    0       0       6       16 1006 TCP=5005 xdr
 B spindleSts            SHMEM   localhost       1024    0       0       7       16 1007 TCP=5005 xdr
 
-# Processes
+# Procesos
 # Name          Buffer          Type    Host              Ops     server? timeout master? cnum
 
 P emc           emcCommand      LOCAL   localhost           RW      0       1.0     0       0

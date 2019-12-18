@@ -1,32 +1,31 @@
 dynamic_offsets
 
-A sinewave is applied to the Z coordinate external offset
+Se aplica una onda sinusoidal al offset externo de la coordenada Z
 
-The waveform amplitdude and frequency are set by pyvcp panel spinboxes.
+La amplitud y la frecuencia de la forma de onda se establecen mediante las casillas de selección del panel de pyvcp.
 
-The Z coordinate max acceleration and max velocity settings (from the ini file) can be modified with pyvcp panel spinboxes.
+La configuración de la aceleración máxima y la velocidad máxima de la coordenada Z (del archivo ini) se pueden modificar con las casillas de selección del panel pyvcp.
 
-Usage:
+Uso:
   1) Estop OFF  (F1)
-  2) Machine ON (F2)
-  3) HOME All   (Ctrl-Home)
-  4) A halscope application is started to
-     show the offset waveforms and the
-     z coordinate response 
-  5) Enable the dynamic offset waveform
-     with the panel 'Z enable' checkbox
-  5) Use the panel to adjust:
-       Waveform:     amplitude, frequency
-       Z Coordinate: max accel, max vel
+  2) Maquina ON (F2)
+  3) HOME Todos (Ctrl-Home)
+  4) Se inicia una aplicación de halscope para
+     mostrar las formas de onda de offset y la
+     respuesta de la coordenada z  
+  5) Habilitar la forma de onda de offset dinámico
+     con la casilla de verificación 'Z enable' del panel
+  5) Usar el panel para ajustar:
+       Forma de onda: amplitud, frecuencia
+       Coordenadas Z: max accel, max vel
 
-Notes:
-  The dynamic waveform is applied with and without
-  running a program.
+Notas:
+  La forma de onda dinámica se aplica con y sin
+  ejecutar un programa.
 
-  MDI cannot be started with non-zero external
-  offsets -- disable the Z offsets and toggle
-  the machine On/Off to zero offsets.
+  MDI no se puede iniciar con un offset externo no nulo
+  -- deshabilitar los offset Z y alternar
+  la máquina On/Off a cero offsets.
 
-  Changes to the Z max accel, max vel are not
-  made while a program or mdi move is in progress.
-  
+  Los cambios en Z max accel, max vel no 
+  se realiza mientras se está ejecutando un movimiento mdi o programa.
