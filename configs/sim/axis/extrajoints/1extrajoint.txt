@@ -1,37 +1,37 @@
-1extrajoint demo
+Demo 1extrajoint
 
-Demo of the motmod num_extrajoints= parameter
+Demostración de motmod num_extrajoints= parámetro
 
-a) XYYZ correspond one-to-one to
-   joints 0123
-b) Joint4 is an 'extra joint' that is
-   not related to any axis letter but
-   is managed independently by a limit3
-   component.
-c) All joints use 'immediate homing'
-d) Using extra joints requires
-   NON-identity kinematics and all
-   joints (including joint4) must be
-   homed before switching to world
-   mode.
-e) A halshow app is opened to display
-   key pin values
-f) A sim_pin app is opened to set key
-   pin values
+a) XYYZ corresponde uno a uno a
+   articulaciones 0,1,2 y 3
+b) Joint4 es una 'articulación extra' que no esta
+   relacionada con ninguna letra de eje pero
+   se gestiona de forma independiente por un componente
+   limit3.
 
-Usage:
-1) F1        (Estop Off)
-2) F2        (Machine On)
-3) jog joint4 to create a small offset
-4) Ctrl-HOME (Home all)
-5) demonstrate joint.4 movement using
-   the provided M144 mdi command:
-   M144 P4 Q1.23 ;move joint.4 to 1.23
-   M144 P4 Q3.21 ;move joint.4 to 3.21
-6) Alternately, demonstrate joint.[45]
-   movement using sim_pin settings:
-     j4.limit3.min  min value
-     j4.limit3.max  max value
-     j4.limit3.maxv max velocity
-     j4.limit3.maxa max acceleration
-     j4.limit3.in   requested value
+c) Todas las articulaciones usan 'homing inmediato'
+d) El uso de articulaciones adicionales requiere
+   cinemática sin identidad y todas
+   las articulaciones (incluida la articulación 4) deben tener
+   home antes de cambiar a modo universal.
+e) Se abre una aplicación halshow para mostrar
+   valores de pines clave
+f) Se abre una aplicación sim_pin para configurar
+   valores de pines clave
+
+Uso:
+1) F1 (Estop Off)
+2) F2 (Maquina On)
+3) jog joint4 para crear un pequeño desplazamiento
+4) Ctrl-HOME (Home Todos)
+5) demuestra el movimiento joint.4 usando
+   el comando mdi m144 proporcionado:
+   M144 P4 Q1.23; mover la articulación.4 a 1.23
+   M144 P4 Q3.21; mover la articulación.4 a 3.21
+6) Alternativamente, demostrar movimiento articulación.[45]
+   usando la configuración sim_pin:
+     j4.limit3.min valor mínimo
+     j4.limit3.max valor máximo
+     j4.limit3.maxv velocidad máxima
+     j4.limit3.maxa aceleración máxima
+     j4.limit3.in valor solicitado
