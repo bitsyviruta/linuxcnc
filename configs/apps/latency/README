@@ -8,7 +8,7 @@ latency-histogram -- Histograma jitter para hilos base y servo predeterminados
 
 latency-histogram-1 -- Histograma jitter para un hilo servo
 
-Note: Los programas latency-plot y latency-histogram se pueden ejecutar desde una línea de comando de terminal con más opciones. 
+Nota: Los programas latency-plot y latency-histogram se pueden ejecutar desde una línea de comando de terminal con más opciones. 
 Para ayuda con el uso:
 
 latency-plot --help
