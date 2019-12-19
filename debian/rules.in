@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-# Simple set of debian/rules that uses debhelper.
+# Conjunto simple de debian/rules que usa debhelper.
 # Based on an example by Joey Hess. 
 # extended by Paul Corner, Alex Joni, Chris Radek, Jeff Epler (in cronological order)
 
@@ -10,10 +10,10 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# When used to produce a debian package, this file is a script "used to
-# control compilation and installation of the executable"
+# Cuando se usa para producir un paquete debian, este archivo es un script "usado para
+# control de compilación e instalación del ejecutable "
 
-# Uncomment this to turn on verbose mode.
+# Descomente esto para activar el modo detallado.
 #export DH_VERBOSE=1
 
 kernel_version = @KERNEL_VERSION@
@@ -30,7 +30,7 @@ build-indep: build-stamp
 build-stamp:
 	dh_testdir
 
-# Add here commands to compile the package.
+# Agregue aquí comandos para compilar el paquete.
 	cd src && ./autogen.sh
 ifeq "$(kernel_version)" "uspace"
 	cd src && ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --with-realtime=uspace --enable-build-documentation=pdf --disable-check-runtime-deps
@@ -62,13 +62,13 @@ install: build
 	dh_testroot
 	dh_prep
 	dh_installdirs
-# start the install
+# iniciar la instalación
 	mkdir -p debian/tmp
 
-	# Version 0.22 and newer of the desktop-file-validate program
-	# (in Jessie and newer) can deal with multiple files specified
-	# on the command line.	Version 0.20 (in Wheezy) says it can,
-	# but can't.  So feed it the files one by one.
+	# La versión 0.22 y más reciente del programa de validación de archivos de escritorio
+	# (en Jessie y versiones posteriores) puede manejar archivos múltiples especificados
+	# en la línea de comando. La versión 0.20 (en Wheezy) dice que puede,
+	# pero no lo hace. Así que de los archivos uno por uno.
 	for F in $(shell find debian/extras/ -name *.desktop); do \
 		desktop-file-validate $$F; \
 	done
@@ -93,11 +93,11 @@ install: build
 		exit 1; \
 	fi
 
-# Build architecture-independent files here.
+# Crear archivos independientes de la arquitectura aquí.
 binary-indep: build install
-# We have nothing to do by default.
+# Nada que hacer por defecto.
 
-# Build architecture-dependent files here.
+# Crear archivos dependientes de la arquitectura aquí.
 binary-arch: build install
 	dh_testdir
 	dh_testroot

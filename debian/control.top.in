@@ -44,10 +44,10 @@ Depends: g++, @KERNEL_HEADERS@,
     @MAIN_PACKAGE_NAME@ (= ${binary:Version}),
     @YAPPS_RUNTIME@
 Section: libs
-Description: PC based motion controller for real-time Linux
- LinuxCNC is the next-generation Enhanced Machine Controller which
- provides motion control for CNC machine tools and robotic
- applications (milling, cutting, routing, etc.).
- .
- This package includes files needed to build new realtime components and
- alternate front-ends for linuxcnc
+Description: Controlador de movimiento basado en PC para Linux en tiempo real
+  LinuxCNC es el controlador de máquina mejorado de próxima generación que
+  proporciona control de movimiento para máquinas herramientas CNC y aplicaciones
+  robotizadas (fresado, corte, fresado, etc.).
+  .
+  Este paquete contiene archivos necesario para construir nuevos componentes en tiempo real y
+  front-end alternativos para linuxcnc

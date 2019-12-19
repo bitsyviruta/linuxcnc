@@ -1,9 +1,9 @@
 Package: @MAIN_PACKAGE_NAME@-xenomai
 Architecture: @XENOMAI_ARCHITECTURE@
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: PC based motion controller for real-time Linux
- LinuxCNC is the next-generation Enhanced Machine Controller which
- provides motion control for CNC machine tools and robotic
- applications (milling, cutting, routing, etc.).
- .
- This package contains extra files for use with Xenomai realtime kernels.
+Description: Controlador de movimiento basado en PC para Linux en tiempo real
+  LinuxCNC es el controlador de máquina mejorado de próxima generación que
+  proporciona control de movimiento para máquinas herramientas CNC y aplicaciones
+  robotizadas (fresado, corte, fresado, etc.).
+  .
+  Este paquete contiene archivos extras para usar con los kernel en tiempo real Xenomai.

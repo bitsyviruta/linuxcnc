@@ -7,31 +7,31 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# When used to produce a debian package, this file is a script "used to
-# control compilation and installation of the executable"
+# Cuando se usa para producir un paquete debian, este archivo es un script "usado para
+# controlar la compilación e instalación del ejecutable"
 
 usage () {
     P=${0##*/}
     cat <<EOF
-$P: Set up debian/ files to build for a particular kernel
+$P: Configura los archivos en debian/ para compilar contra un kernel en particular.
 
-Usage:
-    $P uspace [noauto | rtai | rtai=packagename | xenomai] ...
-        Build for a userspace realtime systems or simulator
+Uso:
+    $P uspace [noauto | rtai | rtai=nombre_paquete | xenomai] ...
+        Compilar para espacio de usuario en sistemas de tiempo real o simulador.
 
     $P sim
-        Deprecated synonym for '$P uspace'
+        Sinónimo en desuso para '$P uspace'.
 
-    $P [kernel-version]
-        Build for the installed RTAI realtime kernel specified by
-        [kernel-version], for example "3.4.9-rtai-686-pae"
+    $P [version-kernel]
+        Compilación para el kernel en tiempo real RTAI instalado especificado por
+        [version-kernel], por ejemplo "3.4.9-rtai-686-pae".
 
     $P -r
-        Build for the currently running kernel for RTAI realtime only
+        Compilar para el kernel actual en ejecución; solo para tiempo real RTAI.
 
     $P -a
-        If the currently running kernel has realtime extensions, use it.
-        Otherwise use any available realtime kernel it can find.
+        Si el kernel actualmente en ejecución tiene extensiones en tiempo real, usarlas.
+        De lo contrario, use cualquier kernel disponible en tiempo real que pueda encontrar.
 EOF
 }
 
@@ -52,7 +52,7 @@ elif [ $1 = "-a" ]; then
     if [ ! -d "/usr/realtime-$KERNEL" ]; then
         KERNEL=$(ls -1d /usr/realtime-* 2> /dev/null | cut -d - -f 2- | head -1)
         if [ -z "$KERNEL" ]; then
-            echo "no realtime kernels found!"
+            echo "no hay kernels realtime!"
             exit 1
         fi
     fi
@@ -61,7 +61,7 @@ fi
 
 TARGET=$1; shift
 
-# for example: "3.16.0-9"
+# por ejemolo: "3.16.0-9"
 KERNEL_VERSION_ABI=${TARGET%-rtai-*}
 
 MODULE_PATH=usr/realtime-$TARGET/modules/linuxcnc
@@ -80,27 +80,27 @@ BUILD_RTAI=false
 BUILD_XENOMAI=false
 BUILD_AUTO=true
 
-# Specialize these based on DISTRIB_NAME as needed
-# These do not run-time depend on a specific package because
-# the whole point is to allow a range of kernels to work, and we don't know
-# of any common thing that all such kernels would provide.
+# Especializar en base a DISTRIB_NAME según sea necesario
+# Estos no dependen de la ejecución de un paquete específico porque
+# el asunto es permitir que funcione con distintos núcleos, y no sabemos
+# que cosas comunes proporcionarían esos núcleos..
 
-# rtai-modules typically doesn't properly declare the architectures where
-# it works, so hardcode it...
+# rtai-modules normalmente no declara correctamente las arquitecturas donde
+# funciona, por lo que se codifica explicitamente ...
 RTAI_DEV="$(apt-cache search -n rtai-modules | head -1 | awk '{print $1}')"
 RTAI_ARCHITECTURE="i386 amd64"
 if [ ! -z "$RTAI_DEV" ]; then
     RTAI_DEV="$RTAI_DEV [i386], $RTAI_DEV [amd64]"
 fi
-# libxenomai-dev does encode the architectures, but we have to resort to awful
-# shell juju to transform it into a proper dependency list
+# libxenomai-dev codifica las arquitecturas, pero tenemos que recurrir a terribles
+# shell juju para transformarlo en una lista de dependencias adecuada
 XENOMAI_DEV="$(apt-cache search -n libxenomai-dev | head -1 | awk '{print $1}')"
 if [ ! -z "$XENOMAI_DEV" ]; then
     if [ `apt-cache showsrc libxenomai-dev 2>/dev/null | wc -l` -eq 0 ]; then
         cat 1>&2 <<-EOF
-	Package libxenomai-dev exists, but information about its source package
-	is not available.  This most likely means that you do not have the
-	right deb-src lines in /etc/apt, or that you need to "apt-get update".
+        El paquete libxenomai-dev existe, pero la información sobre su paquete fuente
+        no está disponible. Esto probablemente significa que usted no tiene la
+        líneas correctas de deb-src en /etc/apt, o que necesita "apt-get update".
 	EOF
 	exit 99
     fi
@@ -127,7 +127,7 @@ while test $# -ne 0; do
     rtai) BUILD_RTAI=true ;;
     rtai=*) BUILD_RTAI=true; RTAI_DEV=${1#rtai=} ;;
     xenomai) BUILD_XENOMAI=true ;;
-    *) echo 1>&2 "Unknown feature: $1"; exit 99 ;;
+    *) echo 1>&2 "Caracteristica desconocida: $1"; exit 99 ;;
     esac
     shift
 done
@@ -178,7 +178,7 @@ Debian-7.*|Raspbian-7) # Wheezy
 Ubuntu-18.*) # Bionic Beaver
         PYTHON_GST=python-gst-1.0,gstreamer1.0-plugins-base
         ;;
-Ubuntu-1[456].*|LinuxMint-1[78]*) # Trusty through Xenial, LinuxMint 17 and 18
+Ubuntu-1[456].*|LinuxMint-1[78]*) # Trusty hasta Xenial, LinuxMint 17 y 18
 	;;
 Ubuntu-1[12].*) # Natty Narwhal, Precise Pangolin (LTS), Quantal Quetzal
         EXTRA_BUILD=libgnomeprintui2.2-dev
@@ -188,9 +188,9 @@ Ubuntu-1[12].*) # Natty Narwhal, Precise Pangolin (LTS), Quantal Quetzal
 	TCLTK_VERSION=8.5
 	;;
 *)
-        echo "unknown distribution: $DISTRIB_NAME"
-        echo "detected dependencies may be incomplete or wrong"
-        echo "please consider fixing it and submitting a pull request"
+        echo "Distribucion desconocida: $DISTRIB_NAME"
+        echo "las dependencias detectadas pueden estar incompletas o ser erroneas"
+        echo "Por favor, considere corregirlo y enviar una solicitud pull"
 	;;
 esac
 
@@ -235,7 +235,7 @@ case $TARGET in
     ;;
     2.6.32-122-rtai|3.4-9-rtai-686-pae|3.16.0-9-rtai-*) ;;
     *)
-	echo "your kernel '$TARGET' is not known. There might be needed dependencies which won't get set automatically."
+	echo "su kernel '$TARGET' es desconocido. Es posible que se necesiten dependencias que no se configurarán automáticamente."
 esac
 
 subst () {
@@ -303,7 +303,7 @@ else
     subst linuxcnc.files.in $DRIVERS > $MAIN_PACKAGE_NAME.files
 fi
 
-DOCS_PACKAGES=$(echo linuxcnc-doc-{en,fr,es})
+DOCS_PACKAGES=$(echo linuxcnc-doc-{en,es})
 for P in $DOCS_PACKAGES; do
     if [ -f $EXTRAS/$P.files ]; then
         cat $P.files.in $EXTRAS/$P.files > $P.files
@@ -313,4 +313,4 @@ for P in $DOCS_PACKAGES; do
 done
 
 rm -f ../build-stamp
-echo "successfully configured for '$DISTRIB_NAME'-'$TARGET$TARGET_EXTRA'.."
+echo "configuracion completada para '$DISTRIB_NAME'-'$TARGET$TARGET_EXTRA'.."
