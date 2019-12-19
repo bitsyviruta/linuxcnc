@@ -23,160 +23,165 @@
 .\"
 .\"
 .\"
-.TH gs2_vfd "1" "January 1, 2009" "GS2 VFD" "LinuxCNC Documentation"
+.TH gs2_vfd "1" "Enero 1, 2009" "GS2 VFD" "Documentación de LinuxCNC"
 
-.SH NAME
-\fBgs2_vfd\fR \- HAL userspace component for Automation Direct GS2 VFD's
+.SH NOMBRE
+\fBgs2_vfd\fR \- Componente de espacio de usuario HAL para VFD Automation Direct GS2 
 
-.SH SYNOPSIS
+.SH SINOPSIS
 .B gs2_vfd
 .RI [OPTIONS]
 .br
 
-.SH DESCRIPTION
-This manual page explains the
+.SH DESCRIPCION
+Esta página de manual explica el componente
 .B gs2_vfd
-component. This component reads and writes to the GS2 via a modbus connection.
+ .Este componente lee y escribe en el GS2 a través de una conexión modbus.
 .PP
-\fBgs2_vfd\fP is for use with LinuxCNC
+\fBgs2_vfd\fP es para usar con LinuxCNC
 
-.SH OPTIONS
+.SH OPCIONES
 .B
 .IP \-b,\ \-\-bits\ <n>
-(default 8) Set number of data bits to <n>, where n must be from 5 to 8 inclusive
+(predeterminado 8) Configurar el número de bits de datos a <n>, donde n debe ser de 5 a 8 inclusive
 .B
 .IP \-d,\ \-\-device\ <path>
-(default /dev/ttyS0) Set the name of the serial device node to use.
+(predeterminado /dev/ttyS0). Establecer el nombre del nodo del dispositivo en serie a usar.
 .B
 .IP \-v,\ \-\-verbose
-Turn on verbose mode.
+Activar el modo detallado.
 .B
 .IP \-g,\ \-\-debug
-Turn on debug messages. Note that if there are serial errors, this may
-become annoying.  Debug mode will cause all modbus messages to be printed
-in hex on the terminal.
+Activar mensajes de depuración. Tenga en cuenta que si hay errores seriales, esto puede
+volverse molesto. El modo de depuración hará que se impriman todos los mensajes Modbus
+en hex en la terminal.
 .B
-.IP \-n,\ \-\-name\ <string>
-(default gs2_vfd) Set the name of the HAL module. The HAL comp name will be set to <string>, and all pin and parameter names will begin with <string>.
+.IP \-n,\ \-\-name\ <cadena>
+(valor predeterminado gs2_vfd) Establece el nombre del módulo HAL. 
+El nombre del compilador de HAL se establecerá en <cadena>, y todos los nombres de los pines y los parámetros 
+comenzarán con <cadena>.
 .B
 .IP \-p,\ \-\-parity\ [even,odd,none]
-(default odd) Set serial parity to even, odd, or none.
+(valor predeterminado odd) Establezca la paridad serie en par, impar o ninguna.
 .B
 .IP \-r,\ \-\-rate\ <n>
-(default 38400) Set baud rate to <n>. It is an error if the rate is not one of the following: 110, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200
+(predeterminado 38400) Establecer la velocidad en baudios en <n>. 
+Es un error si la velocidad no es una de las siguientes: 110, 300, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200
 .B
 .IP \-s,\ \-\-stopbits\ [1,2]
-(default 1) Set serial stop bits to 1 or 2 
+(predeterminado 1) Establecer bits de parada serie en 1 o 2
 .B
 .IP \-t,\ \-\-target\ <n>
-(default 1) Set MODBUS target (slave) number. This must match the device number you set on the GS2.
+(predeterminado 1) Configura el número de esclavo MODBUS. Esto debe coincidir con el número de dispositivo 
+con el que se configura GS2.
 .B
 .IP \-A,\ \-\-accel\-seconds\ <n>
-(default 10.0) Seconds to accelerate the spindle from 0 to Max RPM.
+(predeterminado 10.0) Segundos para acelerar el eje de 0 a RPM máx.
 .B
 .IP \-D,\ \-\-decel\-seconds\ <n>
-(default 0.0) Seconds to decelerate the spindle from Max RPM to 0.
-If set to 0.0 the spindle will be allowed to coast to a stop without
-controlled deceleration.
+(valor predeterminado 0.0) Segundos para desacelerar el eje de Max RPM a 0.
+Si se establece en 0.0, el husillo podrá detenerse sin desaceleración controlada
 .B
 .IP \-R,\ \-\-braking\-resistor
-This argument should be used when a braking resistor is installed on the
-GS2 VFD (see Appendix A of the GS2 manual).  It disables deceleration
-over-voltage stall prevention (see GS2 modbus Parameter 6.05), allowing
-the VFD to keep braking even in situations where the motor is regenerating
-high voltage.  The regenerated voltage gets safely dumped into the
-braking resistor.
+Este argumento debe usarse cuando se instala una resistencia de frenado en el
+GS2 VFD (ver el Apéndice A del manual de GS2). Deshabilita la prevención de sobretensión
+por desaceleración (ver modulo GS2 Parámetro 6.05), permitiendo
+al VFD seguir frenando incluso en situaciones donde el motor está regenerando
+alto voltaje. El voltaje regenerado se descarga de manera segura en la
+resistencia de frenado
 .B
 
-.SH PINS
+.SH PINES
 .B
 .IP <name>.DC\-bus\-volts\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.at\-speed\ (bit,\ out) 
-when drive is at commanded speed
+el drive está a la velocidad ordenada
 .B
 .IP <name>.err\-reset\ (bit,\ in) 
-reset errors sent to VFD
+reiniciar los errores enviados al VFD
 .B
 .IP <name>.firmware\-revision\ (s32,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.frequency\-command\ (float,\ out)
-from the VFD
+desde the VFD
 .B
 .IP <name>.frequency\-out\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.is\-stopped\ (bit,\ out)
-when the VFD reports 0 Hz output
+el VFD informa salida de 0 Hz
 .B
 .IP <name>.load\-percentage\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.motor\-RPM\ (float,\ out)
-from the VFD
+desde the VFD
 .B
 .IP <name>.output\-current\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.output\-voltage\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.power\-factor\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.scale\-frequency\ (float,\ out)
-from the VFD
+desde el VFD
 .B
 .IP <name>.speed\-command\ (float,\ in)
-speed sent to VFD in RPM It is an error to send a speed faster than the Motor Max RPM as set in the VFD
+velocidad enviada al VFD en RPM. Es un error enviar una velocidad más rápida que Max RPM Motor si se establece en el VFD
 .B
 .IP <name>.spindle\-fwd\ (bit,\ in)
-1 for FWD and 0 for REV sent to VFD
+1 para FWD y 0 para REV enviado a VFD
 .B
 .IP <name>.spindle\-on\ (bit,\ in)
-1 for ON and 0 for OFF sent to VFD, only on when running
+1 para ON y 0 para OFF enviado a VFD, solo on en funcionamiento
 .B
 .IP <name>.spindle\-rev\ (bit,\ in)
-1 for ON and 0 for OFF, only on when running
+1 para ON y 0 para OFF, solo on en funcionamiento
 .B
 .IP <name>.status\-1\ (s32,\ out)
-Drive Status of the VFD (see the GS2 manual)
+estado de la unidad VFD (consulte el manual de GS2)
 .B
 .IP <name>.status\-2\ (s32,\ out)
-Drive Status of the VFD (see the GS2 manual) Note that the value is a sum of all the bits that are on. So a 163 which means the drive is in the run mode is the sum of 3 (run) + 32 (freq set by serial) + 128 (operation set by serial).
+estado de la unidad VFD (consulte el manual GS2). Tenga en cuenta que el valor es una suma de todos los
+bits que están activados. Con ello, un 163 que significa que el drive está en el modo de ejecución es 
+la suma de 3 (ejecución) + 32 (frecuencia configurada por serie) + 128 (operación configurada serie).
 
-.SH PARAMETERS
+.SH PARAMETROS
 .B
 .IP <name>.error\-count\ (s32,\ RW)
 .B
 .IP <name>.loop\-time\ (float,\ RW) 
-how often the modbus is polled (default 0.1)
+frecuencia de sondeo del modbus (por defecto 0.1)
 .B
 .IP <name>.nameplate\-HZ\ (float,\ RW) 
-Nameplate Hz of motor (default 60)
+Hz en placa del motor (por defecto 60)
 .B
 .IP <name>.nameplate\-RPM\ (float,\ RW) 
-Nameplate RPM of motor (default 1730)
+RPM de la placa del motor (por defecto 1730)
 .B
 .IP <name>.retval\ (s32,\ RW) 
-the return value of an error in HAL
+valor de retorno de un error en HAL
 .B
 .IP <name>.tolerance\ (float,\ RW)
- speed tolerance (default 0.01)
+ tolerancia de velocidad (por defecto 0.01)
 .B
 .IP <name>.ack\-delay\ (s32,\ RW)
- number of read/write cycles before checking at\-speed (default 2)
+ número de ciclos de lectura / escritura antes de verificar at\-speed (valor predeterminado 2)
 
-.SH SEE ALSO
-\fIGS2 Driver\fR in the LinuxCNC documentation for a full description of the \fBGS2\fR syntax
+.SH VER TAMBIEN
+\fIGS2 Driver\fR en la documentación de LinuxCNC para una descripción completa de la sintaxis \fBGS2\fR
 
-\fIGS2 Examples\fR in the LinuxCNC documentation for examples using the \fBGS2\fR component
+\fIGS2 Examples\fR en la documentación de LinuxCNC para ejemplos que usan el componente \fBGS2\fR
 
 .SH BUGS
 
-.SH AUTHOR
+.SH AUTOR
 John Thornton
 
 .SH LICENSE
