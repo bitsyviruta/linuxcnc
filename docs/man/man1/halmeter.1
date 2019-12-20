@@ -23,101 +23,92 @@
 .\"
 .\"
 .\"
-.TH HALMETER "1"  "2006-03-13" "LinuxCNC Documentation" "HAL User's Manual"
-.SH NAME
-halmeter \- observe HAL pins, signals, and parameters
-.SH SYNOPSIS
+.TH HALMETER "1" "2006-03-13" "Documentación de LinuxCNC" "Manual de usuario de HAL"
+.SH NOMBRE
+halmeter \-observar pines, señales y parámetros HAL.
+.SH SINOPSIS
 .B halmeter
 [\fB\-s\fR] [\fBpin\fR|\fBsig\fR|\fBparam\fR \fIname\fR] [\fB\-g\fR \fIX-positon Y-position [Width]\fR] 
-.SH DESCRIPTION
-\fBhalmeter\fR is used to observe HAL (Hardware Abstraction
-Layer) pins, signals, or parameters.  It serves the same
-purpose as a multimeter does when working on physical systems.
-.SH OPTIONS
+.SH DESCRIPCIÓN
+\fBhalmeter\fR se usa para observar pines, señales o parámetros HAL (capa de abstracción de hardware). 
+Sirve con el mismo propósito que un multímetro cuando se trabaja en sistemas físicos.
+.SH OPCIONES
 .TP
 \fBpin\fR \fIname\fR
-display the HAL pin \fIname\fR.
+muestra el pin HAL \fIname\fR.
 .TP
 \fBsig\fR \fIname\fR
-display the HAL signal \fIname\fR.
+muestra la señal HAL \fIname\fR.
 .TP
 \fBparam\fR \fIname\fR
-display the HAL parameter \fIname\fR.
+mostrar el parámetro HAL \fIname\fR.
 .TP
-If neither \fBpin\fR, \fBsig\fR, or \fBparam\fR are specified, the
-window starts out blank and the user must select an item to observe.
+Si no se especifican \fBpin\fR, \fBsig\fR o \fBparam\fR,
+la ventana comienza en blanco y el usuario debe seleccionar un elemento a observar.
 .TP
 \fB\\-s\fR
-small window.  Non-interactive, must be used with \fBpin\fR, \fBsig\fR,
-or \fBparam\fR to select the item to display.  The item name is displayed 
-in the title bar instead of the window, and there are no "Select" or "Exit"
-buttons.  Handy when you want a lot of meters in a small space.
+Ventana pequeña. No interactivo, se debe usar con\fBpin\fR, \fBsig\fR, 
+o \fBparam\fR para seleccionar el elemento a visualizar. El nombre del elemento se muestra
+en la barra de título en lugar de la ventana, y no hay botones "Select" y "Exit". Útil cuando se quiere una gran cantidad de medidores en un espacio pequeño.
 .TP
 \fB\\-g\fR
-geometry position.  allows one to specify the initial starting position
-and optionally the width of the meter. Referenced from top left of screen 
-in pixel units.
-Handy when you want to load a lot of meters in a script with out them
-displaying on top of each other.
-.SH USAGE
-Unless \fB\\-s\fR is specified, there are two buttons, "Select" and "Exit".
-"Select" opens a dialog box to select the item (pin, signal, or parameter)
-to be observed.  "Exit" does what you expect.
+Posición geométrica. Permite especificar la posición de partida inicial
+y opcionalmente el ancho del medidor. Referenciado desde la parte superior izquierda de la pantalla
+en unidades de pixel.
+Útil cuando se quieres cargar muchos medidores en un script sin 
+mostrarlos uno encima de otro.
+.SH USO
+A menos que se especifique \fB\\-s\fR, hay dos botones, "Select" y "Exit".
+"Select" abre un cuadro de diálogo para seleccionar el elemento (pin, señal o parámetro)
+a ser observado. "Exit" hace eso; Salir.
 
-The selection dialog has "OK" "Apply", and "Cancel" buttons.  OK displays
-the selected item and closes the dialog.  "Apply" displays the selected
-item but keeps the selection dialog open.  "Cancel" closes the dialog
-without changing the displayed item.
+El cuadro de diálogo de selección tiene los botones "OK" "Apply", y "Cancel". OK muestra
+el elemento seleccionado y cierra el diálogo. "Apply" muestra el elemento seleccionado pero mantiene abierto el cuadro de diálogo de selección. "Cancel" cierra el diálogo sin cambiar el elemento mostrado.
 
-.SH EXAMPLES
+.SH EJEMPLOS
 
 .TP
 \fBhalmeter\fR
-Opens a meter window, with nothing initially displayed.  Use the "Select"
-button to choose an item to observe.  Does not return until the window
-is closed.
+Abre una ventana de medidor, sin mostrar nada inicialmente. Use el botón "Select" para elegir el elemento para observar. No regresa hasta que la ventana sea cerrada.
 .TP
 \fBhalmeter &\fR
-Open a meter window, with nothing initially displayed.  Use the "Select"
-button to choose an item.  Runs in the background leaving the shell 
-free for other commands.
+Abre una ventana de medidor, sin mostrar nada inicialmente. Use el botón "Select" para elegir un item. Se ejecuta en background dejando el shell libre para otros comandos.
 .TP
 \fBhalmeter pin\fR \fIparport.0.pin\-03\-out\fR \fB&\fR
-Open a meter window, initially displaying HAL pin \fIparport.0.pin\-03\-out\fR.
-The "Select" button can be used to display other items.  Runs in background.
+Abre una ventana de medidor, que inicialmente muestra el pin HAL \fIparport.0.pin \-03\-out\fR.
+El botón "Select" se puede usar para mostrar otros elementos. Se ejecuta en segundo plano.
 
 .TP
 \fBhalmeter \-s pin\fR \fIparport.0.pin\-03\-out\fR \fB&\fR
-Open a small meter window, displaying HAL pin \fIparport.0.pin\-03\-out\fR.
-The displayed item cannot be changed.  Runs in background.
+Abre una pequeña ventana de medidor, mostrando el pin HAL \fIparport.0.pin\-03\-out\fR.
+El elemento mostrado no puede ser cambiado. Se ejecuta en segundo plano.
 
 .TP
 \fBhalmeter \-s pin\fR \fIparport.0.pin\-03\-out\fR \fB\-g\fR \fI100 500\fR \fB&\fR 
-Open a small meter window, displaying HAL pin \fIparport.0.pin\-03\-out\fR.
-places it 100 pixels to the left and 500 pixels down from top of screen.
-The displayed item cannot be changed.  Runs in background.
+Abre una pequeña ventana de medidor, mostrando el pin HAL \fIparport.0.pin\-03\-out\fR.
+La coloca 100 píxeles hacia la izquierda y 500 píxeles hacia abajo desde la parte superior de la pantalla.
+El elemento mostrado no puede ser cambiado. Se ejecuta en segundo plano.
 
 .TP
 \fBhalmeter \-s pin\fR \fIparport.0.pin\-03\-out\fR \fB\-g\fR \fI100 500 400\fR \fB&\fR 
-Open a small meter window, displaying HAL pin \fIparport.0.pin\-03\-out\fR.
-places it 100 pixels to the left and 500 pixels down from top of screen.
-The width will be 400 pixels (270 is default)
-The displayed item cannot be changed.  Runs in background.
+Abre una pequeña ventana de medidor, mostrando el pin HAL \fIparport.0.pin\-03\-out\fR.
+Lo coloca 100 píxeles hacia la izquierda y 500 píxeles hacia abajo desde la parte superior de la pantalla.
+El ancho será de 400 píxeles (270 es el valor predeterminado).
+El elemento mostrado no puede ser cambiado. Se ejecuta en segundo plano.
 
-.SH "SEE ALSO"
+.SH "VEA TAMBIÉN"
 
-.SH HISTORY
+.SH HISTORIA
 
 .SH BUGS
 
-.SH AUTHOR
-Original version by John Kasunich, as part of the LinuxCNC
-project.  Improvements by several other members of
-the LinuxCNC development team.
-.SH REPORTING BUGS
-Report bugs to jmkasunich AT users DOT sourceforge DOT net
+.SH AUTOR
+Versión original de John Kasunich, como parte del proyecto LinuxCNC.
+Mejoras por parte de otros miembros del equipo de desarrollo de LinuxCNC.
+.SH REPORTANDO ERRORES
+Informar errores a jmkasunich AT users DOT sourceforge DOT net
 .SH COPYRIGHT
 Copyright \(co 2003 John Kasunich.
 .br
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Esto es un software libre; ver las fuente para condiciones de copia. No hay
+garantía; ni siquiera para COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR.
