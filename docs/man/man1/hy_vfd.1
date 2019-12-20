@@ -22,279 +22,278 @@
 .\"
 .\"
 .\"
-.TH hy_vfd "1" "April 25, 2015" "Huanyang VFD" "LinuxCNC Documentation"
+.TH hy_vfd "1" "25 de abril de 2015" "VFD Huanyang" "Documentación LinuxCNC"
 
-.SH NAME
-\fBhy_vfd\fR \- HAL userspace component for Huanyang VFDs
+.SH NOMBRE
+\fBhy_vfd\fR \- Componente de espacio de usuario HAL para VFD de Huanyang
 
-.SH SYNOPSIS
+.SH SINOPSIS
 .B hy_vfd
-.RI [OPTIONS]
+.RI [OPCIONES]
 .br
 
-.SH DESCRIPTION
-This component connects the Huanyang VFD to the LinuxCNC HAL via a serial
-(RS-485) connection.
+.SH DESCRIPCIÓN
+Este componente conecta el VFD Huanyang a LinuxCNC HAL a través de una conexión serial
+(RS-485).
 .PP
-The Huanyang VFD must be configured via the face plate user interface
-to accept serial communications:
+El VFD Huanyang debe configurarse a través de la interfaz de usuario de la placa frontal
+para aceptar comunicaciones en serie:
 .B
 .IP PD001\ =\ 2
-Set register PD001 (source of run commands) to 2 (communication port).
+Establezca el registro PD001 (fuente de los comandos de ejecución) en 2 (puerto de comunicación).
 .B
 .IP PD002\ =\ 2
-Set register PD002 (source of operating frequency) to 2 (communication
-port).
+Ajuste el registro PD002 (fuente de frecuencia de operación) a 2 (puerto de comunicación).
 .B
 .IP PD004
 .br
-Set register PD004 (Base Frequency) according to motor specs.  This is
-the rated frequency of the motor from the motor's name plate, in Hz.
+Configure el registro PD004 (Frecuencia base) según las especificaciones del motor. Esto es
+la frecuencia nominal del motor de la placa de identificación del motor, en Hz.
 .B
 .IP PD005
 .br
-Set register PD005 (max frequency) according to motor specs.  This is
-the maximum frequency of the motor's power supply, in Hz.
+Configure el registro PD005 (frecuencia máxima) de acuerdo con las especificaciones del motor. Esto es
+la frecuencia máxima de la fuente de alimentación del motor, en Hz.
 .B
 .IP PD011
 .br
-Set register PD011 (min frequency) according to motor specs.  This is
-the minimum frequency of the motor's power supply, in Hz.
+Configure el registro PD011 (frecuencia mínima) según las especificaciones del motor. Esto es
+la frecuencia mínima de la fuente de alimentación del motor, en Hz.
 .B
 .IP PD141
 .br
-Set register PD141 (rated motor voltage) according to motor name plate.
-This is the motor's maximum voltage, in Volts.
+Configure el registro PD141 (voltaje nominal del motor) de acuerdo con la placa de identificación del motor.
+Esta es la tensión máxima del motor, en voltios.
 .B
 .IP PD142
 .br
-Set register PD142 (rated motor current) according to motor name plate.
-This is the motor's maximum current, in Amps.
+Configure el registro PD142 (corriente nominal del motor) de acuerdo con la placa de identificación del motor.
+Esta es la corriente máxima del motor, en amperios.
 .B
 .IP PD143
 .br
-Set register PD143 (Number of Motor Poles) according to motor name plate.
+Configure el registro PD143 (Número de polos del motor) de acuerdo con la placa del motor.
 .B
 .IP PD144
 .br
-Set register PD144 (rated motor revolutions) according to motor name
-plate.  This is the motor's speed in RPM at 50 Hz.  Note: This is not the
-motor's max speed (unless the max motor frequency happens to be 50 Hz)!
+Configure el registro PD144 (revoluciones nominales del motor) según la placa del motor.
+Esta es la velocidad del motor en RPM a 50 Hz. Nota: esta no es la
+¡Velocidad máxima del motor (a menos que la frecuencia máxima del motor sea 50 Hz)!
 .B
 .IP PD163\ =\ 1
-Set register PD163 (communication address) to 1.  This matches the
-default in the hy_vfd driver, change this if your setup has special needs.
+Establezca el registro PD163 (dirección de comunicación) en 1. Esto coincide con el
+predeterminado en el controlador hy_vfd, cámbielo si su configuración tiene necesidades especiales.
 .B
 .IP PD164\ =\ 2
-Set register PD164 (baud rate) to 2 (19200 bps).  This matches the
-default in the hy_vfd driver, change this if your setup has special needs.
+Ajuste el registro PD164 (velocidad de transmisión) a 2 (19200 bps). Esto coincide con el
+predeterminado en el controlador hy_vfd, cámbielo si su configuración tiene necesidades especiales.
 .B
 .IP PD165\ =\ 3
-Set register PD165 (communication data method) to 3 (8n1 RTU).
-This matches the default in the hy_vfd driver, change this if your
-setup has special needs.  Note that the hy_vfd driver only supports RTU
-communication, not ASCII.
+Establezca el registro PD165 (método de datos de comunicación) en 3 (8n1 RTU).
+Esto coincide con el valor predeterminado en el controlador hy_vfd, cambie esto si su
+instalación tiene necesidades especiales. Tenga en cuenta que el controlador hy_vfd solo es compatible con 
+comunicación RTU, no ASCII.
 .PP
-Consult the Huanyang instruction manual for details on using the face
-plate to program the VFDs registers, and alternative values for the
-above registers.
-.SH OPTIONS
+Consulte el manual de instrucciones de Huanyang para obtener detalles sobre el uso de la
+placa para programar los registros VFD y valores alternativos para los registros anteriores.
+.SH OPCIONES
 .B
 .IP \-d,\ \-\-device\ <path>
-(default /dev/ttyS0) Set the name of the serial device node to use.
+(predeterminado /dev/ttyS0) Establezca el nombre del nodo del dispositivo serie que se utilizará.
 .B
 .IP \-g,\ \-\-debug
-Turn on debug messages. Note that if there are serial errors, this may
-become annoying.  Debug mode will cause all serial communication messages
-to be printed in hex on the terminal.
+Activa los mensajes de depuración. Tenga en cuenta que si hay errores serie, esto puede
+volverse molesto. El modo de depuración causará que todos los mensajes de comunicación serie
+sean impresos en hexadecimal en el terminal.
 .B
-.IP \-n,\ \-\-name\ <string>
-(default hy_vfd) Set the name of the HAL module. The HAL comp name will be
-set to <string>, and all pin and parameter names will begin with <string>.
+.IP \-n,\ \-\-name\ <cadena>
+(predeterminado hy_vfd) Establece el nombre del módulo HAL. El nombre comp HAL
+se establece en <cadena>, y todos los nombres de pin y parámetro comenzarán con <cadena>.
 .B
 .IP \-b,\ \-\-bits\ <n>
-(default 8) Set number of data bits to <n>, where n must be from 5
-to 8 inclusive.  This must match the setting in register PD165 of the
-Huanyang VFD.
+(predeterminado 8) Establezca el número de bits de datos en <n>, donde n debe ser de 5
+a 8 inclusive. Esto debe coincidir con la configuración en el registro PD165 del
+VFD Huanyang.
 .B
-.IP \-p,\ \-\-parity\ [even,odd,none]
-(default odd) Set serial parity to even, odd, or none.  This must match
-the setting in register PD165 of the Huanyang VFD.
+.IP \-p,\ \-\-parity \ [even,odd,none]
+(valor predeterminado odd) Establezca la paridad serie en par, impar o ninguno. Esto debe coincidir
+la configuración en el registro PD165 del VFD Huanyang.
 .B
 .IP \-r,\ \-\-rate\ <n>
-(default 38400) Set baud rate to <n>. It is an error if the rate is
-not one of the following: 110, 300, 600, 1200, 2400, 4800, 9600, 19200,
-38400, 57600, 115200.  This must match the setting in register PD164 of
-the Huanyang VFD.
+(predeterminado 38400) Establezca la velocidad en baudios en <n>. Es un error si la tasa no es
+ninguna de las siguientes: 110, 300, 600, 1200, 2400, 4800, 9600, 19200,
+38400, 57600, 115200. Esto debe coincidir con la configuración en el registro PD164 de
+el VFD Huanyang.
 .B
 .IP \-s,\ \-\-stopbits\ [1,2]
-(default 1) Set serial stop bits to 1 or 2.  This must match the setting
-in register PD165 of the HuanyangVFD.
+(predeterminado 1) Establezca los bits de parada serie en 1 o 2. Esto debe coincidir con la configuración
+en el registro PD165 de HuanyangVFD.
 .B
 .IP \-t,\ \-\-target\ <n>
-(default 1) Set HYCOMM target (slave) number. This must match the device
-number you set on the Hyanyang VFD in register PD163.
+(predeterminado 1) Establecer el número objetivo (esclavo) de HYCOMM. Esto debe coincidir con el 
+número de dispositivo que configuró en el Hyanyang VFD en el registro PD163.
 .B
 .IP \-F,\ \-\-max\-frequency\ <n>
-(default: read from VFD) If specified, program register PD005 of the VFD
-with the specified max frequency of <n> Hz (and use the same max frequency
-in the hy_vfd driver).  If not specified, read the max frequency to use
-from register PD005 of the VFD.
+(predeterminado: lectura de VFD) Si se especifica, registre el PD005 del VFD
+con la frecuencia máxima especificada de <n> Hz (y use la misma frecuencia máxima
+en el controlador hy_vfd). Si no se especifica, lea la frecuencia máxima a usar
+del registro PD005 del VFD.
 .B
 .IP \-f,\ \-\-min\-frequency\ <n>
-(default: read from VFD) If specified, program register PD011 of the
-VFD with the specified minimum frequency of <n> Hz (and use the same
-minimum frequency in the hy_vfd driver).  If not specified, read the
-minimum frequency to use from register PD011 of the VFD.
+(predeterminado: lectura desde VFD) Si se especifica, el registro de programa PD011 del
+VFD con la frecuencia mínima especificada de <n> Hz (y use el mismo
+frecuencia mínima en el controlador hy_vfd). Si no se especifica, lea la
+frecuencia mínima a usar desde el registro PD011 del VFD.
 .B
 .IP \-V,\ \-\-motor\-voltage\ <n>
-(default: read from VFD) If specified, program register PD141 of the VFD
-with the specified max motor voltage of <n> Volts.  If not specified,
-read the max motor voltage from register PD141 of the VFD.
+(predeterminado: lectura de VFD) Si se especifica, registre el PD141 del VFD
+con la tensión máxima especificada del motor de <n> voltios. Si no se especifica,
+lea la tensión máxima del motor del registro PD141 del VFD.
 .B
 .IP \-I,\ \-\-motor\-current\ <n>
-(default: read from VFD) If specified, program register PD142 of the
-VFD with the specified max motor current of <n> Amps.  If not specified,
-read the max motor current from register PD142 of the VFD.
+(predeterminado: lectura desde VFD) Si se especifica, el registro de programa PD142 del
+VFD con la corriente máxima especificada del motor de <n> amperios. Si no se especifica,
+lea la corriente máxima del motor del registro PD142 del VFD.
 .B
 .IP \-S,\ \-\-motor\-speed\ <n>
-(default: compute from value read from VFD P144) This command-line
-argument is the motor's max speed.  If specified, compute the motor's
-speed at 50 Hz from this argument and from the motor's max frequency
-(from the \-\-max\-frequency argument or from P011 if \-\-max\-frequency is
-not specified) and program register PD144 of the VFD.  If not specified,
-read the motor's speed at 50 Hz from register P144 of the VFD, and use
-that and the max frequency to compute the motor's max speed.
+(predeterminado: calcular a partir del valor leído de VFD P144). El argumento de
+esta línea de comando es la velocidad máxima del motor. Si se especifica, calcule la
+velocidad a 50 Hz de este argumento y de la frecuencia máxima del motor
+(del argumento \-\-max\-frequency o de P011 si \-\-max\-frequency no esta
+especificado) y el registro de programa PD144 del VFD. Si no se especifica,
+lea la velocidad del motor a 50 Hz del registro P144 del VFD y use
+eso y la frecuencia máxima para calcular la velocidad máxima del motor.
 .B
 .IP \-P,\ \-\-motor\-poles\ <n>
-(default: read value from VFD P143) This command-line argument is the
-number of poles in the motor.  If specified, this value is sent to the
-VFD's register PD143.  If not specified, the value is read from PD143
-and reported on the corresponding HAL pin.
+(predeterminado: valor de lectura de VFD P143) Este argumento de línea de comandos es el
+número de polos en el motor. Si se especifica, este valor se envía a
+Registro de VFD PD143. Si no se especifica, el valor se lee desde PD143
+e informa sobre el pin HAL correspondiente.
 .B
-.SH PINS
+.SH PINES
 .B
-.IP <name>.enable
-(bit, in) Enable communication from the hy_vfd driver to the VFD.
+.IP <nombre>.enable
+(bit, in) Habilita la comunicación desde el controlador hy_vfd al VFD.
 .B
-.IP <name>.SetF
-(float, out)
+.IP <nombre>.SetF
+(float)
 .B
-.IP <name>.OutF
-(float, out)
+.IP <nombre>.OutF
+(float)
 .B
-.IP <name>.OutA
-(float, out)
+.IP <nombre>.OutA
+(float)
 .B
-.IP <name>.Rott
-(float, out)
+.IP <nombre>.Rott
+(float)
 .B
-.IP <name>.DCV
-(float, out)
+.IP <nombre>.DCV
+(float)
 .B
-.IP <name>.ACV
-(float, out)
+.IP <nombre>.ACV
+(float)
 .B
-.IP <name>.Cont
-(float, out)
+.IP <nombre>.Cont
+(float)
 .B
-.IP <name>.Tmp
-(float, out)
+.IP <nombre>.Tmp
+(float)
 .B
-.IP <name>.spindle\-forward
+.IP <nombre>.spindle\-forward
 (bit, in)
 .B
-.IP <name>.spindle\-reverse
-(bin, in)
+.IP <nombre>.spindle\-reverse
+(bit, in)
 .B
-.IP <name>.spindle\-on
-(bin, in)
+.IP <nombre>.spindle\-on
+(bit, in)
 .B
-.IP <name>.CNTR
-(float, out)
+.IP <nombre>.CNTR
+(float)
 .B
-.IP <name>.CNST
-(float, out)
+.IP <nombre>.CNST
+(float)
 .B
-.IP <name>.CNST\-run
+.IP <nombre>.CNST\-run
 (bit, out)
 .B
-.IP <name>.CNST\-jog
+.IP <nombre>.CNST\-jog
 (bit, out)
 .B
-.IP <name>.CNST\-command\-rf
+.IP <nombre>.CNST\-command\-rf
 (bit, out)
 .B
-.IP <name>.CNST\-running
+.IP <nombre>.CNST\-running
 (bit, out)
 .B
-.IP <name>.CNST\-jogging
+.IP <nombre>.CNST\-jogging
 (bit, out)
 .B
-.IP <name>.CNST\-running\-rf
+.IP <nombre>.CNST\-running\-rf
 (bit, out)
 .B
-.IP <name>.CNST\-bracking
+.IP <nombre>.CNST\-bracking
 (bit, out)
 .B
-.IP <name>.CNST\-track\-start
+.IP <nombre>.CNST\-track\-start
 (bit, out)
 .B
-.IP <name>.speed\-command
-(float, in)
+.IP <nombre>.speed\-command
+(flotador, adentro)
 .B
-.IP <name>.spindle\-speed\-fb
-(float, out) Current spindle speed as reported by Huanyang VFD.
+.IP <nombre>.spindle\-speed\-fb
+(float, out) Velocidad actual del husillo según lo informado por VFD Huanyang.
 .B
-.IP <name>.spindle\-at\-speed\-tolerance
-(float, in) Spindle speed error tolerance.  If the actual spindle
-speed is within .spindle\-at\-speed\-tolerance of the commanded speed,
-then the .spindle\-at\-speed pin will go True.  The
-default .spindle\-at\-speed\-tolerance is 0.02, which means the actual
-speed must be within 2% of the commanded spindle speed.
+.IP <nombre>.spindle\-at\-speed\-tolerance
+(float, in) Tolerancia de error de velocidad del husillo. Si el husillo real
+la velocidad está dentro de .spindle\-at\-speed\-tolerance de la velocidad ordenada,
+entonces el pin .spindle\-at\-speed pasará a True. los
+.spindle \-at\-speed\-tolerance predeterminado es 0.02, lo que significa que el valor real
+la velocidad debe estar dentro del 2% de la velocidad de husillo ordenada.
 .B
-.IP <name>.spindle\-at\-speed
-(bit, out) True when the current spindle speed is
-within .spindle\-at\-speed\-tolerance of the commanded speed.
+.IP <nombre>.spindle\-at\-speed
+(bit, out) Verdadero cuando la velocidad actual del husillo es
+dentro de .spindle\-at\-speed\-tolerance de la velocidad ordenada.
 .B
-.IP <name>.frequency\-command
-(float, out)
+.IP <nombre>.frecuency\-comando
+(float)
 .B
-.IP <name>.max\-freq
-(float, out)
+.IP <nombre>.max\-freq
+(float)
 .B
-.IP <name>.base\-freq
-(float, out)
+.IP <nombre>.base\-freq
+(float)
 .B
-.IP <name>.freq\-lower\-limit
-(float, out)
+.IP <nombre>.freq\-lower\-limit
+(float)
 .B
-.IP <name>.rated\-motor\-voltage
-(float, out)
+.IP <nombre>.rated\-motor\-voltage
+(float)
 .B
-.IP <name>.rated\-motor\-current
-(float, out)
+.IP <nombre>.rated\-motor\-current
+(float)
 .B
-.IP <name>.rated\-motor\-rev
-(float, out)
+.IP <nombre>.rated\-motor\-rev
+(float)
 .B
 .B
-.IP <name>.motor\-poles
-(u32, out)
+.IP <nombre>.motor\-poles
+(U32, out)
 .B
-.IP <name>.hycomm\-ok
+.IP <nombre>.hycomm\-ok
 (bit, out)
 
-.SH PARAMETERS
+.SH PARÁMETROS
 .B
-.IP <name>.error\-count
+.IP <nombre>.error\-count
 (s32, RW)
 .B
-.IP <name>.retval
+.IP <nombre>.retval
 (float, RW)
 
-.SH AUTHOR
+.SH AUTOR
 Sebastian Kuzminsky
 
-.SH LICENSE
+.SH LICENCIA
 GPL
+
