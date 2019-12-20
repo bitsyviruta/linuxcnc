@@ -23,140 +23,138 @@
 .\"
 .\"
 .\"
-.TH HALSAMPLER "1"  "2006-11-18" "LinuxCNC Documentation" "HAL User's Manual"
-.SH NAME
-halsampler \- sample data from HAL in realtime
-.SH SYNOPSIS
+.TH HALSAMPLER "1" "2006-11-18" "Documentación de LinuxCNC" "Manual de usuario de HAL"
+.SH NOMBRE
+halsampler \- Muestreo de datos de HAL en tiempo real
+.SH SINOPSIS
 .B halsampler
-.RI [ options ]
+.RI [ opciones ]
 
-.SH DESCRIPTION
+.SH DESCRIPCIÓN
 .BR sampler (9)
-and
+y
 .B halsampler
-are used together to sample HAL data in real time and store it in a file.
-.B sampler
-is a realtime HAL component that exports HAL pins and creates a FIFO in shared memory.  It then begins sampling data from the HAL and storing it to the FIFO.
+se usan juntos para muestrear datos HAL en tiempo real y almacenarlos en un archivo.
+.B sampler 
+es un componente HAL en tiempo real que exporta pines HAL y crea una FIFO en la memoria compartida. A continuación, comienza a muestrear los datos HAL y los almacena en la FIFO.
 .B halsampler
-is a user space program that copies data from the FIFO to stdout, where it can
-be redirected to a file or piped to some other program.
+es un programa de espacio de usuario que copia datos de la FIFO a stdout, donde puede
+ser redirigido a un archivo o canalizado a otro programa.
 
-.SH OPTIONS
+.SH OPCIONES
 .TP
-.BI "\-c " CHAN
-instructs 
+.BI "\-c" CHAN
+instruye a
 .B halsampler
-to read from FIFO
+para leer de la FIFO
 .IR CHAN .
-FIFOs are numbered from zero, and the default value is zero, so
-this option is not needed unless multiple FIFOs have been created.
+Las FIFO se numeran desde cero, y el valor predeterminado es cero, por lo que
+esta opción no es necesaria a menos que se hayan creado múltiples FIFO.
 .TP
-.BI "\-n " COUNT
-instructs 
+.BI "\-n" COUNT
+instruye a
 .B halsampler
-to read
+para leer
 .I COUNT
-samples from the FIFO, then exit.  If
+muestras de la FIFO, luego sale. Si
 .B \-n
-is not specified,
+no está especificado,
 .B halsampler
-will read continuously until it is killed.
+leerá continuamente hasta que se mate.
 .TP
 .B \-t
-instructs 
+instruye a
 .B halsampler
-to tag each line by printing the sample number in the first column.
+para etiquetar cada línea imprimiendo el número de muestra en la primera columna.
 .TP
 .B FILENAME
-instructs
-.B halsampler
-to write to \fBFILENAME\fR instead of to stdout.
-.SH USAGE
-A FIFO must first be created by loading 
-.BR sampler (9)
-with 
+instruye a
+.B halsampler para
+escribir en \fBFILENAME\fR en lugar de en stdout.
+.SH USO
+Primero se debe crear una FIFO cargando
+.BR sampler (9) 
+con
 .B halcmd loadrt
-or a
+o un comando
 .B loadrt
-command in a .hal file.  Then
+en un archivo .hal. Entonces
 .B halsampler
-can be invoked to begin printing data from the FIFO to stdout.
+puede invocarse para comenzar a imprimir datos del FIFO a stdout.
 .P
-Data is printed one line per sample.  If
+Los datos se imprimen una línea por muestra. Si se especificó, 
 .B \-t
-was specified, the sample number is printed first.  The data follows, in the
-order that the pins were defined in the config string.  For example, if the
+el número de muestra se imprime primero. Los datos siguen, en el
+orden que los pines se definen en la cadena de configuración. Por ejemplo, si la cadena config en
 .B sampler
-config string was "ffbs" then a typical line of output (without
-.BR \-t )
-would look like:
+era "ffbs", una línea típica de salida (sin
+.BR \-t)
+se vería así:
 .P
 123.55 33.4 0 \-12
 .P
 .B halsampler
-prints data as fast as possible until the FIFO is empty, then it retries at regular intervals, until it is either killed or has printed
+imprime datos lo más rápido posible hasta que la FIFO esté vacía, luego vuelve a intentarlo a intervalos regulares, hasta que se cancela o se imprimen
 .I COUNT
-samples as requested by
-.BR \-n .
-Usually, but not always, data printed by
+muestras según lo solicitado por
+.BR \-n.
+Por lo general, pero no siempre, los datos impresos por
 .B halsampler
-will be redirected to a file or piped to some other program.
+será redireccionados a un archivo o canalizado a algún otro programa.
 .P
-The FIFO size should be chosen to absorb samples captured during any momentary disruptions in the flow of data, such as disk seeks, terminal scrolling, or the processing limitations of subsequent program in a pipeline.  If the FIFO gets
-full and
+El tamaño de FIFO debe elegirse para absorber las muestras capturadas durante cualquier interrupción momentánea en el flujo de datos, como búsquedas de disco, scroll de terminal o las limitaciones de procesamiento del programa subsiguiente en una pipeline. Si la FIFO se llena y
 .B sampler
-is forced to overwrite old data,
+se ve forzado a sobreescribir datos mas antiguos,
 .B halsampler
-will print 'overrun' on a line by itself to mark each gap in the sampled
-data.  If
+imprimirá 'overrun' en una sola línea para marcar cada dato perdido en la muestra de datos. Si se especificó
 .B \-t
-was specified, gaps in the sequential sample numbers in the first column
-can be used to determine exactly how many samples were lost.
+ ,estas lineas en los números de muestra secuenciales en la primera columna
+se pueden usar para determinar exactamente cuántas muestras se perdieron.
 .P
-The data format for
+El formato de datos para la salida de
 .B halsampler
-output is the same as for
+es el mismo que para la entrada de
 .BR halstreamer (1)
-input, so 'waveforms' captured with
+, por lo que 'formas de onda' capturadas con
 .B halsampler
-can be replayed using
-.BR halstreamer .
-The
+puede ser reproducidas usando
+.BR halstreamer.
+La opción
 .B \-t
-option should not be used in this case.
+no debe usarse en este caso.
 
-.SH "EXIT STATUS"
-If a problem is encountered during initialization,
+.SH "ESTADO DE SALIDA"
+Si se encuentra un problema durante la inicialización,
 .B halsampler
-prints a message to stderr and returns failure.
+imprime un mensaje a stderr y devuelve un error.
 .P
-Upon printing
+Al imprimir
 .I COUNT
-samples (if
+muestras (si
 .B \-n
-was specified) it will shut down and return success.  If it is terminated
-before printing the specified number of samples, it returns failure.  This
-means that when
+fue especificado) se cerrará y devolverá éxito. Si se termina
+antes de imprimir el número especificado de muestras, devuelve error. Esto
+significa que cuando
 .B \-n
-is not specified, it will always return failure when terminated.
+no se especifica, siempre devolverá el fallo cuando se termine.
 
-.SH "SEE ALSO"
+.SH "VEA TAMBIÉN"
 .BR sampler (9)
 .BR streamer (9)
 .BR halstreamer (1)
 
-.SH HISTORY
+.SH HISTORIA
 
 .SH BUGS
 
-.SH AUTHOR
-Original version by John Kasunich, as part of the LinuxCNC
-project.  Improvements by several other members of
-the LinuxCNC development team.
-.SH REPORTING BUGS
-Report bugs to jmkasunich AT users DOT sourceforge DOT net
+.SH AUTOR
+Versión original de John Kasunich, como parte del proyecto LinuxCNC. 
+Mejoras por parte de otros miembros de
+el equipo de desarrollo de LinuxCNC.
+.SH REPORTANDO ERRORES
+Informar errores a jmkasunich AT users DOT sourceforge DOT net
 .SH COPYRIGHT
 Copyright \(co 2006 John Kasunich.
 .br
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Este es un software libre; ver las fuentes pàra las condiciones de copia. No hay
+garantía; ni siquiera para COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR.
