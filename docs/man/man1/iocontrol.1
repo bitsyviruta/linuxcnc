@@ -1,98 +1,94 @@
-.TH IOCONTROL "1" "2007-08-25" "LinuxCNC Documentation" "HAL Component" 
+.TH IOCONTROL "1" "2007-08-25" "Documentación de LinuxCNC" "Componente HAL"
 .de TQ
 .br
 .ns
 .TP \\$1
 ..
 
-.SH NAME
-iocontrol \- accepts NML I/O commands, interacts with HAL in userspace
+.SH NOMBRE
+iocontrol \- acepta comandos NML de E/S, interactúa con HAL en el espacio de usuario
 
-.SH SYNOPSIS
+.SH SINOPSIS
 \fBloadusr io [\-ini \fIinifile\fB]
 
 
-.SH DESCRIPTION
-These pins are created by the userspace IO controller, usually found in $LINUXCNC_HOME/bin/io
+.SH DESCRIPCIÓN
+Estos pines son creados por el controlador IO del espacio de usuario, generalmente se encuentran en $LINUXCNC_HOME/bin/io
 .P
-The signals are turned on and off in userspace - if you have strict timing requirements or simply need more i/o, consider using the realtime synchronized i/o provided by \fBmotion\fR(9) instead.
+Las señales se activan y desactivan en el espacio de usuario: si tiene requisitos de temporización estrictos o simplemente necesita más E/S, considere utilizar la E/S sincronizada en tiempo real proporcionada por \fBmotion\fR(9).
 .P
-The inifile is searched for in the directory from which halcmd was run, unless an absolute path is specified.
+El archivo inifile se busca en el directorio desde el que se ejecutó halcmd, a menos que se especifique una ruta absoluta.
 
 .SH PINS
 
 .TP
 \fBiocontrol.0.coolant\-flood
-(Bit, Out) TRUE when flood coolant is requested
+(Bit, Out) TRUE cuando se solicita refrigerante de inundación
 
 .TP
-\fBiocontrol.0.coolant\-mist 
-(Bit, Out) TRUE when mist coolant is requested
+\fBiocontrol.0.coolant\-mist
+(Bit, Out) TRUE cuando se solicita refrigerante por niebla
 
 .TP
-\fBiocontrol.0.emc\-enable\-in 
-(Bit, In) Should be driven FALSE when an external estop condition exists.
+\fBiocontrol.0.emc\-enable\-in
+(Bit, In) Debe ser puesto a FALSE cuando existe una condición Estop externa.
 
 .TP
-\fBiocontrol.0.lube 
-(Bit, Out) TRUE when lube is requested.  This pin gets driven True when
-the controller comes out of E-stop, and when the "Lube On" command gets
-sent to the controller.  It gets driven False when the controller goes
-into E-stop, and when the "Lube Off" command gets sent to the controller.
+\fBiocontrol.0.lube
+(Bit, Out) TRUE cuando se solicita lubricante. Este pin se hace TRUE cuando
+el controlador sale de E-stop, y cuando el comando "Lube On" es
+enviado al controlador. Se vuelve FALSE cuando el controlador entra
+en E-stop, y cuando se envía el comando "Lube Off" al controlador.
 
 .TP
-\fBiocontrol.0.lube_level 
-(Bit, In) Should be driven FALSE when lubrication tank is empty.
+\fBiocontrol.0.lube_level
+(Bit, In) Debe ponerse a FALSE cuando el tanque de lubricación está vacío.
 
 .TP
-\fBiocontrol.0.tool\-change 
-(Bit, Out) TRUE when a tool change is requested
+\fBiocontrol.0.tool\-change
+(Bit, Out) TRUE cuando se solicita un cambio de herramienta
 
 .TP
-\fBiocontrol.0.tool\-changed 
-(Bit, In) Should be driven TRUE when a tool change is completed.
+\fBiocontrol.0.tool\-changed
+(Bit, In) Debe ponerse a TRUE cuando se completa un cambio de herramienta.
 
 .TP
 \fBiocontrol.0.tool\-number
-(s32, Out) Current tool number
+(s32, Out) Número de herramienta actual
 
 .TP
-\fBiocontrol.0.tool\-prep\-number 
-(s32, Out) The number of the next tool, from the RS274NGC T-word
+\fBiocontrol.0.tool\-prep\-number
+(s32, Out) El número de la siguiente herramienta, de la palabra T en RS274NGC
 
 .TP
 \fBiocontrol.0.tool\-prep\-pocket
-(s32, Out) This is the pocket number (location in the tool storage
-mechanism) of the tool requested by the most recent T-word.
+(s32, Out) Este es el número de bolsillo (ubicación en el mecanismo de almacenamiento de  herramienta) de la herramienta solicitada por la palabra en T más reciente.
 
 .TP
-\fBiocontrol.0.tool\-prepare 
-(Bit, Out) TRUE when a T\fIn\fR tool prepare is requested
+\fBiocontrol.0.tool\-prepare
+(Bit, Out) TRUE cuando se solicita una preparación de herramienta T\fIn\fR
 
 .TP
-\fBiocontrol.0.tool\-prepared 
-(Bit, In) Should be driven TRUE when a tool prepare is completed.
+\fBiocontrol.0.tool\-prepared
+(Bit, In) Debe activarse TRUE cuando se completa una preparación de herramienta.
 
 .TP
-\fBiocontrol.0.user\-enable\-out 
-(Bit, Out) FALSE when an internal estop condition exists
+\fBiocontrol.0.user\-enable\-out
+(Bit, Out) FALSE cuando existe una condición interna de estop
 
 .TP
-\fBiocontrol.0.user\-request\-enable 
-(Bit, Out) TRUE when the user has requested that estop be cleared
+\fBiocontrol.0.user\-request\-enable
+(Bit, Out) TRUE cuando el usuario ha solicitado que se elimine estop
 
-.SH PARAMETERS
+.SH PARÁMETROS
 
 .TP
 \fBiocontrol.0.tool\-prep\-index
-(s32, RO) IO's internal array index of the prepped tool requested
-by the most recent T-word.  0 if no tool is prepped.  On Random
-toolchanger machines this is tool's pocket number (ie, the same as the
-tool\-prep\-pocket pin), on Non-random toolchanger machines this is
-a small integer corresponding to the tool's location in the internal
-representation of the tool table.  This parameter returns to 0 after a
-successful tool change (M6).
+(s32, RO) Índice de matriz interna de IO de la herramienta preparada solicitada
+por la palabra en T más reciente. 0 si no hay ninguna herramienta preparada. En máquinas de cambio de herramienta aleatorio
+este es el número de bolsillo de la herramienta (es decir, el mismo que el pin 
+tool\-prep\-pocket), en máquinas de cambio de herramientas no aleatorias esto es un entero que corresponde a la ubicación de la herramienta en la 
+representación interna de la tabla de herramientas. Este parámetro vuelve a 0 después de un cambio exitoso de herramienta (M6).
 
-.SH SEE ALSO
+.SH VEA TAMBIÉN
 \fBmotion\fR(9)
-
