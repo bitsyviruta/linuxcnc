@@ -10,6 +10,18 @@
 .\" and "executables" are to be interpreted as the output of any
 .\" document formatting or typesetting system, including
 .\" intermediate and printed output.
+.\" Copyright (c) 2003 John Kasunich
+.\"                (jmkasunich AT users DOT sourceforge DOT net)
+.\"
+.\" This is free documentation; you can redistribute it and/or
+.\" modify it under the terms of the GNU General Public License as
+.\" published by the Free Software Foundation; either version 2 of
+.\" the License, or (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
 .\"
 .\" This manual is distributed in the hope that it will be useful,
 .\" but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,79 +39,77 @@
 \\$2 \(laURL: \\$1 \(ra\\$3
 ..
 .if \n[.g] .mso www.tmac
-.TH HALRUN "1"  "2012-01-31" "LinuxCNC Documentation" "HAL User's Manual"
-.SH NAME
-halrun \- manipulate the LinuxCNC HAL from the command line
-.SH SYNOPSIS
+.TH HALRUN "1" "2012-01-31" "Documentación de LinuxCNC" "Manual de usuario de HAL"
+.SH NOMBRE
+halrun \- manipular el HAL de LinuxCNC desde la línea de comando
+.SH SINOPSIS
 .B halrun \fI\-h\fR
 .PP
-.B halrun [\fI\-I\fR] [\fIhalcmd_opts\fR] [\fIfilename[.hal|.tcl]\fR]
+.B halrun [\fI\-I\fR] [\fIhalcmd_opts\fR] [\fInombredearchivo[.hal|.tcl]\fR]
 .PP
-.B halrun \fI\-T\fR [\fIhalcmd_opts\fR] [\fIfilename[.hal|.tcl]\fR]
+.B halrun \fI\-T\fR [\fIhalcmd_opts\fR] [\fInombredearchivo[.hal|.tcl]\fR]
 .PP
 .B halrun \fI\-U\fR
-.SH DESCRIPTION
-\fBhalrun\fR is a convenience script used to manipulate the HAL (Hardware
-Abstraction Layer) from the command line.  When invoked, \fBhalrun\fR:
+.SH DESCRIPCIÓN
+\ fBhalrun\fR es un script de conveniencia utilizado para manipular HAL (Capa de abstracción hardware) desde la línea de comando. Cuando se invoca, \fBhalrun\fR:
 
-    Sets up the realtime environment.
-    Executes a command interpreter (\fBhalcmd\fR or \fBhaltcl\fR).
-    (Optionally) runs an interactive session.
-    Tears down the realtime environment.
+    Configura el entorno en tiempo real.
+    Ejecuta un intérprete de comandos (\fBhalcmd\fR o \fBhaltcl\fR).
+    (Opcionalmente) ejecuta una sesión interactiva.
+    Sale del ambiente en tiempo real.
 
-    If no filename is specified, an interactive session is started.
-    The session will use \fBhalcmd\fR(1) unless \-T is specified in
-    which case \fBhaltcl\fR(1) will be used.
+    Si no se especifica ningún nombre de archivo, se inicia una sesión interactiva.
+    La sesión usará \fBhalcmd\fR (1) a menos que \-T esté especificado en
+    cuyo caso \fBhaltcl\fR(1) será utilizado.
 
-    If a filename is specified and neither the \-I nor the \-T option
-    is included, the filename will be processed by the command
-    interpreter corresponding to the filename extension (\fBhalcmd\fR
-    or \fBhaltcl\fR).  After processing, the realtime environment
-    will be torn down.
+    Si no se especifica un nombre de archivo ni la opción \-I ni la opción \-T,
+    el nombre de archivo será procesado por el intérprete de comandos
+    correspondiente a la extensión de nombre de archivo (\fBhalcmd\fR
+    o \fBhaltcl\fR). Después del procesamiento, el entorno en tiempo real
+    será destruido
 
-    If a filename is specified and the \-I or \-T option is included,
-    the file is processed by the appropriate command interpreter and
-    then an interactive session is started for \fBhalcmd\fR or
-    \fBhaltcl\fR according to the \-I or \-T option.
+    Si se especifica un nombre de archivo y se incluye la opción \-I o \-T,
+    el archivo es procesado por el intérprete de comandos apropiado y
+    luego se inicia una sesión interactiva para \fBhalcmd\fR o
+    \fBhaltcl\fR según la opción \-I o \-T.
 
-.SH OPTIONS
+.SH OPCIONES
 .TP
 \fBhalcmd_opts\fR
-When a .hal file is specified, the \fBhalcmd_opts\fR are
-passed to \fBhalcmd\fR.  See the man page for \fBhalcmd\fR(1).
-When a .tcl file is specified, the only valid options are:
+Cuando se especifica un archivo .hal, las \fBhalcmd_opts\fR son
+pasados a \fBhalcmd\fR. Consulte la página man para \fBhalcmd\fR(1).
+Cuando se especifica un archivo .tcl, las únicas opciones válidas son:
     \-i inifile
-    \-f filename[.tcl|.hal]  (alternate means of specifying a file)
+    \-f filename[.tcl|.hal] (medio alternativo de especificar un archivo)
 .TP
 \fB\-I\fR
-Run an interactive \fBhalcmd\fR session
+Ejecuta una sesión interactiva \fBhalcmd\fR
 .TP
 \fB\-T\fR
-Run an interactive \fBhaltcl\fR session.
+Ejecuta una sesión interactiva \fBhaltcl\fR.
 .TP
 \fB\-U\fR
-Forcibly cause the realtime environment to exit.  It releases the HAL mutex,
-requests that all HAL components unload, and stops the realtime system.
-\fB\-U\fR must be the only commandline argument.
+Forzar la salida del entorno en tiempo real. Libera el mutex HAL,
+solicita que todos los componentes HAL se descarguen y detiene el sistema en tiempo real.
+\fB\-U\fR debe ser el único argumento de línea de comando.
 .TP
 \fB\\-h\fR
-display a brief help screen and exit
-.SH EXAMPLES
-.SH HISTORY
+mostrar una breve pantalla de ayuda y salir
+.SH EJEMPLOS
+.SH HISTORIA
 .SH BUGS
-None known at this time.
-.SH AUTHOR
-Original version by John Kasunich, as part of the LinuxCNC Enhanced Machine
-Controller project.  Now includes major contributions by several
-members of the project.
-.SH REPORTING BUGS
-Report bugs to the
+Ninguno conocido en este momento.
+.SH AUTOR
+Versión original de John Kasunich, como parte del Proyecto LinuxCNC de controlador de máquina mejorada. Ahora incluye importantes contribuciones de varios miembros del proyecto.
+.SH REPORTANDO ERRORES
+Reporte errores al
 .URL http://sf.net/p/emc/bugs/ "LinuxCNC bug tracker" .
 .SH COPYRIGHT
-Copyright \(co 2003 John Kasunich.
+Copyright \ (co 2003 John Kasunich.
 .br
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Esto es un software libre; ver las fuentes para las condiciones de copia. No hay
+garantía; ni siquiera para COMERCIABILIDAD o IDONEIDAD PARA UN PROPÓSITO PARTICULAR.
 
-.SH "SEE ALSO"
+.SH "VEA TAMBIÉN"
 \fBhalcmd\fR(1), \fBhaltcl\fR(1)
+
