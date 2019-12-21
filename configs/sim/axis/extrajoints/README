@@ -1,0 +1,18 @@
+demos extrajoints
+
+1extrajoint
+   5 articulaciones en total
+   1 articulación extra (articulación 4)
+   homing inmediato
+   (jog de joint4 antes de homing para
+   crear un pequeño desplazamiento del motor)
+
+2extrajoint
+   6 articulaciones en total
+   2 articulaciones extra (articulaciones 4,5)
+   interruptores home simulados
+
+12extrajoint
+   16 articulaciones en total
+   12 articulaciones adicionales (articulaciones 4 a 15)
+   interruptores home simulados
