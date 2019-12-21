@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Exec=/usr/bin/pncconf
+Icon=linuxcncicon
+X-GNOME-DocPath=
+Terminal=false
+Comment=Ayudante de Configuration para tarjetas Mesa I/O
+StartupNotify=false
+Categories=X-CNC;
+Name=Ayudante Pncconf
+Keywords=cnc;linuxcnc;

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Guia de Primeros Pasos
+Type=Application
+Exec=/usr/bin/see /usr/share/doc/linuxcnc/LinuxCNC_Getting_Started_es.pdf
+Icon=linuxcncicon
+X-GNOME-DocPath=
+Terminal=false
+Comment=Informacion sobre descarga e instalacion de LinuxCNC
+StartupNotify=false
+Categories=X-CNC;
+Keywords=cnc;linuxcnc;
