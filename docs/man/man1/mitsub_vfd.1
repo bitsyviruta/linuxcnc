@@ -1,0 +1,239 @@
+.TH mitsub_vfd "1" "2018-10-25" "Documentación LinuxCNC" "Componente HAL"
+
+
+.SH NOMBRE
+
+mitsub_vfd - Componente de espacio de usuario HAL para VFD Mitsubishi series A500 F500
+E500 A500 D700 E700 F700  (pueden funcionar otros)
+
+
+.SH SINOPSIS
+
+.B loadrt mitsub_vfd [--baud 4800] [--port /dev/ttyUSB0] nombre1=número1[,nombre2=número2...]
+.br
+\fBnombre1\fR es seleccionable por el usuario (generalmente una descripción del
+dispositivo controlado).
+.br
+\fBnumero1\fR es el número de esclavo que se configuró en el VFD.
+Deben tener dos dígitos (parámetro 117)
+.br
+\fBnombre=numero\fR puede repetirse para múltiples VFD
+conectados juntos
+.br
+\fB--baud\fR es opcional ya que por defecto es 9600.
+Todos los vfds en red deben configurarse a la misma velocidad en baudios
+.br
+\fB--port\fR es opcional; por defecto es ttyS0
+
+.SH DESCRIPCIÓN
+
+El componente mitsub_vfd conecta un Mitsubishi VFD a
+LinuxCNC. El VFD está conectado a través del serial RS-485 al
+puerto USB o serial de la computadora usando un convertidor RS-232/RS-485
+
+
+.SH CONFIGURACIÓN DE HARDWARE
+manual de referencia 'communication option reference manual'
+y manual técnico A500 para la serie 500.
+Fr-A700 F700 E700 D700 manual técnico para la serie 700
+.br
+El inversor debe configurarse manualmente para la comunicación.
+.br
+(puede que tenga que configurar PR 77 a 1 para desbloquear la modificación de PR)
+.br
+Debe encender y apagar el inversor para algunos de estos. (por ejemplo, 79)
+
+.TP
+\fBPARÁMETROS INTERNOS DEL VFD :\fR
+
+\fBPARÁMETRO 79\fR - 1 o 0
+
+\fBPARAMETRO 117\fR número de estación - 1
+.br
+(puede configurarse opcionalmente 0 - 31) si el componente también está configurado
+
+\fBPARÁMETRO 118\fR velocidad de comunicación 96
+.br
+(puede configurarse opcionalmente 48,96,192 si el componente también está configurado)
+
+\fBPARÁMETRO 119\fR bit de parada/longitud de datos - 0
+.br
+(8 bits, dos parada - no cambiar)
+
+\fB PARÁMETRO 120\fR paridad - 0
+.br
+(sin paridad, no cambiar)
+
+\fBPARAMETER 121\fR intentos COM - 10
+.br
+(si maximo de 10 errores COM, entonces fallo del inversor- puede cambiarse)
+
+\fBPARÁMETRO 122\fR Intervalo de tiempo de comprobación COM 9999
+.br
+(check never - si se pierde la comunicación, el inversor
+no lo sabra (puede cambiarse)
+
+\fBPARÁMETRO 123\fR tiempo de espera - 9999
+.br
+no se agrega tiempo de espera al frame de datos en serie (no cambiar)
+
+\fBPARAMETER 124\fR Selección CR - 0
+.br
+no cambiar
+
+.SH
+
+Este controlador asume ciertas configuraciones del VFD:
+-Que el estado de frecuencia del motor está configurado para mostrar herz.
+.br
+-Que el bit de estado 3 está a velocidad
+.br
+-Que el bit de estado 7 es alarma
+
+Algunos modelos (p. ej. E500) no pueden controlar el estado.
+.br
+Debe establecer establecer el pin del monitor en falso.
+.br
+En este caso, pines como la velocidad,
+los amplificadores, los bits de alarma y de estado no son útiles.
+
+.SH PINS
+\fB[VFD NAME].fwd\fR (bit, in)::
+      pin de avance / retroceso
+.br
+\fB[VFD NAME].run\fR (bit, in)::
+      pin de marcha / parada
+.br
+\fB[VFD NAME].debug\fR (bit, in)::
+       pin de establecer modo de depuración
+.br
+      Esto imprimirá muchos mensajes al terminal
+.br
+\fB[VFD NAME].monitor\fR (bit, in)::
+      pin de establecer modo monitor
+      Si el comando Falso de estado de solicitud no se enviará a vfd,
+      el estado, los amperios, la potencia, la retroalimentación del motor y la alarma no
+        serán  útiles.
+.br
+\fB[VFD NAME].estop\fR (bit, in)::
+      establecer pin de modo de parada
+.br
+      Esto detendrá el VFD.
+      El reinicio requiere el ciclo del pin run.
+
+\fB[VFD NAME].fwd\fR (bit, out)::
+      pin de estado de velocidad
+      El motor está a la velocidad solicitada dentro de la tolerancia de configuración de VFD.
+.br
+\fB[VFD NAME].alarm\fR (bit, out)::
+      pin de estado de alarma
+.br
+
+\fB[VFD NAME].motor-cmd\fR (float, in)::
+      La velocidad del motor solicitada es Hertz
+.br
+
+\fB[VFD NAME].motor-fb\fR (float, out)::
+      La velocidad de retroalimentación del motor (desde vfd) en hertz
+.br
+\fB[VFD NAME].motor-amps\fR (float, out)::
+      La corriente del motor, en amperios
+.br
+\fB[VFD NAME].motor-power\fR (float, out)::
+      La potencia del motor
+.br
+
+\fB[VFD NAME].scale-cmd\fR (float, in)::
+      La configuración de escala del comando del motor; por defecto en 1
+.br
+\fB[VFD NAME].scale-cmd\fR (float, in)::
+      La configuración de escala del comando del motor; por defecto en 1
+.br
+\fB[VFD NAME].scale-cmd\fR (float, in)::
+      La configuración de escala del comando del motor; por defecto en 1
+.br
+
+\fB[VFD NAME].stat-bit-0\fR (bit, out)::
+      raw status bit
+.br
+\fB[VFD NAME].stat-bit-1\fR (bit, out)::
+      bit de estado en bruto
+.br
+\fB[VFD NAME].stat-bit-2\fR (bit, out)::
+      bit de estado en bruto
+.br
+\fB[VFD NAME].stat-bit-3\fR (bit, out)::
+      bit de estado sin procesar
+      configure el VFD para que este sea el estado del motor a velocidad
+.br
+\fB[VFD NAME].stat-bit-4\fR (bit, out)::
+      bit de estado en bruto
+.br
+\fB[VFD NAME].stat-bit-5\fR (bit, out)::
+      bit de estado en bruto
+.br
+\fB[VFD NAME].stat-bit-6\fR (bit, out)::
+      bit de estado en bruto
+.br
+\fB[VFD NAME].stat-bit-7\fR (bit, out)::
+      bit de estado en bruto
+      Configure el VFD para que esto esté en el bit de alarma
+
+.SH HAL DE MUESTRA
+loadusr -Wn coolant mitsub_vfd --port /dev/ttyUSB0 spindle=02 coolant=01
+.br
+# **************** Spindle VFD setup esclavo 2 ****************
+.br
+net spindle-vel-cmd               spindle.motor-cmd
+.br
+net spindle-cw                    spindle.fwd              
+.br
+net spindle-on                    spindle.run              
+.br
+net spindle-at-speed              spindle.up-to-speed
+.br
+net estop-out                     spindle.estop
+.br
+# cmd escalado a RPM (accionado por correa/engranes)
+.br
+setp spindle.scale-cmd .135
+.br
+# la retroalimentación está en rpm (recíproca de comando)
+.br
+setp spindle.scale-fb 7.411
+.br
+# activa el monitoreo para que la retroalimentacion funcione
+.br
+setp spindle.monitor 1
+.br
+net spindle-speed-indicator spindle.motor-fb
+.br
+# *************** Refrigerante vfd setup esclavo 1 *****************
+.br
+net coolant-flood                         coolant.run
+.br
+net coolant-is-on                         coolant.up-to-speed
+.br
+# cmd y feedback escalados a hertz
+.br
+setp coolant.scale-cmd 1
+.br
+setp coolant.scale-fb 1
+.br
+# comando a velocidad full
+.br
+setp coolant.motor-cmd 60
+.br
+# nos permite ver el estado
+.br
+setp coolant.monitor 1
+.br
+net estop-out                             coolant.estop
+
+.SH PROBLEMAS
+
+algunos modelos (p. ej. E500) no pueden monitorear el estado, por lo tanto, configure
+el pin monitor en falso. En este caso, los pines como a velocidad,
+Los amplificadores, los bits de alarma y de estado no son útiles.
+
+
