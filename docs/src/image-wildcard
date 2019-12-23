@@ -6,10 +6,10 @@ try:
 	from os.path import relpath
 except:
 	def relpath(path, start=os.path.curdir):
-	    """Return a relative version of a path"""
+	    """Retorna la version relativa de un path"""
 
 	    if not path:
-		raise ValueError("no path specified")
+		raise ValueError("path no especificado")
 
 	    start_list = os.path.abspath(start).split(os.path.sep)
 	    path_list = os.path.abspath(path).split(os.path.sep)
