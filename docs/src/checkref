@@ -13,7 +13,7 @@ shift
 FILES="$@"
 
 if [ -z $(which checklink) ]; then
-    echo "ERROR: checklink not found, install w3c-linkchecker for HTML link validation" 1>&2
+    echo "ERROR: no se encontró checklink, instale w3c-linkchecker para la validación de enlaces HTML" 1>&2
     exit 1
 fi
 
@@ -33,17 +33,17 @@ done
 if [ $BAD_LINKS -eq 1 ]; then
     RET_VAL=1
     echo "***" 1>&2
-    echo "*** warning: bad links found in $LANGUAGE docs!" 1>&2
+    echo "*** aviso: links incorrectos encontrados en documentos $LANGUAGE !" 1>&2
     if [ $WARN_ON_FAILURE -eq 1 ]; then
-        echo "*** oh well, continuing anyway" 1>&2
+        echo "*** oh bien, continuando de todas formas" 1>&2
         RET_VAL=0
     fi
     echo "***" 1>&2
     exit $RET_VAL
 else
     echo "###"
-    echo "### language: $LANGUAGE"
-    echo "### all links are good!"
+    echo "### lenguaje: $LANGUAGE"
+    echo "### todos los links correctos!"
     echo "###"
 fi
 
