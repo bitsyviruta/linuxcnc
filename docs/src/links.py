@@ -7,10 +7,10 @@ try:
     from os.path import relpath
 except:
     def relpath(path, start=os.path.curdir):
-        """Return a relative version of a path"""
+        """Retorna la version relativa de un path"""
         
         if not path:
-            raise ValueError("no path specified")
+            raise ValueError("path no especificado")
         
         start_list = os.path.abspath(start).split(os.path.sep)
         path_list = os.path.abspath(path).split(os.path.sep)
@@ -25,7 +25,7 @@ except:
 
 path = '.'
 if len(sys.argv) < 3:
-    sys.stderr.write("Usage: %s links.db link [path]\n" % sys.argv[0])
+    sys.stderr.write("Uso: %s links.db link [path]\n" % sys.argv[0])
     sys.exit(1)
 
 if not sys.argv[1]:
