@@ -1,19 +1,20 @@
-= Building LinuxCNC
+:lang: es
 
-== Introduction
+= Construyendo LinuxCNC
 
-This document describes how to build the LinuxCNC software and
-documentation from source.  This is primarily useful if you are a
-developer who is modifying LinuxCNC.  It can also be useful if you're
-a user who is testing developer branches, though then you also have
-the option of just installing Debian packages from the buildbot:
-http://buildbot.linuxcnc.org
+== Introducción
+
+Este documento describe cómo construir el software LinuxCNC y
+la documentación desde las fuentes. Esto es principalmente útil para un
+desarrollador que está modificando LinuxCNC. También puede ser útil para
+un usuario que está probando las ramas de desarrollo, aunque entonces también está
+la opción de instalar paquetes Debian simplemente desde buildbot:
 
 
 [[Quick-Start]]
-=== Quick Start
+=== Inicio rápido
 
-For the impatient, try this:
+Si es impaciente, intente esto:
 
 ----
 > git clone git://github.com/linuxcnc/linuxcnc.git linuxcnc-dev
@@ -23,175 +24,172 @@ For the impatient, try this:
 > make
 ----
 
-That will probably fail!  That doesn't make you a bad person, it just
-means you should read this whole document to find out how to fix your
-problems.  Especially the section on <<Satisfying-Build-Dependencies,
-Satisfying Build Dependencies>>.
+¡Eso probablemente fallará!. Eso no es culpas suya, solo
+significa que debe leer este documento completamente para averiguar cómo solucionar
+algunos problemas. Especialmente la sección sobre <<Satisfying-Build-Dependencies,
+Satisfacer Dependencias de Construcción>>.
 
-If you are running on a realtime-capable system (such as an install from
-the LinuxCNC Live/Install Image, see the <<_realtime,Realtime>> section below),
-one extra build step is needed at this time:
+Si está ejecutando un sistema con capacidad de tiempo real (como una instalación imagen de
+LinuxCNC Live/Install), consulte la sección <<_realtime,Tiempo real>> a continuación.
+Se necesita un paso de compilación adicional en este caso:
 
 -----
 > sudo make setuid
 -----
-
-After you've successfully built LinuxCNC it's time to run the tests:
+Una vez que haya creado LinuxCNC correctamente, es hora de ejecutar las pruebas:
 
 -----
 > source ../scripts/rip-environment
-> runtests
+> runtest
 -----
 
-This might fail too!  Read this whole document, but especially the section
-on <<Setting-up-the-environment, Setting up the test environment>>.
+¡Esto también podría fallar! Lea todo este documento, pero especialmente la sección
+en <<Setting-up-the-environment,Configuración del entorno de prueba>>.
 
 
-== Supported Platforms
+== Plataformas compatibles
 
-The LinuxCNC project targets modern Debian-based distributions, including
-Debian, Ubuntu, and Mint.
+El proyecto LinuxCNC se dirije a distribuciones modernas basadas en Debian, que incluyen
+Debian, Ubuntu y Mint.
 
-We continuously test on the platforms listed at
+Probamos continuamente en las plataformas listadas en
 http://buildbot.linuxcnc.org.
 
-LinuxCNC builds on most other Linux distributions, though dependency
-management will be more manual and less automatic.  Patches to improve
-portability to new platforms are always welcome.
+LinuxCNC compila en la mayoría de las otras distribuciones de Linux, aunque 
+la administración de dependencias será más manual y menos automática. Siempre son 
+bienvenidos parches para mejorar la portabilidad a nuevas plataformas.
 
 
-=== Realtime
+=== Tiempo real
 
-LinuxCNC is a machine tool controller, and it requires a realtime platform
-to do this job.  This version of LinuxCNC supports three realtime platforms
+LinuxCNC es un controlador de máquina herramienta, y requiere una plataforma en tiempo real
+para hacer ese trabajo (n.t. excepto en modo simulador). Esta versión de LinuxCNC admite tres
+plataformas en tiempo real
 
 RTAI::
 
-    From https://www.rtai.org.  A Linux kernel with the RTAI patch is
-    available from the Debian archive at http://www.linuxcnc.org.  See
-    <<cha:getting-linuxcnc, Getting LinuxCNC>> for installation instructions.
+    Disponible en https://www.rtai.org. Un kernel de Linux con el parche RTAI esta
+    disponible como archivo Debian en http://www.linuxcnc.org. Ver
+    <<cha:getting-linuxcnc, Obteniendo LinuxCNC>> para obtener instrucciones de instalación.
 
 Xenomai::
 
-    From https://xenomai.org.  You will have to compile or obtain a Xenomai
-    kernel yourself.
+    Disponible en https://xenomai.org. Tendrá que compilar u obtener un kernel Xenomai
+    usted mismo
 
-Preempt-RT::
+Preempt-RT ::
 
-    From https://rt.wiki.kernel.org.  A Linux kernel with the
-    Preempt-RT patch is occasionally available from the Debian
-    archive at https://www.debian.org, and from the wayback machine at
+    Disponible en  https://rt.wiki.kernel.org. Un kernel de Linux con el
+    parche Preempt-RT está ocasionalmente disponible desde Debian
+    en https://www.debian.org, y desde wayback machine en
     https://snapshot.debian.org.
 
-To make use of the realtime capabilities of LinuxCNC, certain parts of
-LinuxCNC need to run with root priviledges.  To enable root for these
-parts, run this extra command after the `make` that builds LinuxCNC:
+Para hacer uso de las capacidades en tiempo real de LinuxCNC, ciertas partes de
+LinuxCNC necesita ejecutarse con privilegios de root. Para habilitar root para estas
+partes, ejecute este comando extra después del `make` que construye LinuxCNC:
 
 -----
 > sudo make setuid
 -----
 
 
-=== Non-realtime
+=== Sin tiempo real
 
-LinuxCNC can also be built and run on non-realtime platforms, such as
-a regular install of Debian or Ubuntu without any special realtime kernel.
+LinuxCNC también se puede construirse y ejecutarse en plataformas que no son de tiempo real, como
+una instalación regular de Debian o Ubuntu sin ningún kernel especial en tiempo real.
 
-In this mode LinuxCNC is not useful for controlling machine tools, but
-it is useful for simulating the execution of G-code and for testing the
-non-realtime parts of the system (such as the user interfaces, and some
-kinds of components and device drivers).
-
-
-== Build modes
-
-There are two ways to build LinuxCNC: the developer-friendly "run in
-place" mode and the user-friendly Debian packaging mode.
+En este modo, LinuxCNC no es útil para controlar máquinas herramientas, pero
+es útil para simular la ejecución de código G y para probar
+partes del sistema que no son en tiempo real (como las interfaces de usuario y algunos
+tipos de componentes y controladores de dispositivos).
 
 
-=== Building for Run In Place
+== modos de compilación
 
-In a Run-In-Place build, the LinuxCNC programs are compiled from source
-and then run directly from within the build directory.  Nothing is
-installed outside the build directory.
+Hay dos maneras de construir LinuxCNC: la manera preferible para el desarrollador "run in
+place" o "ejecucion en el sitio" y la manera preferible para el usuario, con paquetes Debian.
 
-This is quick and easy, and suitable for rapid iteration of changes.
 
-The LinuxCNC test suite runs only in a Run-In-Place build.
 
-Most LinuxCNC developers primarily build using this mode.
+=== Construccion "run in place" (RIP)
 
-Building for Run-In-Place follows the steps in the <<Quick-Start,
-Quick Start>> section at the top of this document, possibly with
-different arguments to `src/configure` and `make`.
+En una compilación Run-In-Place o RIP, los programas de LinuxCNC se compilan desde las fuentes
+y luego se ejecutan directamente desde dentro del directorio de compilación. Nada queda
+instalado fuera de ese directorio.
+
+Esto es rápido y fácil, y adecuado para una rápida sucesion de cambios.
+
+El conjunto de pruebas de LinuxCNC solo se ejecuta en una compilación RIP.
+
+La mayoría de los desarrolladores de LinuxCNC usan principalmente este modo.
+
+La construccion Run-In-Place sigue los pasos de la seccion <<Quick-Start,Inicio rápido>> en la parte superior de este documento, posiblemente con diferentes argumentos para `src/configure` y` make`.
 
 
 [[src-configure-arguments]]
-==== `src/configure` arguments
+==== Argumentos de `src/configure` 
 
-The `src/configure` script configures how the source code will be
-compiled.  It takes many optional arguments.
+El script `src/configure` configura cómo será compilado el código fuente.
+Usa muchos argumentos opcionales.
 
-List all arguments to `src/configure` by running this:
+Liste todos los argumentos de `src/configure` ejecutando esto:
 
 -----
 > cd linuxcnc-dev/src
 > ./configure --help
 -----
 
-The most commonly used arguments are:
+Los argumentos más comúnmente utilizados son:
 
 `--with-realtime=uspace`::
 
-    Build for any realtime platform, or for non-realtime.
-    The resulting LinuxCNC executables will run on both a Linux kernel
-    with Preempt-RT patches (providing realtime machine control) and
-    on a vanilla (un-patched) Linux kernel (providing G-code simulation
-    but no realtime machine control).  If development files are installed
-    for Xenomai (typically from package libxenomai-dev) or RTAI (typically
-    from a package with a name starting "rtai-modules"), support for
-    these real-time kernels will also be enabled.
+    Construccion para cualquier plataforma en tiempo real, o para tiempo no real.
+    Los ejecutables LinuxCNC resultantes se ejecutarán en un kernel de Linux
+    con parches Preempt-RT (que proporcionan control de la máquina en tiempo real) y
+    en un kernel Linux estandar (no parcheado, que proporciona simulación de código G
+    pero no control de máquina en tiempo real). Si los archivos de desarrollo están instalados
+    para Xenomai (típicamente del paquete libxenomai-dev) o RTAI (típicamente
+    de un paquete con un nombre que comienza en "rtai-modules"), también estará habilitado soporte
+    para estos kernels en tiempo real .
 
 `--with-realtime=/usr/realtime-$VERSION`::
 
-    Build for the RTAI realtime platform using the older "kernel realtime"
-    model.
-    This requires that
-    you have an RTAI kernel and the RTAI modules installed in
-    `/usr/realtime-$VERSION`.  The resulting LinuxCNC executables will
-    only run on the specified RTAI kernel.  As of LinuxCNC 2.7, this
-    produces the best realtime performance.
+    Construccion para la plataforma RTAI en tiempo real usando el antiguo modelo "kernel en tiempo real".
+    Esto requiere que usted tenga un kernel RTAI y los módulos RTAI instalados en
+    `/usr/realtime-$VERSION`. Los ejecutables LinuxCNC resultantes
+    solo se ejecuta en el kernel RTAI especificado. A partir de LinuxCNC 2.7, esto
+    produce el mejor rendimiento en tiempo real.
 
 `--enable-build-documentation`::
 
-    Build the documentation, in addition to the executables.  This option
-    adds significantly to the time required for compilation, as building
-    the docs is quite time consuming.  If you are not actively working
-    on the documentation you may want to omit this argument.
+    Construccion de la documentación, además de los ejecutables. Esta opción
+    aumenta significativamente el tiempo requerido para la compilación, ya que
+    los documentos consumen mucho tiempo. Si no está trabajando activamente
+    en la documentación es posible que desee omitir este argumento.
 
 
 [[make-arguments]]
-==== `make` arguments
+==== argumentos de 'make'
 
-The `make` command takes two useful optional arguments.
+El comando `make` admite dos argumentos opcionales útiles.
 
 
-Parallel compilation::
+Compilación paralela::
 
-    `make` takes an optional argument `-jN` (where N is a number).
-    This enables parallel compilation with N simultaneous processes, which
-    can significantly speed up your build.
+    `make` toma un argumento opcional` -jN` (donde N es un número).
+    Esto permite la compilación paralela con N procesos simultáneos, que
+    puede acelerar su construcción significativamente.
 +
-A useful value for N is the number of CPUs in your build system.  You can
-discover the number of CPUs by running `nproc`.
+Un valor útil para N es la cantidad de CPU en su sistema de compilación. Usted puede
+descubrir la cantidad de CPU ejecutando `nproc`.
 
 
-Building just a specific target::
+Construccion de un objetivo específico::
 
-    If you want to build just a specific part of LinuxCNC, you can name
-    the thing you want to build on the `make` command line.  For example,
-    if you are working on a component named `froboz`, you can build its
-    executable by running:
+    Si desea construir solo una parte específica de LinuxCNC, puede nombrar
+    lo que desea construir en la línea de comando `make`. Por ejemplo,
+    si está trabajando en un componente llamado `froboz`, puede construir su
+    ejecutable mediante:
 +
 -----
 > cd linuxcnc-dev/src
@@ -199,34 +197,33 @@ Building just a specific target::
 -----
 
 
-=== Building Debian Packages
+=== Construir Paquetes Debian
 
-When building Debian packages, the LinuxCNC programs are compiled from
-source and then stored in a Debian package, complete with dependency
-information.  This takes more time, and the programs can't be used until
-the Debian package is installed on a target machine.
+Al compilar paquetes Debian, los programas LinuxCNC se compilan a partir de
+las fuentes y luego se almacenan en un paquete Debian completo con informacion
+de dependencias. Esto lleva más tiempo, y los programas no pueden usarse hasta que
+el paquete Debian esté instalado en la máquina de destino.
 
-This build mode is primarily useful when packaging the software for
-delivery to end users, and when building the software for a machine
-that doesn't have the build environment installed, or that doesn't have
-internet access.
+Este modo de compilación es principalmente útil al empaquetar el software para
+entregarlo a los usuarios finales, y construir el software para una máquina
+que no tiene el entorno de compilación instalado, o que no tiene
+acceso a Internet.
 
-Building Debian packages requires the `dpkg-buildpackage` tool, from the
-`dpkg-dev` package:
+La creación de paquetes Debian requiere la herramienta `dpkg-buildpackage`, del
+paquete `dpkg-dev`:
 
 -----
 > sudo apt-get install dpkg-dev
 -----
+La construcción de paquetes de Debian también requiere que todas las dependencias de compilación esten
+instaladas, tal como se describe en la sección <<Satisfying-Build-Dependencies,
+Satisfacer Dependencias de construcción>>.
 
-Building Debian packages also requires that all build dependencies are
-installed, as described in the section <<Satisfying-Build-Dependencies,
-Satisfying Build Dependencies>>.
+Una vez que se cumplen esos requisitos previos, la construcción de los paquetes de Debian consiste en
+dos pasos.
 
-Once those prerequisites are met, building the Debian packages consists
-of two steps.
-
-The first step is generating the Debian package scripts and meta-data
-from the git repo by running this:
+El primer paso es generar las secuencias de comandos del paquete Debian y los metadatos
+desde el repositorio git ejecutando:
 
 -----
 > cd linuxcnc-dev/debian
@@ -236,17 +233,16 @@ from the git repo by running this:
 
 [NOTE]
 =====
-The `debian/configure` script is different from the `src/configure`
-script!
+El script `debian/configure` es diferente de `src/configure`
 
-The `debian/configure` script needs different arguments depending on the
-platform you're building on/for, see the <<debian-configure-arguments,
-`debian/configure` arguments>> section.
+El script `debian/configure` necesita diferentes argumentos según la
+plataforma en/para la que está construyendo, vea la seccion <<debian-configure-arguments,
+`argumentos de debian/configure`>>.
 =====
 
-Once the Debian package scripts and meta-data are configured, build the
-package by running `dpkg-buildpackage` (note that it needs to run from
-the `linuxcnc-dev` directory, *not* from `linuxcnc-dev/debian`):
+Una vez que los scripts y los metadatos del paquete Debian están configurados, construya el
+paquete ejecutando `dpkg-buildpackage` (tenga en cuenta que debe ejecutarse desde
+el directorio `linuxcnc-dev`, *no* desde `linuxcnc-dev/debian`):
 
 -----
 > dpkg-buildpackage -b -uc
@@ -254,76 +250,73 @@ the `linuxcnc-dev` directory, *not* from `linuxcnc-dev/debian`):
 
 
 [[debian-configure-arguments]]
-==== `debian/configure` arguments
+==== argumentos de `debian/configure`
 
-The `debian/configure` script configures the Debian packaging.  It must
-be run before `dpkg-checkbuilddeps` and `dpkg-buildpackage` can be run.
+El script `debian/configure` configura el paquete Debian. Debería
+ejecutarse antes de que puedan ejecutarse `dpkg-checkbuilddeps` y` dpkg-buildpackage`.
 
-It takes a single argument which specifies the realtime or non-realtime
-platform to build for.  The normal values for this argument are:
+Se necesita un único argumento que especifique la plataforma a construir; con o sin tiempo real.
+Los valores normales para este argumento son:
 
 `uspace`::
 
-    Configure the Debian package for Preempt-RT realtime or for
-    non-realtime (these two are compatible).
+    Configura el paquete Debian para Preempt-RT en tiempo real o para
+    sin tiempo real (estos dos son compatibles).
 
 `noauto`::
 `rtai`::
 `xenomai`::
 
-    Normally, the lists of RTOSes for uspace realtime to support is detected
-    automatically.  However, if you wish, you may specify one or more of these
-    after `uspace` to enable support for these RTOSes.  Or, to disable
-    autodetection, specify `noauto`.
+    Normalmente, se detectan los RTOS soportados para el espacio en tiempo real
+    automáticamente. Sin embargo, si lo desea, puede especificar uno o más de estos
+    después de `uspace` para habilitar el soporte para estos RTOSs. O bien, para deshabilitar
+    autodetección, especifique `noauto`.
 
-    If you want just the traditional RTAI "kernel module" realtime, use
-    `-r` or `$KERNEL_VERSION` instead.
+    Si solo desea el "módulo kernel" RTAI tradicional en tiempo real, use
+    `-r` o` $KERNEL_VERSION` en su lugar.
 
-`rtai=<package name>`::
+`rtai=<nombre del paquete>`::
 
-    If the development package for rtai lxrt does not start with
-    "rtai-modules", or if the first such package listed by apt-cache search
-    is not the desired one, then explicitly specify the package name.
+    Si el paquete de desarrollo para rtai lxrt no comienza con
+    "rtai-modules", o si el primer paquete mencionado por apt-cache search
+    no es el deseado, especifique explícitamente el nombre del paquete.
 
-`-r`::
+`-r` ::
 
-    Configure the Debian package for the currently running RTAI kernel.
-    You must be running an RTAI kernel on your build machine for this
-    to work!
+    Configurar el paquete Debian para el kernel RTAI actualmente en ejecución.
+    Debe ejecutar un kernel RTAI en su máquina de compilación para que esto funcione.
 
 `$KERNEL_VERSION`::
 
-    Configure the debian package for the specified RTAI kernel version
-    (for example "3.4.9-rtai-686-pae").  The matching kernel headers
-    debian package must be installed on your build machine (for example
-    "linux-headers-3.4.9-rtai-686-pae").  Note that you can _build_
-    LinuxCNC in this configuration, but if you are not running the
-    matching RTAI kernel you will not be able to _run_ LinuxCNC, including
-    the test suite.
-
+    Configurar el paquete Debian para la versión del kernel RTAI especificada
+    (por ejemplo "3.4.9-rtai-686-pae"). Los encabezados del kernel coincidentes
+    con el paquete Debian debe estar instalado en su máquina de compilación (por ejemplo
+    "linux-headers-3.4.9-rtai-686-pae"). Tenga en cuenta que puede construir
+    LinuxCNC en esta configuración, pero si no está ejecutando el
+    kernel RTAI coincidente, no podrá ejecutar LinuxCNC, incluyendo
+    las pruebas.
 
 [[Satisfying-Build-Dependencies]]
-== Satisfying Build Dependencies
+== Satisfacer Dependencias de Construcción
 
-On Debian-based platforms we provide packaging meta-data that knows
-what external software packages need to be installed in order to build
-LinuxCNC.  This is called the Build Dependencies of LinuxCNC.  You can
-use this meta-data to easily list the required packages missing from
-your build system.
+En las plataformas basadas en Debian, proporcionamos metadatos de empaquetado que saben
+qué paquetes de software externos deben instalarse para construir
+LinuxCNC. Estas son las llamadas "Build Dependencies" de LinuxCNC. Usted puede
+utilizar estos metadatos para enumerar fácilmente los paquetes requeridos que faltan en
+su sistema de compilación
 
-Debian systems provide a program called `dpkg-checkbuilddeps` that
-parses the package meta-data and compares the packages listed as build
-dependencies against the list of installed packages, and tells you
-what's missing.
+Los sistemas Debian proporcionan un programa llamado `dpkg-checkbuilddeps` que
+analiza los metadatos del paquete y compara los paquetes enumerados como dependencias de
+compilación contra la lista de paquetes instalados, y le dice
+lo que falta
 
-First, install the `dpkg-checkbuilddeps` program by running:
+Primero, instale el programa `dpkg-checkbuilddeps` ejecutando:
 
 -----
 > sudo apt-get install dpkg-dev
 -----
 
-Then ask your LinuxCNC git checkout to generate its Debian package
-meta-data:
+Luego, solicite a su cuenta de git de LinuxCNC que genere los metadatos del paquete Debian:
 
 -----
 > cd linuxcnc-dev/debian
@@ -331,86 +324,83 @@ meta-data:
 > cd ..
 -----
 
-Finally ask `dpkg-checkbuilddeps` to do its job (note that it needs to
-run from the `linuxcnc-dev` directory, *not* from `linuxcnc-dev/debian`):
+Finalmente, pida a `dpkg-checkbuilddeps` que haga su trabajo (tenga en cuenta que necesita
+ejecutarlo desde el directorio `linuxcnc-dev`, *no* desde` linuxcnc-dev/debian`):
 
 -----
 > dpkg-checkbuilddeps
 -----
 
-It will emit a list of packages that are required to build LinuxCNC
-on your system, but that are not installed yet.  Install them all with
-`sudo apt-get install`, followed by the package names.
+Se emitirá una lista de paquetes necesarios para construir LinuxCNC
+en su sistema, pero que aún no están instalados. Instálelos todos con
+`sudo apt-get install`, seguido de los nombres del paquete.
 
-You can rerun `dpkg-checkbuilddeps` any time you want, to list any
-missing packages.
+Puede volver a ejecutar `dpkg-checkbuilddeps` en cualquier momento que desee, para enumerar cualquier
+paquetes faltante.
 
 
 [[Setting-up-the-environment]]
 == Setting up the environment
 
-This section describes the special steps needed to set up a machine to
-run the LinuxCNC programs, including the tests.
+Esta sección describe los pasos especiales necesarios para configurar una máquina para
+ejecutar los programas de LinuxCNC, incluidas las pruebas.
 
 
-=== Increase the locked memory limit
+=== Aumentar el límite de bloqueo de memoria
 
-LinuxCNC tries to improve its realtime latency by locking the memory it
-uses into RAM.  It does this in order to prevent the operating system from
-swapping LinuxCNC out to disk, which would have bad effects on latency.
+LinuxCNC intenta mejorar su latencia en tiempo real bloqueando la memoria
+utiliza en la memoria RAM. Hace esto para evitar que el sistema operativo
+intercambie LinuxCNC en el disco, lo que tendría efectos negativos en la latencia.
 
-Normally locking memory into RAM is frowned upon, and the operating system
-places a strict limit on how much memory a user is allowed to have locked.
+Normalmente, bloquear la memoria en la RAM está mal visto y el sistema operativo
+establece un límite estricto sobre la cantidad de memoria que un usuario puede bloquear.
 
-When using the Preempt-RT realtime platform LinuxCNC runs with enough
-privilege to raise its memory lock limit itself.  When using the RTAI
-realtime platform it does not have enough privilege, and the user must
-raise the memory lock limit.
+Al usar la plataforma Preempt-RT en tiempo real, LinuxCNC funciona con suficiente
+privilegio para aumentar su límite de bloqueo de memoria por sí mismo. Cuando se usa RTAI
+como plataforma en tiempo real no tiene suficiente privilegio, y el usuario debe
+elevar el límite de bloqueo de memoria.
 
-If LinuxCNC displays the following message on startup, the problem is
-your system's configured limit on locked memory:
+Si LinuxCNC muestra el siguiente mensaje al inicio, el problema es
+el límite configurado de su sistema en la memoria bloqueada:
 
 -----
 RTAPI: ERROR: failed to map shmem
 RTAPI: Locked memory limit is 32KiB, recommended at least 20480KiB.
 -----
 
-To fix this problem, add a file named
-`/etc/security/limits.d/linuxcnc.conf` (as root) with your favorite
-text editor (e.g., `sudo gedit /etc/security/limits.d/linuxcnc.conf`).
-The file should contain the following line:
+Para solucionar este problema, agregue un archivo llamado
+`/etc/security/limits.d/linuxcnc.conf` (como root) con su
+editor de texto (por ejemplo, `sudo gedit /etc/security/limits.d/linuxcnc.conf`).
+El archivo debe contener la siguiente línea:
 
 -----
 * - memlock 20480
 -----
-
-Log out and log back in to make the changes take effect.  Verify that
-the memory lock limit is raised using the following command:
+Cierre sesión y vuelva a iniciarla para que los cambios entren en vigencia. Comprueba que
+límite de bloqueo de la memoria se genera con el siguiente comando:
 
 -----
 > ulimit -l
 -----
 
 
-== Options for checking out the git repo
+== Opciones para consultar el repositorio git
 
-The <<Quick-Start, Quick Start>> instructions at the top of this
-document said to make an anonymous local clone from our git repo at
-http://github.com/linuxcnc/linuxcnc.git.  This is the quickest, easiest
-way to get started.  However, there are other options to consider.
+Las instrucciones <<Quick-Start, Inicio rápido>> en la parte superior de este
+documento decian como hacer un clon local anónimo de nuestro repositorio git en
+http://github.com/linuxcnc/linuxcnc.git. Este es la forma de comenzar más rápida y fácil.
+Sin embargo, hay otras opciones a considerar.
 
+=== Bifurcacion en Github
 
-=== Fork us on Github
+El repositorio git del proyecto LinuxCNC está en http://github.com/LinuxCNC/linuxcnc.
+github es un popular servicio de alojamiento git y sitio web para compartir códigos.
+Usted puede (sin costo) crear fácilmente una 'bifurcacion' (fork) de nuestro repositorio en github,
+y usar eso para rastrear y publicar sus cambios.
 
-The LinuxCNC project git repo is at http://github.com/LinuxCNC/linuxcnc.
-github is a popular git hosting service and code sharing website.
-You can easily (and for no cost) create a fork of our git repo at github,
-and use that to track and publish your changes.
+Después de crear su propio "fork github" de LinuxCNC, clonelo en su
+máquina de desarrollo y proceda con sus modificaciones como de costumbre.
 
-After creating your own github fork of LinuxCNC, clone it to your
-development machine and proceed with your hacking as usual.
-
-We of the LinuxCNC project hope that you will share your changes with
-us, so that the community can benefit from your work.  Github makes this
-sharing very easy: after you polish your changes and push them to your
-github fork, send us a Pull Request.
+Nosotros, en el proyecto LinuxCNC, esperamos que comparta sus cambios, para que la comunidad
+pueda beneficiarse de su trabajo. Github hace muy fácil compartir; después de pulir sus cambios y
+subirlos a su fork github, envíenos una solicitud de extracción Pull Request.
