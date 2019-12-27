@@ -1,281 +1,281 @@
-= Contributing to LinuxCNC
+:lang: es
 
-== Introduction
+= Contribuciones a LinuxCNC
 
-This document contains information for developers about LinuxCNC
-infrastructure, and describes the best practices for contributing code
-and documentation updates to the LinuxCNC project.
+== Introducción
 
-Throughout this document, "source" means both the source code to the
-programs and libraries, and the source text for the documentation.
+Este documento contiene información para desarrolladores sobre la infraestructura
+de LinuxCNC, y describe las mejores prácticas para contribuir con código
+y actualizaciones de documentación para el proyecto LinuxCNC.
+
+A lo largo de este documento, "fuente" significa tanto el código fuente de
+programas y bibliotecas como el texto fuente para la documentación.
 
 
-== Communication among LinuxCNC developers
+== Comunicación entre desarrolladores de LinuxCNC
 
-The two main ways that project developers communicate with each other are:
+Las dos formas principales en que los desarrolladores de proyectos se comunican entre sí son:
 
-* Via IRC, at #linuxcnc-devel on FreeNode.
+* A través de IRC, en #linuxcnc-devel en FreeNode.
 
-* Via email, on the developers' mailing list:
+* A través del correo electrónico, en la lista de correo de los desarrolladores:
   https://lists.sourceforge.net/lists/listinfo/emc-developers
 
 
-== The LinuxCNC Source Forge project
+== El proyecto de LinuxCNC en Source Forge
 
-We use Source Forge for mailing lists: http://sourceforge.net/p/emc/mailman/
+Usamos Source Forge para listas de correo: http://sourceforge.net/p/emc/mailman/
 
 
-== The git Revision Control System
+== El sistema de control de revisiones git
 
-All of the LinuxCNC source is maintained in the revision control system
-git footnote:[http://git-scm.com/].
+Todas las fuentes de LinuxCNC se mantiene en el sistema de control de revisiones git.
+footnote:[http://git-scm.com/].
 
-=== LinuxCNC official git repo
+=== Repositorio oficial LinuxCNC en git
 
-The official LinuxCNC git repo is at http://github.com/linuxcnc/linuxcnc/
+El repositorio oficial git de LinuxCNC está en http://github.com/linuxcnc/linuxcnc/
 
-Anyone can get a read-only copy of the LinuxCNC source tree via git:
+Cualquiera puede obtener una copia de solo lectura del árbol fuente de LinuxCNC a través de git:
 
 `git clone https://github.com/linuxcnc/linuxcnc linuxcnc-dev`
 
-If you are a developer with push access, then follow github's instructions
-for setting up a repository that you can push from.
+Si usted es un desarrollador con acceso de inserción (push), entonces siga las instrucciones de github
+para configurar un repositorio desde el que pueda hacer envios.
 
-Note that the clone command put the local LinuxCNC repo in a
-directory called `linuxcnc-dev`, instead of the default `linuxcnc`.
-This is because the LinuxCNC software by default expects configs and
-G-code programs in a directory called `$HOME/linuxcnc`, and having the
-git repo there too is confusing.
+Tenga en cuenta que el comando clone pone el repositorio LinuxCNC local en un
+directorio llamado, en el ejemplo, `linuxcnc-dev`, en lugar del predeterminado `linuxcnc`.
+Esto se debe a que el software LinuxCNC espera que sus configuraciones y
+programas de código G estén en un directorio llamado `$HOME/linuxcnc`, y mezclarlo con el
+repositorio git seria confuso.
 
-Issues and pull requests are welcome on github:
+Los problemas y las solicitudes pull son bienvenidas en github:
 https://github.com/LinuxCNC/linuxcnc/issues
 https://github.com/LinuxCNC/linuxcnc/pulls
 
-=== Use of git in the LinuxCNC project
+=== Uso de git en el proyecto LinuxCNC
 
-We use the "merging upwards" and "topic branches" git workflows described
-here:
+Utilizamos los flujos de trabajo de git "merging upwards" y "topic branches" descritos
+aquí:
 
 https://www.kernel.org/pub/software/scm/git/docs/gitworkflows.html
 
-We have a development branch called `master`, and one or more stable
-branches with names like `2.6` and `2.7` indicating the version number
-of the releases we make from it.
+Tenemos una rama de desarrollo llamada `master`, y una o más ramas estables
+con nombres como `2.6` o `2.7` que indican el número de versión
+de los lanzamientos que hacemos.
 
-Bugfixes go in the oldest applicable stable branch, and that branch gets
-merged into the next newer stable branch, and so on up to `master`.
-The committer of the bugfix may do the merges themselves, or they may
-leave the merges for someone else.
+Las correcciones de errores van en la rama estable aplicable más antigua, y esa rama se
+fusiona en la siguiente rama estable más nueva, y así sucesivamente hasta `master`.
+El autor de la corrección de errores puede hacer las fusiones por sí mismo, o pueden
+dejar las fusiones a algun otro miembro.
 
-New features generally go in the `master` branch, but some kinds of
-features (specifically well isolated device drivers and documentation)
-may (at the discretion of the stable branch release managers) go into
-a stable branch and get merged up just like bugfixes do.
+Las nuevas características generalmente van en la rama `master`, pero algunos tipos de
+características (específicamente controladores y documentación de dispositivos aislados)
+puede (a discreción de los administradores de lanzamiento de la rama estable) entrar en
+una rama estable y fusionarse como lo hacen las correcciones de errores.
 
 
-=== git tutorials
+=== Tutoriales git
 
-There are many excellent, free git tutorials on the internet.
+Hay muchos tutoriales de git, gratuitos y excelentes, en Internet.
 
-The first place to look is probably the "gittutorial" manpage.
-This manpage is accessible by running "man gittutorial" in a terminal
-(if you have the git manpages installed).  The gittutorial and its
-follow-on documentation are also available online here:
+El primer lugar donde buscar es probablemente la página de manual "gittutorial".
+Esta página de manual es accesible ejecutando "man gittutorial" en un terminal
+(si tiene instaladas las páginas de manual de git). gittutorial y la
+documentación subsiguiente también está disponible en línea aquí:
 
-* git tutorial:
+* tutorial de git:
   https://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
 
-* git tutorial 2:
+* tutorial git 2:
   https://www.kernel.org/pub/software/scm/git/docs/gittutorial-2.html
 
-* Everyday git with 20 commands or so:
+* Git de cada dia, con 20 comandos más o menos:
   https://www.kernel.org/pub/software/scm/git/docs/giteveryday.html
 
-* Git User's Manual:
+* Manual de usuario de Git:
   https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
 
-For a more thorough documentation of git see the "Pro Git" book:
+Para una documentación más completa de git ver el libro "Pro Git":
 http://git-scm.com/book
 
-Another online tutorial that has been recommended is "Git for the Lazy":
+Otro tutorial en línea que se ha recomendado es "Git for the Lazy":
 http://wiki.spheredev.org/Git_for_the_lazy
 
 
-== Overview of the process
+== Descripción general del proceso
 
-The high-level overview of how to contribute changes to the source goes
-like this:
+La descripción a alto nivel de cómo contribuir a los cambios en las fuente
+es la siguiente:
 
-* Communicate with the project developers and let us know what you're
-  hacking on
+* Comuníquese con los desarrolladores del proyecto y háganos saber lo que esta
+  modificando.
 
-* Clone the git repo
+* Clone el repositorio git
 
-* Make your changes in a local branch, making sure you "sign off" your commits
-  according to our signed-off-by policy (see below).
+* Realice sus cambios en una rama local, asegurándose de "firmar" sus confirmaciones
+  de acuerdo con nuestra política (ver a continuación).
 
-* Adding documentation and tests is an important part of adding a new
-  feature.  Otherwise, others won't know how to use your feature, and
-  if other changes break your feature it can go unnoticed without a test.
+* Agregar documentación y pruebas es una parte importante al agregar una nueva
+  característica. De lo contrario, otros no sabrán cómo usarla, y
+  si otros cambios estropean su característica, puede pasar desapercibida sin una prueba.
 
-* Share your changes with the other project developers in one of these ways:
+* Comparta sus cambios con los otros desarrolladores de proyectos de una de estas maneras:
 
-** Push your branch to github and create a github pull request to
-   https://github.com/linuxcnc/linuxcnc (this requires a github account)
+** Envie su rama a github y cree una solicitud de extracción de github a
+   https://github.com/linuxcnc/linuxcnc (esto requiere una cuenta github)
 
-** Push your branch to a publicly visible git repo (such as github,
-   bitbucket, your own publicly-accessible server, etc) and share that
-   location on the emc-developers mailing list, or
+** Envíe su rama a un repositorio git públicamente visible (como github,
+   bitbucket, su propio servidor de acceso público, etc.) y comparta esa
+   ubicación en la lista de correo de emc-developers, o
 
-** Email your commits to the emc-developers mailing list (use `git
-   format-patch` to create the patches)
+** Envíe sus confirmaciones por correo electrónico a la lista de correo de emc-developers (use `git
+   format-patch` para crear los parches)
 
-* Advocate for your patch
+* Defienda su parche
 
-** Explain what problem it addresses and why it should be included
-   in LinuxCNC
+** Explique qué problema aborda y por qué debería incluirse
+   en LinuxCNC
 
-** Be receptive to questions and feedback from the developer community.
+** Sea receptivo a las preguntas y comentarios de la comunidad de desarrolladores.
 
-** It is not uncommon for a patch to go through several revisions before
-   it is accepted.
-
-
-== git configuration
-
-In order to be considered for inclusion in the LinuxCNC source, commits
-must have correct Author fields identifying the author of the commit.
-A good way to ensure this is to set your global git config:
-
-`git config --global user.name "Your full name"`
-
-`git config --global user.email "you@example.com"`
-
-Use your real name (not a handle), and use an unobfuscated e-mail address.
+** No es raro que un parche pase por varias revisiones antes
+   de ser aceptado
 
 
-== Effective use of git
+== Configuración de git
 
-=== Commit contents
+Para ser considerados para su inclusión en las fuentes de LinuxCNC, los commits
+deben tener campos de Autor correctos que identifiquen al autor de los mismos.
+Una buena manera de garantizar esto es establecer su configuración global de git:
 
-Keep your commits small and to the point.  Each commit should accomplish
-one logical change to the repo.
+`git config --global user.name "Su nombre completo"`
 
-=== Write good commit messages
+`git config --global user.email "usted@ejemplo.com"`
 
-Keep commit messages around 72 columns wide (so that in a default-size
-terminal window, they don't wrap when shown by `git log`).
+Use su nombre real (no un mote) y use una dirección de correo electrónico no confusa.
 
-Use the first line as a summary of the intent of the change (almost
-like the subject line of an e-mail).  Follow it with a blank line,
-then a longer message explaining the change.  Example:
 
-    Get rid of RTAPI_SUCCESS, use 0 instead
+== Uso efectivo de git
 
-    The test "retval < 0" should feel familiar; it's the same kind of
-    test you use in userspace (returns -1 for error) and in kernel space
-    (returns -ERRNO for error)
+=== Confirmacion de contenidos
 
-=== Commit to the proper branch
+Mantenga sus confirmaciones pequeñas y concisas. Cada confirmacion debe aportar
+un cambio lógico al repositorio.
 
-Bugfixes should go on the oldest applicable branch.  New features should
-go in the master branch.  If you're not sure where a change belongs,
-ask on irc or on the mailing list.
+=== Escriba buenos mensajes de confirmacion
 
-=== Use multiple commits to organize changes
+Mantenga los mensajes de confirmación con alrededor de 72 columnas de ancho (para que no se recorten
+en un ventana de terminal de tamaño predeterminado cuando se muestran con `git log`).
 
-When appropriate, organize your changes into a branch (a series of
-commits) where each commit is a logical step towards your ultimate
-goal. For example, first factor out some complex code into a new
-function. Then, in a second commit, fix an underlying bug. Then, in the
-third commit, add a new feature which is made easier by the refactoring
-and which would not have worked without fixing that bug.
+Use la primera línea como resumen de la intención del cambio (casi
+como el asunto de un correo electrónico). Sígualo con una línea en blanco, y
+luego un mensaje más largo que explique el cambio. Ejemplo:
 
-This is helpful to reviewers, because it is easier to see that the
-"factor out code into new function" step was right when there aren’t
-other edits mixed in; it’s easier to see that the bug is fixed when
-the change that fixes it is separate from the new feature; and so on.
+    Deshacerse de RTAPI_SUCCESS, usar 0 en su lugar
 
-=== Follow the style of the surrounding code
+    La prueba "retval < 0" debería parecer familiar; es el mismo tipo de
+    prueba que se usa en el espacio de usuario (devuelve -1 para error) y en el espacio de kernel
+    (devuelve -ERRNO para error)
 
-Make an effort to follow the prevailing indentation style of surrounding
-code. In particular, changes to whitespace make it harder for other
-developers to track changes over time. When reformatting code must be
-done, do it as a commit separate from any semantic changes.
+=== Confirmar (commit) a la rama adecuada
 
-=== Simplify complicated history before sharing with fellow developers
+Las correcciones de errores deberían ir a la rama aplicable más antigua. Las nuevas características deberían
+entra en la rama principal. Si no está seguro de donde pertenece un cambio,
+pregunte en irc o en la lista de correo.
 
-With git, it’s possible to record every edit and false start as a
-separate commit. This is very convenient as a way to create checkpoints
-during development, but often you don’t want to share these false
-starts with others.
+=== Usar múltiples commits para organizar cambios
 
-Git provides two main ways to clean history, both of which can be done
-freely before you share the change:
+Cuando sea apropiado, organice sus cambios en una rama (una serie de
+commits) donde cada commit es un paso lógico hacia su objetivo ultimo.
+Por ejemplo, primero, hacer de un código complejo una nueva
+función. Luego, en un segundo commit, arreglar un posible error subyacente. Despues, en el
+tercer commit, agregar una nueva característica que se facilita mediante la refactorización
+y que no habría funcionado sin arreglar ese error.
 
-`git commit --amend` lets you make additional changes to the last thing
-you committed, optionally modifying the commit message as well. Use this
-if you realized right away that you left something out of the commit,
-or if you typo’d the commit message.
+Esto es útil para los revisores, porque es más fácil ver que el
+paso "factorizar código en una nueva función" era correcto cuando no hay
+otras ediciones mezcladas; es más fácil ver que el error está solucionado cuando
+el cambio que lo corrige está separado de la nueva característica; y así sucesivamente.
 
-`git rebase --interactive upstream-branch` lets you go back through each
-commit made since you forked your feature branch from the upstream branch,
-possibly editing commits, dropping commits, or squashing (combining)
-commits with others.  Rebase can also be used to split individual commits
-into multiple new commits.
+=== Seguir el estilo del código circundante
 
-===  Make sure every commit builds
+Haga un esfuerzo para seguir el estilo de sangría predominante del código circundante.
+En particular, los cambios en espacios en blanco hacen más difícil para otros
+desarrolladores rastrear los cambios a lo largo del tiempo. Cuando se deba reformatear el código,
+hagalo como un commit separado de cualquier cambio semántico.
 
-If your change consists of several patches, `git rebase -i` may be used to
-reorder these patches into a sequence of commits which more clearly lays
-out the steps of your work.  A potential consequence of reordering patches
-is that one might get dependencies wrong - for instance, introducing a
-use of a variable, and the declaration of that variable only follows in
-a later patch.
+=== Simplificar las historias complicadas antes de compartirla con otros desarrolladores
 
-While the branch HEAD will build, not every commit might build in such
-a case.  That breaks `git bisect` - something somebody else might use
-later on to find the commit which introduced a bug.  So beyond making
-sure your branch builds, it is important to assure every single commit
-builds as well.
+Con git es posible grabar cada edición y falso comienzo como un
+commit separado. Esto es muy conveniente como una forma de crear puntos de control
+durante el desarrollo, pero a menudo no se quiere compartir estos falsos
+comienzos con otros
 
-There's an automatic way to check a branch for each commit being buildable
-- see http://dustin.sallings.org/2010/03/28/git-test-sequence.html
-, and the code at https://github.com/dustin/bindir/blob/master/git-test-sequence .
-Use as follows (in this case testing every commit from origin/master to
-HEAD, including running regression tests):
+Git proporciona dos formas principales de limpiar el historial, y ambas se pueden hacer
+libremente antes de compartir el cambio:
+
+`git commit --amend` le permite hacer cambios adicionales a la última cosa
+que ha confirmado, modificando opcionalmente también el mensaje de confirmacion. Utilize esto
+si se da cuenta enseguida de que dejó algo fuera de la confirmacion,
+o del mensaje de confirmación.
+
+`git rebase --interactive upstream-branch` le permite revisar cada
+confirmación desde que bifurcó su rama de características de la rama ascendente,
+posiblilitando la edicion , eliminacion o combinacion de commits.
+Rebase también se puede usar para dividir commits individuales
+en múltiples commits nuevos.
+
+=== Asegurese de que cada commit compila
+
+Si su cambio consiste en varios parches, `git rebase -i` se puede usar para
+reordenar estos parches en una secuencia de commits que establece más claramente
+los pasos de su trabajo. Una consecuencia potencial de reordenamiento de parches
+es que podría tener dependencias incorrectas, por ejemplo, introducir un
+uso de una variable, y la declaración de esa variable en un parche posterior.
+
+Mientras que la rama HEAD se construirá, no todos los commits podrían construir en tales
+casos. Eso rompe `git bisect` - algo que alguien más podría usar
+más tarde para encontrar el commit que introdujo un error. Así que más allá de
+asegúrese de que su ramificación se construye, es importante asegurar que cada commit
+construye también.
+
+Hay una manera automática de verificar una rama para que cada commit sea construible
+- ver http://dustin.sallings.org/2010/03/28/git-test-sequence.html
+y el código en https://github.com/dustin/bindir/blob/master/git-test-sequence.
+Úselo de la siguiente manera (en este caso, probando cada confirmación desde el origin/master hasta
+HEAD, incluyendo la ejecución de pruebas de regresión):
 
 ----
 cd linuxcnc-dev
-git-test-sequence origin/master..  '(cd src && make && ../scripts/runtests)'
+git-test-sequence origin/master.. '(cd src && make && ../scripts/runtests)'
 ----
 
-This will either report 'All's well' or 'Broke on <commit>'
+Esto se informará como 'All's well' o 'Broke on <commit>'.
 
-===  Renaming files
+=== Cambiar el nombre de los archivos
 
-Please use the ability to rename files very cautiously.  Like running
-indent on single files, renames still make it more difficult to follow
-changes over time.  At a minimum, you should seek consensus on irc or
-the mailing list that the rename is an improvement.
+Utilice la capacidad de cambiar el nombre de los archivos con mucha cautela. Al igual que
+variar la sangría en archivos individuales, cambiar el nombre hace que sea más difícil seguir
+los cambios con el tiempo. Como mínimo, debe buscar un consenso en irc o
+la lista de correo de que el cambio de nombre es una mejora.
 
-===  Prefer "rebase"
+=== Preferir "rebase"
 
-Use `git pull --rebase` instead of bare `git pull` in order to keep a
-nice linear history.  When you rebase, you always retain your work as
-revisions that are ahead of origin/master, so you can do things like
-`git format-patch` them to share with others without pushing to the
-central repository.
+Use `git pull --rebase` en lugar de` git pull` desnudo para mantener una
+buena historia lineal. Al usar rebase, siempre conserva su trabajo como
+revisiones que están por delante del origin/master, por lo que puede hacer cosas como
+`git format-patch` para compartir con los demás sin envios al
+repositorio central.
 
 
-== Other ways to contribute
+== Otras formas de contribuir
 
-There are many ways  to contribute to LinuxCNC, that are not addressed
-by this document.  These ways include:
+Hay muchas formas de contribuir a LinuxCNC, que no se abordan
+en este documento. Estas formas incluyen:
 
-* Answering questions on the forum, mailing lists, and in IRC
+* Responder preguntas en el foro, listas de correo y en IRC
 
-* Reporting bugs on the bug tracker, forum, mailing lists, or in IRC
+* Informar de errores en el rastreador de errores, foro, listas de correo o en IRC
 
-* Helping test experimental features
-
+* Ayudar a probar las características experimentales
