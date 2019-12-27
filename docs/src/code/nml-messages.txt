@@ -1,14 +1,16 @@
-= NML Messages
-for details see src/emc/emc.hh
+:lang: es
 
-    OPERATOR
+= Mensajes NML
+Para detalles, vea src/emc/emc.hh
+
+    OPERATOR (operador)
 ----
     EMC_OPERATOR_ERROR_TYPE
     EMC_OPERATOR_TEXT_TYPE
     EMC_OPERATOR_DISPLAY_TYPE
 ----
 
-    JOINT
+    JOINT (articulaciones)
 ----
     EMC_JOINT_SET_JOINT_TYPE
     EMC_JOINT_SET_UNITS_TYPE
@@ -46,7 +48,7 @@ for details see src/emc/emc.hh
     EMC_JOG_STOP_TYPE
 ----
 
-    TRAJ
+    TRAJ (trayectorias)
 ----
     EMC_TRAJ_SET_AXES_TYPE
     EMC_TRAJ_SET_UNITS_TYPE
@@ -88,7 +90,7 @@ for details see src/emc/emc.hh
     EMC_TRAJ_STAT_TYPE
 ----
 
-    MOTION
+    MOTION 
 ----
     EMC_MOTION_INIT_TYPE
     EMC_MOTION_HALT_TYPE
@@ -99,7 +101,7 @@ for details see src/emc/emc.hh
     EMC_MOTION_STAT_TYPE
 ----
 
-    TASK
+    TASK (tareas)
 ----
     EMC_TASK_INIT_TYPE
     EMC_TASK_HALT_TYPE
@@ -123,7 +125,7 @@ for details see src/emc/emc.hh
     EMC_TASK_STAT_TYPE
 ----
 
-    TOOL
+    TOOL (herramientas)
 ----
     EMC_TOOL_INIT_TYPE
     EMC_TOOL_HALT_TYPE
@@ -138,7 +140,7 @@ for details see src/emc/emc.hh
     EMC_TOOL_STAT_TYPE
 ----
 
-    AUX
+    AUX (auxiliares)
 ----
     EMC_AUX_ESTOP_ON_TYPE
     EMC_AUX_ESTOP_OFF_TYPE
@@ -147,7 +149,7 @@ for details see src/emc/emc.hh
     EMC_AUX_STAT_TYPE
 ----
 
-    SPINDLE
+    SPINDLE (husillo)
 ----
     EMC_SPINDLE_ON_TYPE
     EMC_SPINDLE_OFF_TYPE
@@ -162,7 +164,7 @@ for details see src/emc/emc.hh
     EMC_SPINDLE_STAT_TYPE
 ----
 
-    COOLANT
+    COOLANT (refrigerante)
 ----
     EMC_COOLANT_MIST_ON_TYPE
     EMC_COOLANT_MIST_OFF_TYPE
@@ -171,7 +173,7 @@ for details see src/emc/emc.hh
     EMC_COOLANT_STAT_TYPE
 ----
 
-    LUBE
+    LUBE (lubricacion)
 ----
     EMC_LUBE_ON_TYPE
     EMC_LUBE_OFF_TYPE
@@ -188,7 +190,7 @@ for details see src/emc/emc.hh
     EMC_IO_PLUGIN_CALL_TYPE
 ----
 
-    OTHER
+    OTROS
 ----
     EMC_NULL_TYPE
     EMC_SET_DEBUG_TYPE
