@@ -10,19 +10,35 @@ las páginas del manual con el comando man.
 
 Al instalar linuxCNC con el CD de Ubuntu por defecto se tiene que iniciar
 sesión cada vez que encienda el ordenador. Para activar autentificacion automática
-valla a 'System > Administration > Login Window'. Si se trata
-de una nueva instalación de la ventana de inicio de sesión puede tardar
-un segundo o tres para apareser. Usted tiene que tener la contraseña que utilizo
+vaya a 'System > Administration > Login Window'. Si se trata
+de una instalación nueva, la ventana de inicio de sesión puede tardar
+unos segundo en aparecer. Usted tiene que tener la contraseña que utilizo
 para la instalación para acceder a la ventana de configuracion de inicio.
 En la pestaña seguridad marque habilitar acceso automático y elija un nombre de
 usuario de la lista (seleecione su nombre de usuario).
+
+N.T. Debian Stretch usa por defecto el entorno de escritorio Xfce, con el gestor
+de pantallas lightDM. Para obtener acceso automatico con Stretch:
+ .en un terminal, use el comando: 
+----
+$ /usr/sbin/lightdm --show-config
+----
+ .Anote el path absoluto del archivo de configuracion lightdm.conf.
+ .Edite con un editor de texto puro (gedit, nano, etc), como root, ese archivo.
+ .Busque y descomente las lineas
+----
+#autologin-user=
+#autologin-user-timeout=0
+----
+ .Haga autologin-user=su_nombre_usuario
+ .Guarde y reinicie.
 
 == Inicio automático (((Automatic Startup)))
 
 Para tener un inicio automático de linuxCNC con su configuración después
 de encender el equipo valla a 'System > Preferences > Sessions > Startup Applications',
 seleccione la opcion agregar nuevo.
-Valla a su carpeta de configuración y
+Vaya a su carpeta de configuración y
 seleccione el archivo .ini. Cuando el cuadro de dialogo selector de
 archivos se cierra, añadir linuxcnc y un espacio al frente de la ruta a su archivo .ini.
 
@@ -32,6 +48,10 @@ Ejemplo:
 linuxcnc /home/mill/linuxcnc/config/mill/mill.ini
 ----
 
+N.T. En Debian Stretch, vaya a 'Aplicaciones > Configuracion > Administrador de Configuracion > Sesion e Inicio'.
+En la pestaña 'Autoarranque de aplicaciones', use el boton 'Añadir'. De un nombre, una descripcion y una orden similar
+al ejemplo anterior. En el proximo reinicio, LinuxCNC arrancara automaticamente.
+arranque
 == Páginas de manual [[sec:Man-Pages]]
 
 (((Man Pages)))
