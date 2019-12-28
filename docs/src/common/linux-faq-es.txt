@@ -62,11 +62,11 @@ al ejemplo anterior. En el proximo reinicio, LinuxCNC arrancara automaticamente.
 (((Man Pages)))
 
 Las páginas del manual son generadas automáticamente en la mayoría de los casos.
-Páginas del manuales estan generalmente disponibles para la
+Las páginas del manual estan generalmente disponibles para la
 mayoría de los programas y comandos de linux.
 
-Para abrir una página del manual utilice una terminar,
-la terminal se puede abrir usando la ruta  'Applications >
+Para abrir una página del manual utilice una terminal.
+La terminal se puede abrir usando la ruta  'Applications >
 Accessories > Terminal'. 
 Por ejemplo si quiere encontrar
 algo acerca del comando de busqueda "find" tecle:
@@ -75,60 +75,58 @@ algo acerca del comando de busqueda "find" tecle:
 man find
 ----
 
-Utilice los botones página hacia arriba y pagina hacia abajo para ver las páginas del manual
+Utilice las teclas 'página-arriba y 'pagina-abajo' para ver las páginas del manual
 y la tecla Q para salir de la visualizacion.
 
 
 == Lista de módulos
 
-A veces para  soluciónar algun problemas que usted necesita obtener una
-lista de módulos que se encuentran cargados. En una ventana de terminal tecle:
+A veces, para soluciónar algun problema, usted necesita obtener una
+lista de los módulos que se encuentran cargados. En una ventana de terminal teclee:
 
 ----
 lsmod
 ----
 
-Si desea enviar la salida de lsmod a un archivo de texto tecle:
+Si desea enviar la salida de lsmod a un archivo de texto teclee:
 
 ----
 lsmod > mymod.txt
 ----
 
-El archivo de texto resultante se colocara en el directorio de inicio
+El archivo de texto resultante, 'mymod.txt', se colocara en el directorio home
 si usted no cambio de directorio cuando abrio la terminal y
-será nombrado mymod.txt o como usted lo haya nombrado.
+será nombrado mymod.txt, o como usted lo haya nombrado.
 
 
-== Edición de archivos raíz [[sec:Editing-a-Root-File]]
+== Edición de archivos de root [[sec:Editing-a-Root-File]]
 
 (((Editing a Root File)))
 
 Al abrir el explorador de archivos y ver que el propietario del
-archivo es el usuario raíz, se tienen que hacer algunos pasos adicionales para modificar el archivo.
+archivo es el usuario root, se tienen que hacer algunos pasos adicionales para modificar ese archivo.
 La edición de algunos archivos puede tener malos resultados. Tenga cuidado
-al editar los archivos de raíz, generalmente usted puede ver y abrir los archivos raíz
+al editar los archivos de root; generalmente usted puede ver y abrir los archivos root
 en modo de 'solo lectura'.
 
 
-=== El camino de línea de comandos
+=== Con la línea de comandos
 
 (((sudo gedit)))
 
-Abrir 'Applications > Accessories > Terminal'.
-
-En la ventana de terminal tecle.
+En una ventana de terminal teclee.
 
 ----
 sudo gedit
 ----
 
-Abrir el archivo con el menu File > Open > Edit, proceda a editar.
+Abrir el archivo con el menu File > Open > Edit, y proceda a editar.
 
 === Usando la interface grafica
 
 (((gksudo)))
 
- .Haga clic derecho sobre el escritorio y seleccione crear lansador
+ .Haga clic derecho sobre el escritorio y seleccione 'Crear lanzador'
  .Escriba nombre en como editar sudo
  .Escriba 'gksudo "gnome-open %u"' como el comando y guarda el lansador
   en su escritorio.
