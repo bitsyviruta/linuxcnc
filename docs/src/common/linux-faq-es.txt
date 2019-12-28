@@ -19,17 +19,22 @@ usuario de la lista (seleecione su nombre de usuario).
 
 N.T. Debian Stretch usa por defecto el entorno de escritorio Xfce, con el gestor
 de pantallas lightDM. Para obtener acceso automatico con Stretch:
- .en un terminal, use el comando: 
+
+ .en un terminal, use el comando:
+ 
 ----
 $ /usr/sbin/lightdm --show-config
 ----
+
  .Anote el path absoluto del archivo de configuracion lightdm.conf.
  .Edite con un editor de texto puro (gedit, nano, etc), como root, ese archivo.
  .Busque y descomente las lineas
+
 ----
 #autologin-user=
 #autologin-user-timeout=0
 ----
+
  .Haga autologin-user=su_nombre_usuario
  .Guarde y reinicie.
 
@@ -51,7 +56,7 @@ linuxcnc /home/mill/linuxcnc/config/mill/mill.ini
 N.T. En Debian Stretch, vaya a 'Aplicaciones > Configuracion > Administrador de Configuracion > Sesion e Inicio'.
 En la pestaña 'Autoarranque de aplicaciones', use el boton 'Añadir'. De un nombre, una descripcion y una orden similar
 al ejemplo anterior. En el proximo reinicio, LinuxCNC arrancara automaticamente.
-arranque
+
 == Páginas de manual [[sec:Man-Pages]]
 
 (((Man Pages)))
