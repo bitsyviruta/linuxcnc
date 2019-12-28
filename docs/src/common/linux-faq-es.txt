@@ -297,7 +297,7 @@ lspci -v
 Durante la instalación, ubuntu intentara detectar la configuración del monitor. Si esto no funciona
 el sistema se instalara con un máximo de resolución 800x600.
 
-Instrucciones para la fijación de este se encuentra aquí:
+Instrucciones para arreglar esto, se encuentra aquí:
 
 https://help.ubuntu.com/community/FixVideoResolutionHowto[https://help.ubuntu.com/community/FixVideoResolutionHowto]
 
@@ -305,10 +305,10 @@ https://help.ubuntu.com/community/FixVideoResolutionHowto[https://help.ubuntu.co
 .Paths relativos
 Los phats relativos se basan en el directorio de arranque que contiene
 el archivo ini. Usar paths relativos puede facilitar la relocalizacion
-de archivos de configuracion pero requiere una buena comprencion de los especificadores de path linux.
+de archivos de configuracion pero requiere una buena comprensión de los especificadores de path linux.
 
 ....
-   ./f0        es lo mismo que f0, e.g., un archivo llamado f0 en el directorio de arranque
+   ./f0        es lo mismo que f0, e.g., un archivo llamado f0 en el directorio
    ../f1       se refiere a un archivo llamado f1 en el directorio padre
    ../../f2    se refiere a un archivo llamado f2 en el directorio padre del padre
    ../../../f3 etc.
