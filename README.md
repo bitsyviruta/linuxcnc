@@ -1,6 +1,6 @@
 # LinuxCNC
 
-LinuxCNC controla máquinas CNC. Puede manejar fresadoras, tornos, impresoras 3D, cortadores láser, cortadores de plasma, brazos de robot, hexápodos y más. http://linuxcnc.org/
+LinuxCNC controla máquinas CNC. Puede manejar fresadoras, tornos, impresoras 3D, cortadores láser, cortadores de plasma, brazos de robot, hexápodos y otras. http://linuxcnc.org/
 
 # DESCARGO DE RESPONSABILIDAD
 
@@ -10,16 +10,16 @@ LinuxCNC controla máquinas CNC. Puede manejar fresadoras, tornos, impresoras 3D
 
 ** Cualquier maquinaria capaz de dañar a las personas debe tener prevista la desconexion completa de energía de todos los motores, etc., antes de que las personas entren en cualquier área peligrosa.
 
-** Toda la maquinaria debe estar diseñada para cumplir con las normas y códigos de seguridad locales y nacionales, y los autores de este software no pueden, y no lo hacen, asumir cualquier responsabilidad por dicho cumplimiento. **
+** Toda la maquinaria debe estar diseñada para cumplir con las normas y códigos de seguridad locales y nacionales, y los autores de este software no pueden, y no lo hacen, asumir cualquier responsabilidad derivada de dicho cumplimiento. **
 
 
-Este software se lanza bajo GPLv2, con algunas partes bajo la LGPL. Vea el archivo COPYING para más detalles.
+Este software se lanza bajo licencia GPLv2, con algunas partes bajo LGPL. Vea el archivo COPYING para más detalles.
 
 La traduccion al español de este software queda adherida a este descargo y a las licencias GPLv2 y partes LGPL. 
 
 
 # El proceso de construcción
 
-Consulte el archivo 'docs/src/code/building-linuxcnc.txt' para obtener información sobre cómo construir y ejecutar el software, o mire aquí:
+Consulte el archivo 'docs/src/code/building-linuxcnc.txt' para obtener información sobre cómo construir y ejecutar el software, o vea:
 
 http://linuxcnc.org/docs/devel/html/code/building-linuxcnc.html

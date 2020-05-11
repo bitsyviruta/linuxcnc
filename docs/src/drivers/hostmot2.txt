@@ -1,191 +1,188 @@
-= Mesa HostMot2 Driver 
+= Mesa HostMot2 Driver
 
 [[cha:mesa-hostmot2-driver]]
 
-== Introduction 
+== Introducción
 
-HostMot2 is an FPGA configuration developed by Mesa Electronics for
-their line of 'Anything I/O' motion control cards. The firmware is open
-source, portable and flexible. It can be configured (at compile-time)
-with zero or more instances (an object created at runtime) of each of
-several Modules: encoders (quadrature counters), PWM generators, and
-step/dir generators. The firmware can be configured (at run-time) to
-connect each of these instances to pins on the I/O headers. I/O pins
-not driven by a Module instance revert to general-purpose
-bi-directional digital I/O.
+HostMot2 es una configuración FPGA desarrollada por Mesa Electronics para
+su línea de tarjetas de control de movimiento 'Anything I/O'. El firmware es de fuente
+abierta, portátil y flexible. Se puede configurar (en tiempo de compilación)
+con cero o más instancias (objetos creados en tiempo de ejecución) de varios
+módulos: codificadores (contadores de cuadratura), generadores PWM y
+generadores paso/dir. El firmware se puede configurar (en tiempo de ejecución) para que
+conecte cada una de estas instancias a pines en los conectores de E/S. Los pines de E/S
+no manejados por una instancia de módulo quedan como E/S digital bidireccional de propósito general.
 
-== Firmware Binaries
+== Binarios del firmware
 
-.50 Pin Header FPGA cards
+.Tarjetas FPGA con conectores de 50 pines
 
-Several pre-compiled HostMot2 firmware binaries are available for the
-different Anything I/O boards. (This list is incomplete, check the
-hostmot2-firmware distribution for up-to-date firmware lists.)
+Varios binarios de firmware HostMot2 precompilados están disponibles para
+placas Anything I/O diferentes. (Esta lista está incompleta, verifique la
+distribución de firmware hostmot2 para listas de firmware actualizadas).
 
-* 3x20 (144 I/O pins): using hm2_pci module
-** 24-channel servo
-** 16-channel servo plus 24 step/dir generators
+* 3x20 (144 pines de E/S): utilizando el módulo hm2_pci
+** 24 canales servo 
+** 16 canales servo más 24 generadores de paso/dir
 
-* 5i22 (96 I/O pins): using hm2_pci module
-** 16-channel servo
-** 8-channel servo plus 24 step/dir generators
+* 5i22 (96 pines de E/S): utilizando el módulo hm2_pci
+** 16 canales servo
+** 8 canales servo más 24 generadores de paso/dir
 
-* 5i20, 5i23, 4i65, 4i68 (72 I/O pins): using hm2_pci module
-** 12-channel servo
-** 8-channel servo plus 4 step/dir generators
-** 4-channel servo plus 8 step/dir generators
+* 5i20, 5i23, 4i65, 4i68 (72 pines de E/S): utilizando el módulo hm2_pci
+** 12 canales servo
+** 8 canales servo más 4 generadores 4 paso/dir
+** 4 canales servo más 8 generadores de paso/dir
 
-* 7i43 (48 I/O pins): using hm2_7i43 module
-** 8-channel servo (8 PWM generators & 8 encoders)
-** 4-channel servo plus 4 step/dir generators
+* 7i43 (48 pines de E/S): utilizando el módulo hm2_7i43
+** 8 canales servo (8 generadores PWM y 8 codificadores)
+** 4 canales servo más 4 generadores de paso/dir
 
-.DB25 FPGA cards
+.tarjetas DB25 FPGA
 
-The 5i25 Superport FPGA card is preprogrammed when purchased and does not
-need a firmware binary.
+La tarjeta 5i25 Superport FPGA está preprogramada cuando se compra y no
+necesita un firmware binario.
 
-== Installing Firmware
+== Instalación de firmware
 
-Depending on how you installed LinuxCNC you may have to open the Synaptic
-Package Manager from the System menu and install the package for your
-Mesa card. The quickest way to find them is to do a search for
-'hostmot2' in the Synaptic Package Manager. Mark the firmware for
-installation, then apply.
+Dependiendo de cómo se instaló LinuxCNC, es posible que deba abrir el
+administrador de paquetes Synaptic desde el menú Sistema e instalar el paquete para su
+tarjeta Mesa. La forma más rápida de encontrarlo es hacer una búsqueda de
+'hostmot2' en el Administrador de paquetes Synaptic. Marque el firmware para su
+instalación, y luego apliquela.
 
-== Loading HostMot2
+== Cargando HostMot2
 
-The LinuxCNC support for the HostMot2 firmware is split into a generic
-driver called 'hostmot2' and two low-level I/O drivers for the Anything
-I/O boards. The low-level I/O drivers are 'hm2_7i43' and 'hm2_pci' (for
-all the PCI- and PC-104/Plus-based Anything I/O boards). The hostmot2 driver
-must be loaded first, using a HAL command like this:
-
-----
-loadrt hostmot2 
-----
-
-See the hostmot2(9) man page for details.
-
-The hostmot2 driver by itself does nothing, it needs access to actual
-boards running the HostMot2 firmware. The low-level I/O drivers provide
-this access. The low-level I/O drivers are loaded with commands like
-this:
+El soporte de LinuxCNC para el firmware HostMot2 se divide en un controlador
+caricgenérico llamado 'hostmot2' y dos controladores de E/S de bajo nivel para tarjetas
+Anything I/O. Los controladores de E/S de bajo nivel son 'hm2_7i43' y 'hm2_pci' (para
+todas las placas de E/S Anything basadas en PCI y PC-104/Plus). El controlador hostmot2
+debe cargarse primero, usando un comando HAL como este:
 
 ----
-loadrt hm2_pci config="firmware=hm2/5i20/SVST8_4.BIT 
-       num_encoders=3 num_pwmgens=3 num_stepgens=1"
+loadrt hostmot2
 ----
 
-The config parameters are described in the hostmot2 man page.
+Consulte la página man del comando hostmot2(9) para obtener más información.
+
+El controlador hostmot2 por sí solo no hace nada, necesita acceso a
+placas que ejecutan el firmware HostMot2. Los controladores de E/S de bajo nivel proporcionan
+este acceso. Los controladores de E/S de bajo nivel están cargados con comandos como
+este:
+
+----
+loadrt hm2_pci config="firmware=hm2/5i20/SVST8_4.BIT
+       num_encoders=3 num_pwmgens=3 num_stepgens=1 "
+----
+
+Los parámetros de configuración se describen en la página man del comando hostmot2.
 
 == Watchdog
 
-The HostMot2 firmware may include a watchdog Module; if it does, the
-hostmot2 driver will use it.
+El firmware HostMot2 puede incluir un módulo de vigilancia; si lo hace, el
+controlador hostmot2 lo usará.
 
-The watchdog must be petted by LinuxCNC periodically or it will bite.
-The hm2 write function (see below) pets the watchdog.
+El perro guardián debe ser refrescado por LinuxCNC periódicamente o saltará.
+La función de escritura hm2 (ver más abajo) refresca al perro guardián.
 
-When the watchdog bites, all the board's I/O pins are disconnected from
-their Module instances and become high-impedance inputs (pulled high).
-The state of the HostMot2 firmware modules is not disturbed (except
-for the configuration of the I/O Pins). Encoder instances keep counting
-quadrature pulses, and pwm- and step-generators keep generating signals
-(which are not relayed to the motors, because the I/O Pins have become
-inputs).
+Cuando el perro guardián salta, todos los pines de E/S de la placa se desconectan de
+sus instancias de módulo y se convierten en entradas de alta impedancia (pulled high).
+El estado de los módulos de firmware HostMot2 no se altera (excepto
+para la configuración de los pines de E/S). Las instancias de codificador siguen contando
+pulsos de cuadratura y los generadores de pasos y pwm siguen generando señales
+(que no se transmiten a los motores, porque los pines de E/S se han convertido en
+entradas).
 
-Resetting the watchdog resets the I/O pins to the configuration chosen
-at load-time.
+Al restablecer el watchdog se restablecen los pines de E/S a la configuración elegida
+en tiempo de carga.
 
-If the firmware includes a watchdog, the following HAL objects will be
-exported:
+Si el firmware incluye un perro guardián, serán exportados los siguientes objetos HAL:
 
-=== Pins:
+=== Pines:
 
-* 'has_bit' - 
-     (bit i/o) True if the watchdog has bit, False if the watchdog has not
-    bit. If the watchdog has bit and the has_bit bit is True, the user can
-    reset it to False to resume operation.
+* 'has_bit' -
+     (bit I/O) Verdadero si el perro guardián ha saltado. Falso en caso contrario.
+    Si el perro guardián ha saltado y el bit has_bit es True, el usuario puede
+    reiniciarlo a Falso para reanudar la operación.
 
-=== Parameters:
+=== Parámetros:
 
-* 'timeout_ns' - 
-     (u32 read/write) Watchdog timeout, in nanoseconds. This is
-    initialized to 5,000,000 (5 milliseconds) at module load time. If
-    more than this amount of time passes between calls to the hm2 write
-    function, the watchdog will bite.
+* 'timeout_ns' -
+     (u32 lectura/escritura) Tiempo de espera del watchdog, en nanosegundos. Esto es
+    inicializado a 5000000 (5 milisegundos) en tiempo de carga del módulo. Si
+    pasa más tiempo entre llamadas a la función de escritura hm2, el perro guardián saltará.
 
-== HostMot2 Functions
+== Funciones HostMot2
 
-* 'hm2_<BoardType>.<BoardNum>.read' - 
-    Read all inputs, update input HAL pins.
+* 'hm2_<BoardType>.<BoardNum>.read' -
+    Lee todas las entradas, actualiza los pines HAL de entrada.
 
-* 'hm2_<BoardType>.<BoardNum>.write' - 
-    Write all outputs.
+* 'hm2_<BoardType>.<BoardNum>.write' -
+    Escribe todas las salidas.
 
-* 'hm2_<BoardType>.<BoardNum>.read_gpio' - 
-     Read the GPIO input pins only. (This function 
-    is not available on the 7i43 due to limitations of the EPP bus.)
+* 'hm2_<BoardType>.<BoardNum>.read_gpio' -
+     Lee solo los pines de entrada GPIO. (Esta función
+    no está disponible en la 7i43 debido a limitaciones del bus EPP).
 
-* 'hm2_<BoardType>.<BoardNum>.write_gpio' - 
-     Write the GPIO control registers and output pins only. (This function 
-    is not available on the 7i43 due to limitations of the EPP bus.) 
+* 'hm2_<BoardType>.<BoardNum>.write_gpio' -
+     Escribe solo los registros de control GPIO y los pines de salida. (Esta función
+    no está disponible en el 7i43 debido a limitaciones del bus EPP).
 
-[NOTE]
+[NOTA]
 =====================================================================
-The above 'read_gpio' and 'write_gpio' functions should not 
-normally be needed, since the GPIO bits are read and written along 
-with everything else in the standard 'read' and 'write' 
-functions above, which are normally run in the servo thread.
+Las funciones 'read_gpio' y 'write_gpio' anteriores no se necesitan
+normalmente , ya que los bits GPIO se leen y escriben
+con todo lo demás en las funciones estándar 'read' y 'write'
+anteriores, que normalmente se ejecutan en el hilo servo.
 
-The 'read_gpio' and 'write_gpio' functions were provided in 
-case some very fast (frequently updated) I/O is needed. These 
-functions should be run in the base thread. If you have need for 
-this, please send an email and tell us about it, and what your 
-application is.
+Las funciones 'read_gpio' y 'write_gpio' se proporcionaron para el
+caso de necesitar alguna E/S muy rápida (actualizada con frecuencia). Estas
+funciones deben ejecutarse en el hilo base. Si tiene necesidad de
+esto, por favor envíe un correo electrónico y cuéntenos al respecto, y cuál es su
+aplicación.
 =====================================================================
 
 == Pinouts
 
-The hostmot2 driver does not have a particular pinout. The pinout
-comes from the firmware that the hostmot2 driver sends to the Anything I/O
-board. Each firmware has different pinout, and the pinout depends on
-how many of the available encoders, pwmgens, and stepgens are used. To
-get a pinout list for your configuration after loading LinuxCNC in the
-terminal window type:
+El controlador hostmot2 no tiene un pinout particular. El pinout
+proviene del firmware que el controlador hostmot2 envía a la tarjeta Anything I/O.
+Cada firmware tiene un pinout diferente, y el pinout depende de
+cuántos codificadores, pwmgens y stepgens disponibles se usan.
+Para obtener una lista de pinout para su configuración después de cargar LinuxCNC,
+escriba en una ventana de terminal:
 
 ----
 dmesg > hm2.txt
 ----
 
-The resulting text file will contain lots of information as well as
-the pinout for the HostMot2 and any error and warning messages.
+El archivo de texto resultante contendrá mucha información, así como
+el pinout para HostMot2 y cualquier mensaje de error y advertencia.
 
-To reduce the clutter by clearing the message buffer before loading
-LinuxCNC type the following in the terminal window:
+Para reducir el desorden, borre el búfer de mensajes antes de cargar
+LinuxCNC escribiendo lo siguiente en la ventana de terminal:
 
 ----
 sudo dmesg -c
 ----
 
-Now when you run LinuxCNC and then do a 'dmesg > hm2.txt' in the terminal
-only the info from the time you loaded LinuxCNC will be in your file along
-with your pinout. The file will be in the current directory of the
-terminal window. Each line will contain the card name, the card number,
-the I/O Pin number, the connector and pin, and the usage. From this
-printout you will know the physical connections to your card based on
-your configuration.
+Ahora, cuando ejecute LinuxCNC y luego haga un 'dmesg > hm2.txt' en la terminal,
+solo la información del momento en que cargó LinuxCNC estará en su archivo
+con su pinout. El archivo estará en el directorio actual de la
+ventana de terminal. Cada línea contendrá el nombre de la tarjeta, el número de la tarjeta,
+el número de pin de E/S, el conector y el pin, y el uso. De aqui,
+sabrá las conexiones físicas a su tarjeta basadas en
+su configuración
 
-An example of a 5i20 configuration:
+Un ejemplo de una configuración 5i20:
 
 ----
-[HOSTMOT2] 
-DRIVER=hm2_pci 
-BOARD=5i20 
+[HOSTMOT2]
+DRIVER=hm2_pci
+BOARD=5i20
 CONFIG="firmware=hm2/5i20/SVST8_4.BIT num_encoders=1 num_pwmgens=1 num_stepgens=3"
 ----
 
-The above configuration produced this printout.
+La configuración anterior produjo esta impresión.
 
 ----
 [ 1141.053386] hm2/hm2_5i20.0: 72 I/O Pins used: 
@@ -218,68 +215,67 @@ The above configuration produced this printout.
 [ 1141.053815] hm2_5i20.0: initialized AnyIO board at 0000:02:02.0
 ----
 
-[NOTE]
-That the I/O Pin nnn will correspond to the pin number shown on
-the HAL Configuration screen for GPIOs. Some of the Stepgen, Encoder
-and PWMGen will also show up as GPIOs in the HAL Configuration screen.
+[NOTA]
+El pin de E/S nnn corresponderá al número de pin que se muestra en
+la pantalla de configuración de HAL para GPIO. Algunos de los Stepgen, Encoder
+y PWMGen también se mostrarán como GPIO en la pantalla de configuración de HAL.
 
-== PIN Files
+== Archivos PIN
 
-The default pinout is described in a .PIN file (human-readable text). 
-When you install a firmware package the .PIN files are installed in 
+El pinout predeterminado se describe en un archivo .PIN (texto legible para humanos).
+Cuando instala un paquete de firmware, los archivos .PIN se instalan en
 
 ----
-/usr/share/doc/hostmot2-firmware-<board>/ 
+/usr/share/doc/hostmot2-firmware-<board>/
 ----
 
 == Firmware
 
-The selected firmware (.BIT file) and configuration is uploaded from 
-the PC motherboard to the Mesa mothercard on LinuxCNC startup. 
-If you are using Run In Place, you must still install a 
-hostmot2-firmware-<board> package. There is more information about 
-firmware and configuration in the 'Configurations' section. 
+El firmware seleccionado (archivo .BIT) y la configuración se cargan desde
+la placa base de la PC a la tarjeta madre Mesa en el inicio de LinuxCNC.
+Si está utilizando Run In Place, aún debe instalar el paquete
+hostmot2-firmware-<board> . Hay más información sobre
+firmware y configuración en la sección 'Configuraciones'.
 
-== HAL Pins
+== Pines HAL
 
-The HAL pins for each configuration can be seen by opening up 'Show
-HAL Configuration' from the Machine menu. All the HAL pins and
-parameters can be found there. The following figure is of the 5i20
-configuration used above.
+Los pines HAL para cada configuración se pueden ver abriendo 'Mostrar
+Configuración HAL' desde el menú Máquina. Todos los pines y parámetros HAL
+se pueden encontrar allí. La siguiente figura es de la 
+configuración 5i20 utilizada anteriormente.
 
-.5i20 HAL Pins[[cap:5i20-HAL-Pins]]
+.5i20 HAL Pins [[cap:5i20-HAL-Pins]]
 
-image::images/5i20-halpins.png[alt="5i20 HAL Pins"]
+image::images/5i20-halpins.png[alt="Pines HAL 5i20"]
 
-== Configurations
+== Configuraciones
 
-The Hostmot2 firmware is available in several versions, depending on 
-what you are trying to accomplish. You can get a reminder of what a 
-particular firmware is for by looking at the name. Let's look at a 
-couple of examples. 
+El firmware Hostmot2 está disponible en varias versiones, dependiendo de
+lo que esté tratando de lograr. Puede recordar lo que es
+un firmware particular mirando el nombre. Veamos un par de ejemplos.
 
-In the 7i43 (two ports), SV8 ('Servo 8') would be for having 8 servos 
-or fewer, using the 'classic' 7i33 4-axis (per port) servo board. 
-So 8 servos would use up all 48 signals in the two ports. But if 
-you only needed 3 servos, you could say 'num_encoders=3' and 'num_pwmgens=3' 
-and recover 5 servos at 6 signals each, thus gaining 30 bits of GPIO. 
+En una 7i43 (dos puertos), SV8 ('Servo 8') sería para tener 8 servos
+o menos, utilizando la tarjeta servo 'clásica' 7i33 de 4 ejes (por puerto).
+Entonces 8 servos usarían las 48 señales en los dos puertos. Pero si
+solo se necesitan 3 servos, podría decir 'num_encoders=3' y 'num_pwmgens=3'
+y recuperar 5 servos, a 6 señales cada uno, obteniendo así 30 bits de GPIO.
 
-Or, in the 5i22 (four ports), SVST8_24 ('Servo 8, Stepper 24') would be 
-for having 8 servos or fewer (7i33 x2 again), and 24 steppers or fewer 
-(7i47 x2). This would use up all four ports. 
-If you only needed 4 servos you could say 'num_encoders=4' and 
-'num_pwmgens=4' and recover 1 port (and save a 7i33). 
-And if you only needed 12 steppers you could say 'num_stepgens=12' and 
-free up one port (and save a 7i47). 
-So in this way we can save two ports (48 bits) for GPIO. 
+En una 5i22 (cuatro puertos), SVST8_24 ('Servo 8, Stepper 24') sería
+para tener 8 servos o menos (7i33x2 nuevamente) y 24 steppers o menos
+(7i47x2). Esto usaría los cuatro puertos.
+Si solo se necesitara 4 servos, podría decir 'num_encoders=4' y
+'num_pwmgens=4' y recuperar 1 puerto (ahorrando una 7i33).
+Y si solo se necesita 12 steppers, podría decir 'num_stepgens=12' y
+liberar un puerto (ahorrando una 7i47).
+De esta manera, podemos guardar dos puertos (48 bits) para GPIO.
 
-Here are tables of the firmwares available in the official packages. 
-There may be additional firmwares available at the Mesanet.com website 
-that have not yet made it into the LinuxCNC official firmware packages, so 
-check there too.  
+Lo sigiente son tablas de los firmwares disponibles en los paquetes oficiales.
+Puede haber firmwares adicionales disponibles en el sitio web de Mesanet.com
+que aún no han llegado a los paquetes de firmware oficiales de LinuxCNC, así que
+compruebelos allí también.
 
-3x20 (6-port various) Default Configurations (The 3x20 comes in 1M, 1.5M, and 2M gate versions. 
-So far, all firmware is available in all gate sizes.) 
+Configuraciones predeterminadas de 3x20 (6 puertos varios) (El 3x20 viene en versiones de puerta de 1M, 1.5M y 2M.
+Hasta ahora, todo el firmware está disponible en todos los tamaños de compuerta).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder | PWMGen | StepGen | GPIO
@@ -287,8 +283,8 @@ So far, all firmware is available in all gate sizes.)
 |SVST16_24        | 16      | 16     | 24      | 0
 |====================================================================
 
-5i22 (4-port PCI) Default Configurations (The 5i22 comes in 1M and 1.5M gate versions. 
-So far, all firmware is available in all gate sizes.) 
+Configuraciones predeterminadas de 5i22 (PCI de 4 puertos) (El 5i22 viene en versiones de puerta de 1M y 1.5M.
+Hasta ahora, todo el firmware está disponible en todos los tamaños de compuerta).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder | PWM | StepGen | GPIO
@@ -298,7 +294,7 @@ So far, all firmware is available in all gate sizes.)
 |SVST8_24         | 8       | 8   | 24      | 0
 |====================================================================
 
-5i23 (3-port PCI) Default Configurations (The 5i23 has 400k gates.)
+Configuraciones predeterminadas de 5i23 (PCI de 3 puertos) (El 5i23 tiene 400k puertas).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -314,7 +310,7 @@ So far, all firmware is available in all gate sizes.)
 |SVTP6_7I39       | 6        | 0 (6 BLDC) | 0        | 0
 |====================================================================
 
-5i20 (3-port PCI) Default Configurations (The 5i20 has 200k gates.)
+Configuraciones predeterminadas de 5i20 (PCI de 3 puertos) (El 5i20 tiene 200k puertas).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -327,7 +323,7 @@ So far, all firmware is available in all gate sizes.)
 |SVST8_4IM2       | 8 (+IM)  | 8          | 4        | 8
 |====================================================================
 
-4i68 (3-port PC/104) Default Configurations (The 4i68 has 400k gates.)
+4i68 (PC de 3 puertos / 104) Configuraciones predeterminadas (El 4i68 tiene 400k puertas).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -340,7 +336,7 @@ So far, all firmware is available in all gate sizes.)
 |====================================================================
 
 
-4i65 (3-port PC/104) Default Configurations (The 4i65 has 200k gates.)
+4i65 (PC de 3 puertos / 104) Configuraciones predeterminadas (El 4i65 tiene 200k puertas).
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -348,8 +344,7 @@ So far, all firmware is available in all gate sizes.)
 |SVST8_4          | 8        | 8          | 4        | 0
 |SVST8_4IM2       | 8 (+IM)  | 8          | 4        | 8
 |====================================================================
-
-7i43 (2-port parallel) 400k gate versions, Default Configurations
+7i43 (2 puertos paralelos) 400k versiones de puerta, configuraciones predeterminadas
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -360,7 +355,7 @@ So far, all firmware is available in all gate sizes.)
 |SVST2_4_7I47     | 4        | 2          | 4        | 24
 |====================================================================
 
-7i43 (2-port parallel) 200k gate versions, Default Configurations
+7i43 (2 puertos paralelos) 200k versiones de puerta, configuraciones predeterminadas
 [width="90%", options="header"]
 |====================================================================
 |Firmware         | Encoder  | PWM        | StepGen  | GPIO
@@ -370,458 +365,443 @@ So far, all firmware is available in all gate sizes.)
 |SVST2_4_7I47     | 4        | 2          | 4        | 24
 |====================================================================
 
-Even though several cards may have the same named .BIT file you cannot use 
-a .BIT file that is not for that card. Different cards have different 
-clock frequencies so make sure you load the proper .BIT file for your 
-card. Custom hm2 firmwares can be created for special applications and 
-you may see some custom hm2 firmwares in the directories with the 
-default ones. 
+Aunque varias tarjetas pueden tener el mismo nombre de archivo .BIT, no puede usar
+un archivo .BIT que no es para esa tarjeta. Diferentes tarjetas tienen diferentes
+frecuencias de reloj, así que asegúrese de cargar el archivo .BIT adecuado para su
+tarjeta. Se pueden crear firmwares hm2 personalizados para aplicaciones especiales y
+puede ver algunos firmwares hm2 personalizados en los directorios con
+los predeterminados
 
-When you load the board-driver (hm2_pci or hm2_7i43), you can tell it
-to disable instances of the three primary modules (pwmgen, stepgen, and
-encoder) by setting the count lower. Any I/O pins belonging to disabled
-module instances become GPIOs.
+Cuando carga el controlador de placa (hm2_pci o hm2_7i43), puede decirle
+que deshabilite instancias de los tres módulos principales (pwmgen, stepgen y
+codificador) estableciendo el recuento más bajo. Cualquier pin de E/S perteneciente a 
+las instancias de módulos desactivados se convierten en GPIO.
 
 == GPIO
 
-General Purpose I/O pins on the board which are not used by a module
-instance are exported to HAL as 'full' GPIO pins. Full GPIO pins can be
-configured at run-time to be inputs, outputs, or open drains, and have
-a HAL interface that exposes this flexibility. I/O pins that are owned
-by an active module instance are constrained by the requirements of the
-owning module, and have a restricted HAL interface.
+Los pines de E/S de uso general en la placa que no son utilizados por 
+las instancias de un módulo, se exportan a HAL como pines GPIO 'completos'. 
+Los pines GPIO completos pueden ser configurados en tiempo de ejecución como entradas, 
+salidas o open-drain, y tener una interfaz HAL que expone esta flexibilidad. Los pines de E/S 
+que son propiedad de una instancia de módulo activo están restringidos por los requisitos del
+módulo y tiene una interfaz HAL restringida.
 
-GPIOs have names like 'hm2_<BoardType>.<BoardNum>.gpio.<IONum>.'
-IONum. is a three-digit number. The mapping from IONum to connector and
-pin-on-that-connector is written to the syslog when the driver loads,
-and it's documented in Mesa's manual for the Anything I/O boards.
+Los GPIO tienen nombres como 'hm2_<BoardType>.<BoardNum>.gpio.<IONum>'.
+IONum es un número de tres dígitos. El mapeo de IONum al conector y
+pin-en-ese-connector se escribe en el syslog cuando se carga el controlador,
+y está documentado en el manual Mesa para las placas Anything I/O.
 
-The hm2 GPIO representation is modeled after the Digital Inputs and
-Digital Outputs described in the Canonical Device Interface (part of
-the HAL General Reference document).
+La representación hm2 GPIO se modela después de las entradas y salidas digitales
+descritas en la interfaz de dispositivo canónico (parte del documento de referencia general de HAL).
 
-GPIO pins default to input.
+Pines GPIO predeterminados para la entrada.
 
-=== Pins
+=== Pines
 
-* 'in' - 
-     (Bit, Out) Normal state of the hardware input pin. Both full GPIO pins
-    and I/O pins used as inputs by active module instances have this pin.
+* 'in' -
+     (Bit, Out) Estado normal del pin hardware de entrada. TAnto los pines GPIO completos
+    como los pines de E/S utilizados como entradas por las instancias de módulos activos tienen este pin.
 
-* 'in_not' - 
-     (Bit, Out) Inverted state of the hardware input pin. Both full GPIO
-    pins and I/O pins used as inputs by active module instances have this
-    pin.
+* 'in_not' -
+     (Bit, Out) Estado invertido del pin hardware entrada. Ambos GPIO completos
+    los pines y los pines de E/S utilizados como entradas por las instancias de módulos activos tienen esto
+    alfiler.
 
-* 'out' - 
-     (Bit, In) Value to be written (possibly inverted) to the hardware
-    output pin. Only full GPIO pins have this pin.
+* 'out' -
+     (Bit, In) Valor a escribir (posiblemente invertido) en el hardware
+    pin de salida Solo los pines GPIO completos tienen este pin.
 
-=== Parameters
+=== Parámetros
 
-* 'invert_output' - 
-     (Bit, RW) This parameter only has an effect if the 'is_output'
-    parameter is true. If this parameter is true, the output value of the
-    GPIO will be the inverse of the value on the 'out' HAL pin. Only full
-    GPIO pins and I/O pins used as outputs by active module instances have
-    this parameter. To invert an active module pin you have to invert the
-    GPIO pin not the module pin.
+* 'invert_output' -
+     (Bit, RW) Este parámetro solo tiene efecto si el parámetro 'is_output'
+    es verdadero. Si este parámetro es verdadero, el valor de salida del
+    GPIO será el inverso del valor en el pin HAL 'out'. Solo Los pines GPIO completos
+    y los pines de E/S utilizados como salidas por instancias de módulos activos tienen
+    este parámetro. Para invertir un pin del módulo activo, debe invertir el
+    pin GPIO, no el pin del módulo.
 
-* 'is_opendrain' - 
-     (Bit, RW) This parameter only has an effect if the 'is_output'
-    parameter is true. If this parameter is false, the GPIO behaves as a
-    normal output pin: the I/O pin on the connector is driven to the value
-    specified by the 'out' HAL pin (possibly inverted), and the value of
-    the 'in' and 'in_not' HAL pins is undefined. If this parameter is true,
-    the GPIO behaves as an open-drain pin. Writing 0 to the 'out' HAL pin
-    drives the I/O pin low, writing 1 to the 'out' HAL pin puts the I/O pin
-    in a high-impedance state. In this high-impedance state the I/O pin
-    floats (weakly pulled high), and other devices can drive the value; the
-    resulting value on the I/O pin is available on the 'in' and 'in_not'
-    pins. Only full GPIO pins and I/O pins used as outputs by active module
-    instances have this parameter.
+* 'is_opendrain' -
+     (Bit, RW) Este parámetro solo tiene efecto si el parámetro 'is_output'
+    es verdadero. Si este parámetro es falso, el GPIO se comporta como un
+    pin de salida normal: el pin de E/S en el conector se lleva al valor
+    especificado por el pin HAL 'out' (posiblemente invertido) y el valor de
+    los pines HAL 'in' e 'in_not' no están definidos. Si este parámetro es verdadero,
+    el GPIO se comporta como un pi open-drain. Escribir 0 en el pin HAL 'out'
+    baja el pin de E/S; escribir 1 en el pin HAL 'out' coloca el pin de E/S
+    en un estado de alta impedancia. En este estado de alta impedancia, el pin de E/S
+    flota (débilmente elevado), y otros dispositivos pueden manejar el valor; el
+    valor resultante en el pin de E/S está disponible en los pines 'in' e 'in_not'.
+    Solo los pines GPIO completos y pines de E/S utilizados como salidas por instancias activas
+    de módulo tienen este parámetro.
 
-* 'is_output' - 
-     (Bit, RW) If set to 0, the GPIO is an input. The I/O pin is put in a
-    high-impedance state (weakly pulled high), to be driven by other
-    devices. The logic value on the I/O pin is available in the 'in' and
-    'in_not' HAL pins. Writes to the 'out' HAL pin have no effect. If this
-    parameter is set to 1, the GPIO is an output; its behavior then depends
-    on the 'is_opendrain' parameter. Only full GPIO pins have this
-    parameter.
+* 'is_output' -
+     (Bit, RW) Si se establece en 0, el GPIO es una entrada. El pin de E/S se coloca en un
+    estado de alta impedancia (débilmente elevado), para ser conducido por otros
+    dispositivos. El valor lógico en el pin de E/S está disponible en los pines HAL 'in' y
+    'in_not'. Las escrituras en el pin HAL 'out' no tienen efecto. Si este
+    parámetro se establece en 1, el GPIO es una salida; su comportamiento entonces depende
+    en el parámetro 'is_opendrain'. Solo los pines GPIO completos tienen esto
+    parámetro.
 
 == StepGen
 
-Stepgens have names like
-'hm2_<BoardType>.<BoardNum>.stepgen.<Instance>.'. 'Instance' is a
-two-digit number that corresponds to the HostMot2 stepgen instance
-number. There are 'num_stepgens' instances, starting with 00.
+Los Stepgens tienen nombres como
+'hm2_<BoardType>.<BoardNum>.stepgen.<Instance>.'. 'Instance' es un
+número de dos dígitos que corresponde al número de instancia de Stepgen HostMot2.
+Hay 'num_stepgens' instancias, que comienzan con 00.
 
-Each stepgen allocates 2-6 I/O pins (selected at firmware compile
-time), but currently only uses two: Step and Direction outputs.footnote:[At 
-present, the firmware supports multi-phase stepper outputs, but 
-the driver doesn't. Interested volunteers are solicited.]
+Cada stepgen asigna 2-6 pines de E/S (seleccionados en tiempo de compilación del firmware), 
+pero actualmente solo utiliza dos: salidas de paso y dirección. footnote:[En la actualidad, 
+el firmware admite salidas paso a paso de múltiples fases, pero
+el driver no. Se solicitan voluntarios interesados.]
 
-The stepgen representation is modeled on the stepgen software
-component. Stepgen default is active high step output (high during step
-time low during step space). To invert a StepGen output pin you invert
-the corresponding GPIO pin that is being used by StepGen. To find the
-GPIO pin being used for the StepGen output run dmesg as shown above.
+La representación stepgen está modelada en el componente software stepgen.
+El valor predeterminado de salida de paso de Stepgen es activa alto (alto durante el tiempo
+de paso y bajo durante el espacio entre paso). Para invertir un pin de salida StepGen, invierta
+el pin GPIO correspondiente que utiliza StepGen. Para encontrar el
+pin GPIO que se usa para la salida StepGen ejecute dmesg como se muestra arriba.
 
-Each stepgen instance has the following pins and parameters:
+Cada instancia de stepgen tiene los siguientes pines y parámetros:
 
-=== Pins
+=== Pines
 
 * 'control-type' - 
-     (Bit, In) Switches between position control mode (0) and velocity
-    control mode (1). Defaults to position control (0).
+     (Bit, In) Cambia entre el modo de control de posición (0) y 
+    modo de control de velocidad (1). Por defecto, control de posición (0).
 
 * 'counts' - 
-    (s32, Out) Feedback position in counts (number of steps).
+    (s32, Out) Posición de retroalimentación en conteos (número de pasos).
 
 * 'enable' - 
-    (Bit, In) Enables output steps. When false, no steps are generated.
+    (Bit, In) Habilita los pasos de salida. Cuando es falso, no se generan pasos.
 
-* 'position-cmd' - 
-     (Float, In) Target position of stepper motion, in user-defined
-    position units.
+* 'position-cmd' -
+     (Float, in) Posición objetivo del movimiento paso a paso, en unidades de posición
+    definidas por el usuario.
 
-* 'position-fb' - 
-     (Float, Out) Feedback position in user-defined position units (counts
-    / position_scale).
+* 'position-fb' -
+     (Float, out) Posición de retroalimentación en unidades de posición definidas por el usuario (counts/position_scale).
 
 * 'velocity-cmd' - 
-     (Float, In) Target velocity of stepper motion, in user-defined
-    position units per second. This pin is only used when the stepgen is in
-    velocity control mode (control-type=1).
+     (Float, In) Velocidad objetivo del movimiento paso a paso, definido por el usuario en
+    unidades de posición por segundo. Este pin solo se usa cuando el stepgen está en
+    modo de control de velocidad (control-type = 1).
 
 * 'velocity-fb' - 
-     (Float, Out) Feedback velocity in user-defined position units per
-    second.
+     (Float, Out) Velocidad de retroalimentación en unidades de posición definidas por el usuario por
+    segundo.
 
-=== Parameters
+=== Parámetros
 
-* 'dirhold' - 
-     (u32, RW) Minimum duration of stable Direction signal after a step
-    ends, in nanoseconds.
+* 'dirhold' -
+     (u32, RW) Duración mínima de la señal de dirección estable después de 
+    terminar un paso, en nanosegundos.
 
-* 'dirsetup' - 
-     (u32, RW) Minimum duration of stable Direction signal before a step
-    begins, in nanoseconds.
+* 'dirsetup' -
+     (u32, RW) Duración mínima de la señal de dirección estable antes de un paso
+    comienza, en nanosegundos.
 
-* 'maxaccel' - 
-     (Float, RW) Maximum acceleration, in position units per second per
-    second. If set to 0, the driver will not limit its acceleration.
+* 'maxaccel' -
+     (Float, RW) Aceleración máxima, en unidades de posición por segundo por
+    segundo. Si se establece en 0, el controlador no limitará su aceleración.
 
-* 'maxvel' - 
-     (Float, RW) Maximum speed, in position units per second. If set to 0,
-    the driver will choose the maximum velocity based on the values of
-    steplen and stepspace (at the time that maxvel was set to 0).
+* 'maxvel' -
+     (Flotador, RW) Velocidad máxima, en unidades de posición por segundo. Si se establece en 0,
+    el conductor elegirá la velocidad máxima en función de los valores de
+    steplen y stepspace (en el momento en que maxvel se estableció en 0).
 
 * 'position-scale' - 
-     (Float, RW) Converts from counts to position units. position = counts
+     (Float, RW) Convierte de recuentos a unidades de posición. posición = cuenta
     / position_scale
 
-* 'step_type' - 
-     (u32, RW) Output format, like the step_type modparam to the software
-    stegen(9) component. 0 = Step/Dir, 1 = Up/Down, 2 = Quadrature. In
-    Quadrature mode (step_type=2), the stepgen outputs one complete Gray
-    cycle (00 \-> 01 \-> 11 \-> 10 \-> 00) for each 'step' it takes.
+* 'step_type' -
+     (u32, RW) Formato de salida, como el modparam step_type para el componente 
+    softwareá stegen(9). 0 = Paso / Dir, 1 = Arriba / Abajo, 2 = Cuadratura. En
+    Modo de cuadratura (step_type = 2), el stepgen genera un Gray completo
+    ciclo (00 \ -> 01 \ -> 11 \ -> 10 \ -> 00) para cada 'paso' que tome.
 
-* 'steplen' - 
-    (u32, RW) Duration of the step signal, in nanoseconds.
+* 'steplen' -
+    (u32, RW) Duración de la señal de paso, en nanosegundos.
 
 * 'stepspace' - 
-    (u32, RW) Minimum interval between step signals, in nanoseconds.
+    (u32, RW) Intervalo mínimo entre señales de paso, en nanosegundos.
 
-=== Output Parameters
+=== Parámetros de salida
 
-The Step and Direction pins of each StepGen have two additional
-parameters. To find which I/O pin belongs to which step and direction
-output run dmesg as described above.
+Los pines de paso y dirección de cada StepGen tienen dos parmetros adicionales.
+Para encontrar qué pin de E/S pertenece a qué salida paso y dirección, 
+ejecute dmesg como se describió anteriormente.
 
-* 'invert_output' - 
-     (Bit, RW) This parameter only has an effect if the 'is_output'
-    parameter is true. If this parameter is true, the output value of the
-    GPIO will be the inverse of the value on the 'out' HAL pin. 
+* 'invert_output' -
+     (Bit, RW) Este parámetro solo tiene efecto si el parámetro 'is_output'
+    es verdadero. Si este parámetro es verdadero, el valor de salida del
+    GPIO será el inverso del valor en el pin HAL 'out'.
 
-* 'is_opendrain' - 
-     (Bit, RW) If this parameter is false, the GPIO behaves as a normal
-    output pin: the I/O pin on the connector is driven to the value
-    specified by the 'out' HAL pin (possibly inverted). If this parameter
-    is true, the GPIO behaves as an open-drain pin. Writing 0 to the 'out'
-    HAL pin drives the I/O pin low, writing 1 to the 'out' HAL pin puts the
-    I/O pin in a high-impedance state. In this high-impedance state the I/O
-    pin floats (weakly pulled high), and other devices can drive the value;
-    the resulting value on the I/O pin is available on the 'in' and 'in_not'
-    pins. Only full GPIO pins and I/O pins used as outputs by active module
-    instances have this parameter.
+* 'is_opendrain' -
+     (Bit, RW) Si este parámetro es falso, el GPIO se comporta como
+    pin de salida normal: el pin de E/S en el conector se conduce al valor
+    especificado por el pin HAL 'out' (posiblemente invertido). Si este parámetro
+    es True, el GPIO se comporta como un pin opendrain. Escribir 0 en  
+    el pin HAL 'out' conduce el pin de E/S bajo, escribiendo 1 en el pin HAL 'out' pone el
+    pin de E/S en un estado de alta impedancia. En este estado de alta impedancia, el pin E/S
+    flota (tirados débilmente alto) y otros dispositivos pueden impulsar el valor;
+    el valor resultante en el pin de E/S está disponible en los pines 'in' e 'in_not'.
+    Solo pines GPIO completos y pines de E/S utilizados como salidas por instancias de módulo activas
+    tienen este parámetro.
 
 == PWMGen
 
-PWMgens have names like
-'hm2_<BoardType>.<BoardNum>.pwmgen.<Instance>.'. 'Instance' is a
-two-digit number that corresponds to the HostMot2 pwmgen instance
-number. There are 'num_pwmgens' instances, starting with 00.
+Los PWMgens tienen nombres como
+'hm2_<BoardType>.<BoardNum> .pwmgen.<Instance>.'. 'Instance' es un
+número de dos dígitos que corresponde al número de instancia de HostMot2 pwmgen.
+Hay 'num_pwmgens' instancias, que comienzan con 00.
 
-In HM2, each pwmgen uses three output I/O pins: Not-Enable, Out0, and
-Out1. To invert a PWMGen output pin you invert the corresponding GPIO
-pin that is being used by PWMGen. To find the GPIO pin being used for
-the PWMGen output run dmesg as shown above.
+En HM2, cada pwmgen usa tres pines de E/S de salida: No habilitado, Out0 y
+Fuera 1. Para invertir un pin de salida PWMGen, invierte el GPIO correspondiente
+pin que está siendo usado por PWMGen. Para encontrar el pin GPIO que se utiliza para
+la salida PWMGen ejecuta dmesg como se muestra arriba.
 
-The function of the Out0 and Out1 I/O pins varies with output-type
-parameter (see below).
+La función de los pines de E/S Out0 y Out1 varía con el tipo de salida
+parámetro (ver más abajo).
 
-The hm2 pwmgen representation is similar to the software pwmgen
-component. Each pwmgen instance has the following pins and parameters:
+La representación hm2 pwmgen es similar al software pwmgen
+componente. Cada instancia de pwmgen tiene los siguientes pines y parámetros:
 
-=== Pins
+=== Pines
 
-* 'enable' - 
-     (Bit, In) If true, the pwmgen will set its Not-Enable pin false and
-    output its pulses. If 'enable' is false, pwmgen will set its Not-Enable
-    pin true and not output any signals.
+* 'habilitar' -
+     (Bit, In) Si es verdadero, el pwmgen establecerá su pin No habilitado falso y
+    emitir sus pulsos. Si 'enable' es falso, pwmgen establecerá su No-Enable
+    pin verdadero y no emite ninguna señal.
 
-* 'value' - 
-    (Float, In) The current pwmgen command value, in arbitrary units.
+* 'valor' -
+    (Float, In) El valor actual del comando pwmgen, en unidades arbitrarias.
 
-=== Parameters
+=== Parámetros
 
-* 'output-type' - 
-     (s32, RW) This emulates the output_type load-time argument to the
-    software pwmgen component. This parameter may be changed at runtime,
-    but most of the time you probably want to set it at startup and then
-    leave it alone. Accepted values are 1 (PWM on Out0 and Direction on
-    Out1), 2 (Up on Out0 and Down on Out1), 3 (PDM mode, PDM on Out0 and
-    Dir on Out1), and 4 (Direction on Out0 and PWM on Out1, 'for locked
-    antiphase').
+* 'Tipo de salida' -
+     (s32, RW) Esto emula el argumento output_type load-time al
+    componente de software pwmgen. Este parámetro se puede cambiar en tiempo de ejecución,
+    pero la mayoría de las veces probablemente quieras configurarlo al inicio y luego
+    déjalo. Los valores aceptados son 1 (PWM en Out0 y Dirección en
+    Out1), 2 (Up on Out0 y Down on Out1), 3 (modo PDM, PDM on Out0 y
+    Dir en Out1), y 4 (Dirección en Out0 y PWM en Out1, 'para bloqueado
+    antifase ').
 
-* 'scale' - 
-     (Float, RW) Scaling factor to convert 'value' from arbitrary units to
-    duty cycle: dc = value / scale. Duty cycle has an effective range of
-    -1.0 to +1.0 inclusive, anything outside that range gets clipped.
+* 'escala' -
+     (Float, RW) Factor de escala para convertir el 'valor' de unidades arbitrarias a
+    ciclo de trabajo: dc = valor / escala. El ciclo de trabajo tiene un rango efectivo de
+    -1.0 a +1.0 inclusive, todo lo que esté fuera de ese rango se recorta.
 
-* 'pdm_frequency' - 
-     (u32, RW) This specifies the PDM frequency, in Hz, of all the pwmgen
-    instances running in PDM mode (mode 3). This is the 'pulse slot
-    frequency'; the frequency at which the pdm generator in the Anything I/O board
-    chooses whether to emit a pulse or a space. Each pulse (and space) in
-    the PDM pulse train has a duration of 1/pdm_frequency seconds. For
-    example, setting the pdm_frequency to 2e6 (2 MHz) and the duty cycle to
-    50% results in a 1 MHz square wave, identical to a 1 MHz PWM signal
-    with 50% duty cycle. The effective range of this parameter is from
-    about 1525 Hz up to just under 100 MHz. Note that the max frequency is
-    determined by the ClockHigh frequency of the Anything I/O board; the
-    5i20 and 7i43 both have a 100 MHz clock, resulting in a 100 Mhz max PDM
-    frequency. Other boards may have different clocks, resulting in
-    different max PDM frequencies. If the user attempts to set the
-    frequency too high, it will be clipped to the max supported frequency
-    of the board.
+* 'pdm_frequency' -
+     (u32, RW) Esto especifica la frecuencia PDM, en Hz, de todos los pwmgen
+    instancias que se ejecutan en modo PDM (modo 3). Esta es la 'ranura de pulso
+    frecuencia'; la frecuencia con la que el generador pdm en la placa Anything I / O
+    elige si emitir un pulso o un espacio. Cada pulso (y espacio) en
+    el tren de pulsos PDM tiene una duración de 1 / pdm_frequency segundos. por
+    ejemplo, estableciendo pdm_frequency en 2e6 (2 MHz) y el ciclo de trabajo en
+    El 50% da como resultado una onda cuadrada de 1 MHz, idéntica a una señal PWM de 1 MHz
+    con 50% de ciclo de trabajo. El rango efectivo de este parámetro es de
+    aproximadamente 1525 Hz hasta poco menos de 100 MHz. Tenga en cuenta que la frecuencia máxima es
+    determinado por la frecuencia ClockHigh de la placa Anything I / O; el
+    5i20 y 7i43 tienen un reloj de 100 MHz, lo que resulta en un PDM máximo de 100 Mhz
+    frecuencia. Otros tableros pueden tener diferentes relojes, lo que resulta en
+    diferentes frecuencias máximas de PDM. Si el usuario intenta establecer el
+    frecuencia demasiado alta, se recortará a la frecuencia máxima admitida
+    del tablero.
 
-* 'pwm_frequency' - 
-     (u32, RW) This specifies the PWM frequency, in Hz, of all the pwmgen
-    instances running in the PWM modes (modes 1 and 2). This is the
-    frequency of the variable-duty-cycle wave. Its effective range is from
-    1 Hz up to 193 KHz. Note that the max frequency is determined by the
-    ClockHigh frequency of the Anything I/O board; the 5i20 and 7i43 both
-    have a 100 MHz clock, resulting in a 193 KHz max PWM frequency. Other
-    boards may have different clocks, resulting in different max PWM
-    frequencies. If the user attempts to set the frequency too high, it
-    will be clipped to the max supported frequency of the board.
-    Frequencies below about 5 Hz are not terribly accurate, but above 5 Hz
-    they're pretty close.
+* 'pwm_frequency' -
+     (u32, RW) Esto especifica la frecuencia PWM, en Hz, de todos los pwmgen
+    instancias que se ejecutan en los modos PWM (modos 1 y 2). Este es el
+    frecuencia de la onda del ciclo de trabajo variable. Su rango efectivo es de
+    1 Hz hasta 193 KHz. Tenga en cuenta que la frecuencia máxima está determinada por
+    Reloj Alta frecuencia de la placa Anything I / O; los 5i20 y 7i43 ambos
+    tener un reloj de 100 MHz, lo que resulta en una frecuencia PWM máxima de 193 KHz. Otro
+    los tableros pueden tener diferentes relojes, lo que resulta en diferentes PWM máx.
+    frecuencias Si el usuario intenta establecer la frecuencia demasiado alta,
+    se recortará a la frecuencia máxima admitida de la placa.
+    Las frecuencias inferiores a aproximadamente 5 Hz no son terriblemente precisas, pero superiores a 5 Hz
+    Están bastante cerca.
 
-=== Output Parameters
+=== Parámetros de salida
 
-The output pins of each PWMGen have two additional parameters. To find
-which I/O pin belongs to which output run dmesg as described above.
+Los pines de salida de cada PWMGen tienen dos parámetros adicionales. Encontrar
+qué pin de E/S pertenece a qué salida ejecuta dmesg como se describió anteriormente.
 
-* 'invert_output' - 
-     (Bit, RW) This parameter only has an effect if the 'is_output'
-    parameter is true. If this parameter is true, the output value of the
-    GPIO will be the inverse of the value on the 'out' HAL pin. 
+* 'invert_output' -
+     (Bit, RW) Este parámetro solo tiene efecto si el 'is_output'
+    El parámetro es verdadero. Si este parámetro es verdadero, el valor de salida del
+    GPIO será el inverso del valor en el pin HAL 'fuera'.
 
-* 'is_opendrain' - 
-     (Bit, RW) If this parameter is false, the GPIO behaves as a normal
-    output pin: the I/O pin on the connector is driven to the value
-    specified by the 'out' HAL pin (possibly inverted). If this parameter
-    is true, the GPIO behaves as an open-drain pin. Writing 0 to the 'out'
-    HAL pin drives the I/O pin low, writing 1 to the 'out' HAL pin puts the
-    I/O pin in a high-impedance state. In this high-impedance state the I/O
-    pin floats (weakly pulled high), and other devices can drive the value;
-    the resulting value on the I/O pin is available on the 'in' and 'in_not'
-    pins. Only full GPIO pins and I/O pins used as outputs by active module
-    instances have this parameter.
+* 'is_opendrain' -
+     (Bit, RW) Si este parámetro es falso, el GPIO se comporta normalmente
+    pin de salida: el pin de E/S en el conector se conduce al valor
+    especificado por el pin HAL 'fuera' (posiblemente invertido). Si este parámetro
+    Es cierto, el GPIO se comporta como un pasador de drenaje abierto. Escribir 0 en el 'out'
+    El pin HAL impulsa el pin de E/S bajo, escribiendo 1 en el pin HAL 'out' pone el
+    Pin de E/S en un estado de alta impedancia. En este estado de alta impedancia, la E/S
+    los flotadores de clavija (tirados débilmente alto) y otros dispositivos pueden impulsar el valor;
+    el valor resultante en el pin de E/S está disponible en 'in' e 'in_not'
+    patas. Solo pines GPIO completos y pines de E/S utilizados como salidas por módulo activo
+    Las instancias tienen este parámetro.
 
-[[sec:hm2-encoder]]
-== Encoder
+[[sec: codificador hm2]]
+== Codificador
 
-Encoders have names like
-'hm2_<BoardType>.<BoardNum>.encoder.<Instance>.'. 'Instance' is a
-two-digit number that corresponds to the HostMot2 encoder instance
-number. There are 'num_encoders' instances, starting with 00.
+Los codificadores tienen nombres como
+'hm2_ <BoardType>. <BoardNum> .encoder. <Instance>.'. 'Instancia' es un
+número de dos dígitos que corresponde a la instancia del codificador HostMot2
+número. Hay instancias 'num_encoders', que comienzan con 00.
 
-Each encoder uses three or four input I/O pins, depending on how the
-firmware was compiled. Three-pin encoders use A, B, and Index
-(sometimes also known as Z). Four-pin encoders use A, B, Index, and
-Index-mask.
+Cada codificador usa tres o cuatro pines de E/S de entrada, dependiendo de cómo
+El firmware fue compilado. Los codificadores de tres pines usan A, B e Índice
+(a veces también conocido como Z). Los codificadores de cuatro pines usan A, B, Index y
+Máscara de índice.
 
-The hm2 encoder representation is similar to the one described by the
-Canonical Device Interface (in the HAL General Reference document), and
-to the software encoder component. Each encoder instance has the
-following pins and parameters:
+La representación del codificador hm2 es similar a la descrita por
+Interfaz de dispositivo canónico (en el documento de referencia general de HAL), y
+al componente codificador de software. Cada instancia de codificador tiene el
+siguientes pines y parámetros:
 
-=== Pins
+=== Pines
 
-* 'count' - 
-    (s32, Out) Number of encoder counts since the previous reset.
+* 'contar' -
+    (s32, Out) Número de recuentos de codificador desde el reinicio anterior.
 
-* 'index-enable' - 
-     (Bit, I/O) When this pin is set to True, the count (and therefore also
-    position) are reset to zero on the next Index (Phase-Z) pulse. At the
-    same time, index-enable is reset to zero to indicate that the pulse has
-    occurred.
+* 'index-enable' -
+     (Bit, I / O) Cuando este pin se establece en True, el recuento (y, por lo tanto, también
+    posición) se restablecen a cero en el siguiente pulso de índice (Fase-Z). En el
+    Al mismo tiempo, la habilitación de índice se restablece a cero para indicar que el pulso tiene
+    ocurrió.
 
-* 'position' - 
-    (Float, Out) Encoder position in position units (count / scale).
+* 'posición' -
+    (Flotante, Fuera) Posición del codificador en unidades de posición (conteo / escala).
 
-* 'rawcounts' - 
-     (s32, Out) Total number of encoder counts since the start, not
-    adjusted for index or reset.
+* 'primas' -
+     (s32, Out) Número total de recuentos de codificador desde el inicio, no
+    ajustado por índice o reinicio.
 
-* 'reset' - 
-     (Bit, In) When this pin is TRUE, the count and position pins are set
-    to 0. (The value of the velocity pin is not affected by this.) The
-    driver does not reset this pin to FALSE after resetting the count to 0,
-    that is the user's job.
+* 'Reiniciar' -
+     (Bit, In) Cuando este pin es VERDADERO, se establecen los pines de conteo y posición
+    a 0. (El valor del pin de velocidad no se ve afectado por esto).
+    el controlador no restablece este pin a FALSE después de restablecer el recuento a 0,
+    Ese es el trabajo del usuario.
 
-* 'velocity' - 
-    (Float, Out) Estimated encoder velocity in position units per second.
+* 'velocidad' -
+    (Float, Out) Velocidad estimada del codificador en unidades de posición por segundo.
 
-=== Parameters
+=== Parámetros
 
-* 'counter-mode' - 
-     (Bit, RW) Set to False (the default) for Quadrature. Set to True for
-    Up/Down or for single input on Phase A. Can be used for a frequency to
-    velocity converter with a single input on Phase A when set to true.
+* 'modo contador' -
+     (Bit, RW) Establecer en False (el valor predeterminado) para Quadrature. Establecer en verdadero para
+    Arriba / Abajo o para una sola entrada en la Fase A. Se puede usar para una frecuencia para
+    convertidor de velocidad con una sola entrada en la Fase A cuando se establece en verdadero.
 
-* 'filter' - 
-     (Bit, RW) If set to True (the default), the quadrature counter needs
-    15 clocks to register a change on any of the three input lines (any
-    pulse shorter than this is rejected as noise). If set to False, the
-    quadrature counter needs only 3 clocks to register a change. The
-    encoder sample clock runs at 33 MHz on the PCI Anything I/O cards and 50 MHz
-    on the 7i43.
+* 'filtro' -
+     (Bit, RW) Si se establece en True (el valor predeterminado), el contador de cuadratura necesita
+    15 relojes para registrar un cambio en cualquiera de las tres líneas de entrada (cualquiera
+    pulso más corto que esto se rechaza como ruido). Si se establece en False, el
+    El contador de cuadratura necesita solo 3 relojes para registrar un cambio. los
+    el reloj de muestra del codificador funciona a 33 MHz en las tarjetas PCI Anything I / O y 50 MHz
+    en el 7i43.
 
-* 'index-invert' - 
-     (Bit, RW) If set to True, the rising edge of the Index input pin
-    triggers the Index event (if index-enable is True). If set to False,
-    the falling edge triggers.
+* 'index-invert' -
+     (Bit, RW) Si se establece en True, el borde ascendente del pin de entrada de índice
+    activa el evento Index (si index-enable es True). Si se establece en False,
+    el borde descendente se dispara.
 
-* 'index-mask' - 
-     (Bit, RW) If set to True, the Index input pin only has an effect if
-    the Index-Mask input pin is True (or False, depending on the
-    index-mask-invert pin below).
+* 'index-mask' -
+     (Bit, RW) Si se establece en True, el pin de entrada de índice solo tiene efecto si
+    el pin de entrada de la máscara de índice es verdadero (o falso, dependiendo de
+    pin index-mask-invert a continuación).
 
-* 'index-mask-invert' - 
-     (Bit, RW) If set to True, Index-Mask must be False for Index to have
-    an effect. If set to False, the Index-Mask pin must be True.
+* 'index-mask-invert' -
+     (Bit, RW) Si se establece en True, Index-Mask debe ser False para que Index tenga
+    Un efecto. Si se establece en False, el pin de máscara de índice debe ser True.
 
-* 'scale' - 
-     (Float, RW) Converts from 'count' units to 'position' units. A
-    quadrature encoder will normally have 4 counts per pulse so a 100 PPR
-    encoder would be 400 counts per revolution. In '.counter-mode' a 100
-    PPR encoder would have 100 counts per revelution as it only uses the
-    rising edge of A and direction is B.
+* 'escala' -
+     (Float, RW) Convierte de unidades de 'conteo' a unidades de 'posición'. UN
+    El codificador de cuadratura normalmente tendrá 4 recuentos por pulso, por lo que 100 PPR
+    codificador sería 400 cuentas por revolución. En '.counter-mode' a 100
+    El codificador PPR tendría 100 recuentos por revelación, ya que solo usa
+    borde ascendente de A y dirección es B.
 
-* 'vel-timeout' - 
-     (Float, RW) When the encoder is moving slower than one pulse for each
-    time that the driver reads the count from the FPGA (in the hm2_read()
-    function), the velocity is harder to estimate. The driver can wait
-    several iterations for the next pulse to arrive, all the while
-    reporting the upper bound of the encoder velocity, which can be
-    accurately guessed. This parameter specifies how long to wait for the
-    next pulse, before reporting the encoder stopped. This parameter is in
-    seconds.
+* 'vel-timeout' -
+     (Float, RW) Cuando el codificador se mueve más lento que un pulso por cada
+    hora en que el controlador lee el recuento de la FPGA (en hm2_read ()
+    función), la velocidad es más difícil de estimar. El conductor puede esperar
+    varias iteraciones para que llegue el siguiente pulso, todo el tiempo
+    informar el límite superior de la velocidad del codificador, que puede ser
+    adivinado con precisión. Este parámetro especifica cuánto tiempo esperar para
+    siguiente pulso, antes de informar que el codificador se detuvo. Este parámetro está en
+    segundos.
 
-== 5i25 Configuration
+== Configuración 5i25
 
 === Firmware
 
-The 5i25 firmware comes preloaded for the daughter card it is purchased with.
-So the 'firmware=xxx.BIT' is not part of the hm2_pci configuration string when
-using a 5i25.
+El firmware 5i25 viene precargado para la tarjeta secundaria con la que se compra.
+Entonces el 'firmware = xxx.BIT' no es parte de la cadena de configuración hm2_pci cuando
+usando un 5i25.
 
-=== Configuration
+=== Configuración
 
-Example configurations of the 5i25/7i76 and 5i25/7i77 cards are included in
-the <<sub:configuration-selector,Configuration Selector>>.
+Las configuraciones de ejemplo de las tarjetas 5i25 / 7i76 y 5i25 / 7i77 se incluyen en
+el << sub: selector de configuración, Selector de configuración >>.
 
-If you like to roll your own configuration the following examples show how
-to load the drivers in the HAL file.
+Si le gusta rodar su propia configuración, los siguientes ejemplos muestran cómo
+para cargar los controladores en el archivo HAL.
 
-.5i25 + 7i76 Card
+Tarjeta .5i25 + 7i76
 ----
-# load the generic driver
+# cargar el controlador genérico
 loadrt hostmot2
 
-# load the PCI driver and configure
-loadrt hm2_pci config="num_encoders=1 num_stepgens=5 sserial_port_0=0XXX"
+# cargar el controlador PCI y configurar
+loadrt hm2_pci config = "num_encoders = 1 num_stepgens = 5 sserial_port_0 = 0XXX"
 ----
 
-.5i25 + 7i77 Card
+Tarjeta .5i25 + 7i77
 ----
-# load the generic driver
+# cargar el controlador genérico
 loadrt hostmot2
 
-# load the PCI driver and configure
-loadrt hm2_pci config="num_encoders=6 num_pwmgens=6 sserial_port_0=0XXX"
+# cargar el controlador PCI y configurar
+loadrt hm2_pci config = "num_encoders = 6 num_pwmgens = 6 sserial_port_0 = 0XXX"
 ----
 
-=== SSERIAL Configuration
+=== Configuración SSERIAL
 
-The 'sserial_port_0=0XXX' configuration string sets some options for the smart
-serial daughter card. These options are specific for each daughter card. See
-the Mesa manual for more information on the exact usuage. 
+La cadena de configuración 'sserial_port_0 = 0XXX' establece algunas opciones para la tarjeta secundaria inteligente en serie. Estas opciones son específicas para cada tarjeta secundaria. Consulte el manual de Mesa para obtener más información sobre el uso exacto.
 
-=== 7i77 Limits
+=== 7i77 Límites
 
-The minlimit and maxlimit are bounds on the pin value (in this case the analog
-out value) fullscalemax is the scale factor.
+El límite mínimo y el límite máximo son límites en el valor del pin (en este caso, el valor de salida analógica) fullscalemax es el factor de escala.
 
-These are by default set to the analog in or analog range (most likely in
-volts).
+Estos están configurados por defecto en el rango analógico o analógico (muy probablemente en voltios).
 
-So for example on the 7I77 +-10V analog outputs, the default values are:
+Entonces, por ejemplo, en las salidas analógicas 7I77 + -10V, los valores predeterminados son:
 
 minlimit -10
 maxlimit +10
 maxfullscale 10
 
-If you wanted to say scale the analog out of a channel to IPS for a velocity
-mode servo (say 24 IPS max) you could set the limits like this:
+Si desea decir escalar el análogo de un canal a IPS para un servo de modo de velocidad (digamos 24 IPS máx.), Puede establecer los límites de esta manera:
 
 minlimit -24
 maxlimit +24
 maxfullscale 24
 
-If you wanted to scale the analog out of a channel to RPM for a 0 to 6000 RPM
-spindle with 0-10V control you could set the limits like this:
+Si desea escalar el análogo de un canal a RPM para un eje de 0 a 6000 RPM con control de 0-10 V, puede establecer los límites de esta manera:
 
-minlimit 0
+mínimo 0
 maxlimit 6000
 maxfullscale 6000
-(this would prevent unwanted negative output voltages from being set)
+(esto evitaría que se establezcan voltajes de salida negativos no deseados)
 
-== Example Configurations
+== Configuraciones de ejemplo
 
-Several example configurations for Mesa hardware are included with LinuxCNC.
-The configurations are located in the hm2-servo and hm2-stepper sections of
-the <<sub:configuration-selector,Configuration Selector>>. Typically you
-will need the board installed for the configuration you pick to
-load. The examples are a good place to start and will save you time.
-Just pick the proper example from the LinuxCNC Configuration Selector and
-save a copy to your computer so you can edit it. To see the exact pins
-and parameters that your configuration gave you, open the Show HAL
-Configuration window from the Machine menu, or do dmesg as outlined
-above.
+Se incluyen varias configuraciones de ejemplo para el hardware de Mesa con LinuxCNC.
+Las configuraciones se encuentran en las secciones hm2-servo y hm2-stepper de << sub: configuration-selector, Configuration Selector >>. Por lo general, necesitará la placa instalada para la configuración que elija cargar. Los ejemplos son un buen lugar para comenzar y le ahorrarán tiempo.
+Simplemente elija el ejemplo adecuado del Selector de configuración de LinuxCNC y guarde una copia en su computadora para poder editarlo. Para ver los pines y parámetros exactos que le proporcionó su configuración, abra la ventana Mostrar configuración de HAL en el menú Máquina o haga dmesg como se describe anteriormente.
