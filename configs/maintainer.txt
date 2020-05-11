@@ -5,12 +5,12 @@ Notas generales para el directorio de configuraciones, root/configs.
 
 -------------------------------------------------------
 
-El directorio de configuraciones contiene una jerarquía de las mismas,
+El directorio config contiene una jerarquía configuraciones,
 cada una con uno o más archivos ini, que están destinadas a:
 
 
   1) ejecutar tal cual en una compilación RIP (ejecución en el lugar)
-  2) ejecutarse cuando se copia en un directorio de usuario ~/linuxcnc
+  2) ejecutarse cuando se copia al directorio de usuario ~/linuxcnc
      por el selector de configuración (pickconfig.tcl)
 
 Nota: Casos especiales.
@@ -38,7 +38,7 @@ un archivo .demo sea utilizable.
 El selector de configuración (pickconfig.tcl) recorre las
 configuraciones _de usuario_ existentes en ~/linuxcnc/configs y /configs del
 directorio raíz  de la distribución. Presenta ambas
-configuraciones; de usuario existentes y las configuraciones de muestra.
+configuraciones existentes; de usuario y configuraciones de muestra.
 Cuando se selecciona una configuración de muestra, el selector de configuración:
 
   1) crea un directorio en ~/linuxcnc/configs para el
@@ -49,10 +49,10 @@ Cuando se selecciona una configuración de muestra, el selector de configuració
 
   2) crea un directorio ~/linuxcnc/nc_files (si
      no existe). Crea enlaces en este directorio
-     a las ubicaciones del sistema de los ejemplos y bibliotecas
-     (ejemplos, ngcgui_lib, gladevcp_lib)
+     a las ubicaciones de sistema de los ejemplos y bibliotecas
+     (examples, ngcgui_lib, gladevcp_lib)
 
-  3) edita todos los archivos ini que se copian para que
+  3) edita todos los archivos ini que se copian haciendo que
      [DISPLAY]PROGRAM_PREFIX = ~/linuxcnc/nc_files.
 
 Un proceso similar ocurre para los archivos de demostración (.demo) cuando
