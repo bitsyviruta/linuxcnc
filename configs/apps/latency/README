@@ -1,15 +1,15 @@
 ﻿Programas de evaluación de latencia
 
-latency-test -- prueba estándar para linuxcnc
+latency-test -- Prueba estándar para linuxcnc
 
-latency-plot -- plot de latencias para los hilos base y servo predeterminados
+latency-plot -- Plot de latencias para los hilos base y servo predeterminados
 
 latency-histogram -- Histograma jitter para hilos base y servo predeterminados
 
 latency-histogram-1 -- Histograma jitter para un hilo servo
 
-Nota: Los programas latency-plot y latency-histogram se pueden ejecutar desde una línea de comando de terminal con más opciones. 
-Para ayuda con el uso:
+Nota: Los programas latency-plot y latency-histogram se pueden ejecutar con más opciones desde una línea de comando de terminal. 
+Para ayuda sobre su uso:
 
 latency-plot --help
 latency-histogram --help

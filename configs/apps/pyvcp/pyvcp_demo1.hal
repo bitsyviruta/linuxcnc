@@ -13,12 +13,12 @@ net dial2scale2 pyvcp.scale.4.param_pin <= pyvcp.dial1
 net dial2scale4 pyvcp.scale.5.param_pin <= pyvcp.dial2
 
 # third row of label and led activating radio buttons
-net 1pressed pyvcp.multilabel.0.legend0 <= pyvcp.radio0.one
-net 2pressed pyvcp.multilabel.0.legend1 <= pyvcp.radio0.two
-net 3pressed pyvcp.multilabel.0.legend2 <= pyvcp.radio0.three
-net 4pressed pyvcp.multilabel.1.legend0 <= pyvcp.radio1.four
-net 5pressed pyvcp.multilabel.1.legend1 <= pyvcp.radio1.five
-net 6pressed pyvcp.multilabel.1.legend2 <= pyvcp.radio1.six
+net 1pressed pyvcp.multilabel.0.legend0 <= pyvcp.radio0.uno
+net 2pressed pyvcp.multilabel.0.legend1 <= pyvcp.radio0.dos
+net 3pressed pyvcp.multilabel.0.legend2 <= pyvcp.radio0.tres
+net 4pressed pyvcp.multilabel.1.legend0 <= pyvcp.radio1.cuatro
+net 5pressed pyvcp.multilabel.1.legend1 <= pyvcp.radio1.cinco
+net 6pressed pyvcp.multilabel.1.legend2 <= pyvcp.radio1.seis
 
 net cb0active pyvcp.checkbutton0 => pyvcp.led0
 net cb1active pyvcp.checkbutton1 => pyvcp.led1
