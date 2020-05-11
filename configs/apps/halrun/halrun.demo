@@ -41,7 +41,7 @@ if [ ! -z "$debug" ] ; then
 fi
 
 if $REALTIME status >/dev/null ; then
-  msg="$prog: LinuxCNC is active"
+  msg="$prog: LinuxCNC está activo"
   echo "$msg"
   popup "$msg"
   exit 1
@@ -55,8 +55,8 @@ if [ X"$TERM" = Xxterm ] ; then
   $TERM -geometry 80x40 \
         -sb \
         -fg black -bg ivory2 \
-        -title "halrun (Use Ctrl-L-button, Ctrl_R-button for xterm options)" \
-        -e "echo Working_Directory=$(pwd);echo; $HALRUN -I $HALFILE"
+        -title "halrun (Use Ctrl-L, Ctrl_R para opciones xterm)" \
+        -e "echo Directorio_de_Trabajo=$(pwd);echo; $HALRUN -I $HALFILE"
 else
   $TERM -e "$HALRUN -I $HALFILE"
 fi
