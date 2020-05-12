@@ -5,7 +5,7 @@
 #
 #        tcl/tkemc.tcl -ini emc.ini
 #
-# Not: tkemc.tcl no necesita ser ejecutado como 'root'.
+# Nota: tkemc.tcl no necesita ser ejecutado como 'root'.
 
 # Buffers
 # Name                  Type    Host             size    neut?   (old)   buffer# MP ---
