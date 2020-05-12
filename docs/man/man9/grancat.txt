@@ -1,0 +1,393 @@
+﻿axis.L.eoffset-clear IN BIT
+axis.L.eoffset-counts IN S32
+axis.L.eoffset-enable IN BIT
+axis.L.eoffset-request OUT FLOAT
+axis.L.eoffset-scale IN FLOAT
+axis.L.eoffset OUT FLOAT
+axis.L.jog-accel-fraction IN FLOAT
+axis.L.jog-counts IN S32
+axis.L.jog-enable IN BIT
+axis.L.jog-scale IN FLOAT
+axis.L.jog-vel-mode IN BIT
+axis.L.kb-jog-active OUT BIT
+axis.L.pos-cmd OUT FLOAT
+axis.L.teleop-pos-cmd OUT FLOAT
+axis.L.teleop-tp-enable OUT BIT
+axis.L.teleop-vel-cmd OUT FLOAT
+axis.L.teleop-vel-lim OUT FLOAT
+axis.L.wheel-jog-active OUT BIT
+bb_gpio.pN.in-NN-invert bit in
+bb_gpio.pN.in-NN bit out
+bb_gpio.pN.out-NN-invert bit in
+bb_gpio.pN.out-NN bit out
+bb_gpio.read  
+bb_gpio.userledN-invert bit in
+bb_gpio.userledN bit in
+bb_gpio.write  
+classicladder.0.floatin-NN IN float
+classicladder.0.floatout-NN OUT float
+classicladder.0.hide_gui IN bit
+classicladder.0.in-NN IN bit
+classicladder.0.ladder-state RO s32
+classicladder.0.out-NN OUT bit
+classicladder.0.refresh.time RO s32
+classicladder.0.refresh.tmax RW s32
+classicladder.0.refresh FP 
+classicladder.0.s32in-NN IN s32
+classicladder.0.s32out-NN OUT s32
+counter.N.counts s32 out
+counter.N.index-enable bit io
+counter.N.phase-A bit in
+counter.N.phase-Z bit in
+counter.N.position-scale float rw
+counter.N.position float out
+counter.N.rawcounts s32 ro
+counter.N.reset bit io
+counter.N.velocity float out
+counter.capture-position  
+counter.update-counters  
+debounce.G.F.in bit in
+debounce.G.F.out bit out
+debounce.G.delay s32 rw
+debounce.G  
+encoder.N.capture-position.tmax s32 rw
+encoder.N.counter-mode bit io
+encoder.N.counter-mode bit rw
+encoder.N.counts-latched s32 out
+encoder.N.counts s32 out
+encoder.N.index-enable bit io
+encoder.N.latch-falling bit in
+encoder.N.latch-input bit in
+encoder.N.latch-rising bit in
+encoder.N.min-speed-estimate float in
+encoder.N.phase-A bit in
+encoder.N.phase-B bit in
+encoder.N.phase-Z bit in
+encoder.N.position-interpolated float out
+encoder.N.position-latched float out
+encoder.N.position-scale float io
+encoder.N.position float out
+encoder.N.rawcounts s32 out
+encoder.N.reset bit in
+encoder.N.velocity-rpm float out
+encoder.N.velocity float out
+encoder.N.x4-mode bit io
+encoder.capture-position  
+encoder.N.  
+encoder.update-counters  
+encoder-ratio.N.enable bit in
+encoder-ratio.N.error float out
+encoder-ratio.N.master-A bit in
+encoder-ratio.N.master-B bit in
+encoder-ratio.N.slave-A bit in
+encoder-ratio.N.slave-B bit in
+encoder-ratio.N.  
+encoder-ratio.N.master-ppr u32 rw
+encoder-ratio.N.master-teeth u32 rw
+encoder-ratio.N.slave-ppr u32 rw
+encoder-ratio.N.slave-teeth u32 rw
+encoder-ratio.sample  
+encoder-ratio.update  
+genhexkins.base.N.x  
+genhexkins.base.N.y  
+genhexkins.base.N.z  
+genhexkins.base-n.N.x  
+genhexkins.base-n.N.y  
+genhexkins.base-n.N.z  
+genhexkins.convergence-criterion  
+genhexkins.correction.N  
+genhexkins.last-iterations  
+genhexkins.limit-iterations  
+genhexkins.max-error  
+genhexkins.max-iterations  
+genhexkins.platform.N.x  
+genhexkins.platform.N.y  
+genhexkins.platform.N.z  
+genhexkins.platform-n.N.x  
+genhexkins.platform-n.N.y  
+genhexkins.platform-n.N.z  
+genhexkins.screw-lead  
+genhexkins.spindle-offset  
+genhexkins.tool-offset  
+genserkins.A-N  
+genserkins.ALPHA-N  
+genserkins.D-N  
+joint.N.active OUT BIT
+joint.N.amp-enable-out OUT BIT
+joint.N.amp-fault-in IN BIT
+joint.N.backlash-corr OUT FLOAT
+joint.N.backlash-filt OUT FLOAT
+joint.N.backlash-vel OUT FLOAT
+joint.N.coarse-pos-cmd OUT FLOAT
+joint.N.error OUT BIT
+joint.N.f-error-lim OUT FLOAT
+joint.N.f-error OUT FLOAT
+joint.N.f-errored OUT BIT
+joint.N.faulted OUT BIT
+joint.N.free-pos-cmd OUT FLOAT
+joint.N.free-tp-enable OUT BIT
+joint.N.free-vel-lim OUT FLOAT
+joint.N.home-state OUT S32
+joint.N.home-sw-in IN BIT
+joint.N.homed OUT BIT
+joint.N.homing OUT BIT
+joint.N.in-position OUT BIT
+joint.N.index-enable IO BIT
+joint.N.jog-accel-fraction IN FLOAT
+joint.N.jog-counts IN S32
+joint.N.jog-enable IN BIT
+joint.N.jog-scale IN FLOAT
+joint.N.jog-vel-mode IN BIT
+joint.N.joint-acc-cmd OUT FLOAT
+joint.N.joint-vel-cmd OUT FLOAT
+joint.N.kb-jog-active OUT BIT
+joint.N.motor-offset OUT FLOAT
+joint.N.motor-pos-cmd OUT FLOAT
+joint.N.motor-pos-fb IN FLOAT
+joint.N.neg-hard-limit OUT BIT
+joint.N.neg-lim-sw-in IN BIT
+joint.N.pos-cmd OUT FLOAT
+joint.N.pos-fb OUT FLOAT
+joint.N.pos-hard-limit OUT BIT
+joint.N.pos-lim-sw-in IN BIT
+joint.N.unlock OUT BIT
+joint.N.wheel-jog-active OUT BIT
+joint.N.is-unlocked IN BIT
+joint.N.posthome-cmd.  
+lcd.NN.contrast float in
+lcd.NN.decimal-separator u32 rw
+lcd.NN.out u32 out
+lcd.NN.page_num u32 in
+lcd.NN.page.PP.arg.NN float/s32/u32/bit in
+lcd  
+lineardeltakins.L float in
+lineardeltakins.R float in
+matrix_kb.N.col-CC-in bit in
+matrix_kb.N.key_rollover u32 r/w
+matrix_kb.N.key.rRcC bit out
+matrix_kb.N.keycode u32 io
+matrix_kb.N.negative-logic bit r/w
+matrix_kb.N.row-RR-out bit out
+matrix_kb.N  
+motion-command-handler.time OUT S32
+motion-command-handler.tmax,tmax-increasedare created for
+motion-controller.time OUT S32
+motion-controller.tmax,tmax-increased  
+motion.adaptive-feed IN FLOAT
+motion.analog-in-NN IN FLOAT
+motion.analog-out-NN OUT FLOAT
+motion.coord-error OUT BIT
+motion.coord-mode OUT BIT
+motion.current-vel OUT FLOAT
+motion.debug-*  
+motion.digital-in-NN IN BIT
+motion.digital-out-NN OUT BIT
+motion.distance-to-go OUT FLOAT
+motion.enable IN BIT
+motion.eoffset-active OUT BIT
+motion.eoffset-limited OUT BIT
+motion.feed-hold IN BIT
+motion.feed-inhibit IN BIT
+motion.homing-inhibit IN BIT
+motion.in-position OUT BIT
+motion.motion-enabled OUT BIT
+motion.motion-type OUT S32
+motion.on-soft-limit OUT BIT
+motion.probe-input IN BIT
+motion.program-line OUT S32
+motion.requested-vel OUT FLOAT
+motion.servo.last-period OUT U32
+motion.teleop-mode OUT BIT
+motion.tooloffset.L OUT FLOAT
+motion-command-handler.tmax-increased RO S32
+motion-command-handler.tmax RW S32
+motion-command-handler  
+motion-controller.tmax-increased RO BIT
+motion-controller.tmax RW S32
+mux-gen.N.elapsed float r
+mux-gen.N.selected s32 r
+mux-gen.NN.debounce-us u32 in
+mux-gen.NN.in-[bit/float/s32/u32]-MM variable-type in
+mux-gen.NN.out-[bit/float/s32/u32] variable-type out
+mux-gen.NN.sel-bitMM bit in
+mux-gen.NN.sel-int u32 in
+mux-gen.NN.suppress-no-input bit in
+mux-gen.NN  
+num_3pwmgens  
+num_aio:  
+num_bspis  
+num_chan=0  
+num_dio:  
+num_dplls  
+num_encoders  
+num_inputs-1.  
+num_joints:  
+num_leds  
+num_pwmgens  
+num_resolvers  
+num_spindles:  
+num_ssrs  
+num_stepgens  
+opto_ac5.[BOARDNUMBER].led[NUMBER] OUT bit
+opto_ac5.[BOARDNUMBER].port[PORTNUMBER].in-[PINNUMBER] OUT bit
+opto_ac5.[BOARDNUMBER].port[PORTNUMBER].in-[PINNUMBER]-not OUT bit
+opto_ac5.[BOARDNUMBER].port[PORTNUMBER].out-[PINNUMBER] IN bit
+opto_ac5.[BOARDNUMBER].port[PORTNUMBER].out-[PINNUMBER]-invert W bit
+opto_ac5.0.digital-read  
+opto_ac5.0.digital-write  
+pid.N.bias float in
+pid.N.command-deriv float in
+pid.N.command float in
+pid.N.commandD float ro
+pid.N.commandDD float ro
+pid.N.commandDDD float ro
+pid.N.deadband float in
+pid.N.Dgain float in
+pid.N.do-pid-calcs  
+pid.N.enable bit in
+pid.N.error-previous-target bit in
+pid.N.error float out
+pid.N.errorD float ro
+pid.N.errorI float ro
+pid.N.feedback-deriv float in
+pid.N.feedback float in
+pid.N.FF0 float in
+pid.N.FF1 float in
+pid.N.FF2 float in
+pid.N.FF3 float in
+pid.N.Igain float in
+pid.N.index-enable bit in
+pid.N.maxcmdD float in
+pid.N.maxcmdDD float in
+pid.N.maxcmdDDD float in
+pid.N.maxerror float in
+pid.N.maxerrorD float in
+pid.N.maxerrorI float in
+pid.N.maxoutput float in
+pid.N.output float out
+pid.N.Pgain float in
+pid.N.saturated-count s32 out
+pid.N.saturated-s float out
+pid.N.saturated bit out
+pid.N.  
+pumakins.A2  
+pumakins.A3  
+pumakins.D3  
+pumakins.D4  
+pwmgen.N.curr-dc float out
+pwmgen.N.dir bit out
+pwmgen.N.dither-pwm bit in/out
+pwmgen.N.down bit out
+pwmgen.N.enable bit in
+pwmgen.N.max-dc float in/out
+pwmgen.N.min-dc float in/out
+pwmgen.N.offset float in/out
+pwmgen.N.pwm-freq float in/out
+pwmgen.N.pwm bit out
+pwmgen.N.scale float in/out
+pwmgen.N.up bit out
+pwmgen.N.value float in
+pwmgen.make-pulses  
+pwmgen.update  
+rosekins.bigtheta_degrees float out
+rosekins.revolutions float out
+rosekins.theta_degrees float out
+sampler.N.curr-depth s32 output
+sampler.N.enable bit input
+sampler.N.full bit output
+sampler.N.overruns s32 read/write
+sampler.N.pin.M input 
+sampler.N.sample-num s32 read/write
+scarakins.D1  
+scarakins.D2  
+scarakins.D3  
+scarakins.D4  
+scarakins.D5  
+scarakins.D6  
+siggen.N.amplitude float in
+siggen.N.clock bit out
+siggen.N.cosine float out
+siggen.N.frequency float in
+siggen.N.offset float in
+siggen.N.reset bit in
+siggen.N.sawtooth float out
+siggen.N.sine float out
+siggen.N.square float out
+siggen.N.triangle float out
+siggen.N.update  
+siggen.N.  
+sim-encoder.N.phase-A bit out
+sim-encoder.N.phase-B bit out
+sim-encoder.N.phase-Z bit out
+sim-encoder.N.ppr u32 rw
+sim-encoder.N.scale float rw
+sim-encoder.N.speed float in
+sim-encoder.make-pulses  
+sim-encoder.N.  
+sim-encoder.update-speed  
+spindle.M.at-speed IN BIT
+spindle.M.forward OUT BIT
+spindle.M.index-enable io BIT
+spindle.M.inhibit IN BIT
+spindle.M.is-oriented IN BIT
+spindle.M.locked OUT BIT
+spindle.M.on OUT BIT
+spindle.M.orient-angle OUT FLOAT
+spindle.M.orient-fault IN S32
+spindle.M.orient-mode OUT BIT
+spindle.M.orient OUT BIT
+spindle.M.reverse OUT BIT
+spindle.M.revs IN FLOAT
+spindle.M.speed-cmd-rps FLOAT OUT
+spindle.M.speed-in IN FLOAT
+spindle.M.speed-out-abs OUT FLOAT
+spindle.M.speed-out-rps-abs OUT FLOAT
+spindle.M.speed-out-rps OUT FLOAT
+spindle.M.speed-out OUT FLOAT
+spindle.M.amp-fault-in IN BIT
+spindle.Make OUT BIT
+sserial_port_N  
+stepgen_width  
+stepgen.N.counts s32 out
+stepgen.N.dir bit out
+stepgen.N.dirdelay u32 rw
+stepgen.N.dirhold u32 rw
+stepgen.N.dirsetup u32 rw
+stepgen.N.down bit out
+stepgen.N.enable bit in
+stepgen.N.frequency float ro
+stepgen.N.maxaccel float rw
+stepgen.N.maxvel float rw
+stepgen.N.phase-Athruphase-E bit out
+stepgen.N.position-cmd float in
+stepgen.N.position-fb float out
+stepgen.N.position-scale float rw
+stepgen.N.rawcounts s32 ro
+stepgen.N.step bit out
+stepgen.N.steplen u32 rw
+stepgen.N.stepspace u32 rw
+stepgen.N.up bit out
+stepgen.N.velocity-cmd float in
+stepgen.capture-position  
+stepgen.make-pulses  
+stepgen.update-freq  
+supply.N._q bit out
+supply.N._variable float out
+supply.N.d bit rw
+supply.N.q bit out
+supply.N.update  
+supply.N.value bit rw
+supply.N.variable float out
+tripodkins.Bx  
+tripodkins.Cx  
+tripodkins.Cy  
+watchdog.enable-in bit in
+watchdog.input-n bit in
+watchdog.ok-out bit out
+watchdog.timeout-n float in
+wsum.N.bit.M.in bit in
+wsum.N.bit.M.weight s32 rw
+wsum.N.hold bit in
+wsum.N.offset s32 rw
+wsum.N.sum s32 out
+
