@@ -1,5 +1,5 @@
 Esta configuración es una máquina paso a paso simulada con la adición de conexiones ClassicLadder a algunas de las IO de LinuxCNC.
 
-El programa inicial de escalera incluye varios posibles arreglos de e-stop y una bobina de lubricación temporizada. La escalera de lubricación incluye una carrera de detección que observa el nivel de lubricación o la presión de lubricación y advierte sobre un fallo en la condición de lubricación.
+El programa inicial de escalera incluye varias disposiciones posibles de e-stop y una bobina para lubricación temporizada. La escalera de lubricación incluye un sensor de detección que observa el nivel o la presión de lubricación y advierte sobre un fallo en la condición de lubricación.
 
 Esta integración de escalera con HAL le permitirá expandir la interfaz IO a una fresadora con controles de husillo y cambiador de herramientas.
