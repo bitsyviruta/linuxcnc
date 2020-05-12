@@ -5,9 +5,9 @@ Archivos principales de Axis gui sim ini:
 axis.ini		demo básica (pulgadas)
 axis_9axis.ini 		9 ejes
 axis_mm.ini		demo básica  (mm)
-canterp.ini		Demostración de un intérprete que no sea gcode
-gantry.ini 		gantry demo
-gantry_mm.ini 		gantry demo (mm)
+canterp.ini		Demostración de un intérprete no-gcode
+gantry.ini 		demo portico
+gantry_mm.ini 		demo portico (mm)
 histogram_demo.ini 	ejemplos hal-histogram 
 historical_lathe.ini 	configurado con 3 articulaciones (XYZ, con Y sin usar)
 ini_hal_demo.ini  	demo ini pines hal
@@ -15,12 +15,12 @@ lathe.ini		demo torno
 ldelta.ini 		robot delta lineal
 ldelta_demo.ini 	robot delta lineal con gui para jog
 minimal_xyz.ini 	conjunto mínimo de elementos de configuración
-perfil_axis.ini 	perfil
+profile_axis.ini 	perfil
 random_tc.ini		cambiador aleatorio de herramientas
 rdelta.ini		robot delta rotativo 
 
 Seleccione uno de estos si no tiene una máquina funcional pero desea editar algunas cosas de configuración básica o
-jugar con una de las pantallas de LinuxCNC.
+explorar una de las pantallas de LinuxCNC.
 
 Se proporcionan configuraciones adicionales en los subdirectorios.
 

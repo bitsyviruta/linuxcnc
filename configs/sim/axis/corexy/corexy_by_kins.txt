@@ -8,7 +8,7 @@ $ man kins para más información
 Notas:
 
 1) Usar corexykins requiere
-interruptores home que funcionen en Posiciones
+interruptores home que funcionen en posiciones
 de motor para las articulaciones 0 y 1
 
 2) Un método alternativo para la
