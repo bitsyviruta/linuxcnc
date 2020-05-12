@@ -5,7 +5,7 @@ Archivos principales de Axis gui sim ini:
 axis.ini		demo básica (pulgadas)
 axis_9axis.ini 		9 ejes
 axis_mm.ini		demo básica  (mm)
-canterp.ini		Demostración de un intérprete que no sea gcode
+canterp.ini		Demostración de un intérprete no-gcode
 gantry.ini 		gantry demo
 gantry_mm.ini 		gantry demo (mm)
 histogram_demo.ini 	ejemplos hal-histogram 
