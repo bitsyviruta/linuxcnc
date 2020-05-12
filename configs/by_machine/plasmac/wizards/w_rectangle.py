@@ -3,7 +3,7 @@
 '''
 w_rectangle.py
 
-Copyright (C) 2019  Phillip A Carter
+Copyright (C) 2019, 2020  Phillip A Carter
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -26,6 +26,7 @@ import time
 import math
 import linuxcnc
 import shutil
+import hal
 from subprocess import Popen,PIPE
 
 class rectangle:
@@ -49,6 +50,7 @@ class rectangle:
             Popen('axis-remote {}'.format(fName), stdout = PIPE, shell = True)
         elif self.gui == 'gmoccapy':
             self.c = linuxcnc.command()
+            self.c.program_open('blank.ngc')
             self.c.program_open(fName)
         else:
             print('Unknown GUI in .ini file')
@@ -90,6 +92,7 @@ class rectangle:
         else:
             inTmp = open(self.fTmp, 'r')
             outWiz = open(self.fWizard, 'w')
+            outWiz.write('(preamble)\n')
             outWiz.write('{}\n'.format(self.preamble))
             outWiz.write('f#<_hal[plasmac.cut-feed-rate]>\n')
             for line in inTmp:
@@ -166,6 +169,7 @@ class rectangle:
                         break
                     outNgc.write(line)
             else:
+                outNgc.write('(preamble)\n')
                 outNgc.write('{}\n'.format(self.preamble))
                 outNgc.write('f#<_hal[plasmac.cut-feed-rate]>\n')
             outTmp.write('\n(wizard rectangle)\n')
@@ -295,6 +299,7 @@ class rectangle:
             outNgc.close()
             self.load_file(self.fNgc)
             self.add.set_sensitive(True)
+            hal.set_p('plasmac_run.preview-tab', '1')
         else:
             msg = ''
             if xL <= 0:

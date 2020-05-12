@@ -3,7 +3,7 @@
 '''
 plasmac_config.py
 
-Copyright (C) 2019  Phillip A Carter
+Copyright (C) 2019, 2020  Phillip A Carter
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
@@ -42,23 +42,27 @@ class HandlerClass:
     def configure_widgets(self):
         # set_digits = number of digits after decimal
         # configure  = (value, lower limit, upper limit, step size, 0, 0)
+        self.builder.get_object('version-label').set_text(self.plasmacVersion)
         self.builder.get_object('arc-fail-delay').set_digits(1)
-        self.builder.get_object('arc-fail-delay-adj').configure(1,0.1,60,0.1,0,0)
-        self.builder.get_object('arc-ok-low').set_digits(1)
-        self.builder.get_object('arc-ok-low-adj').configure(0,0,200,0.5,0,0)
-        self.builder.get_object('arc-ok-high').set_digits(1)
-        self.builder.get_object('arc-ok-high-adj').configure(0,0,200,0.5,0,0)
+        self.builder.get_object('arc-fail-delay-adj').configure(3,0.1,60,0.1,0,0)
+        self.builder.get_object('arc-ok-low').set_digits(0)
+        self.builder.get_object('arc-ok-low-adj').configure(30,0,100,1,0,0)
+        self.builder.get_object('arc-ok-high').set_digits(0)
+        self.builder.get_object('arc-ok-high-adj').configure(99999,0,99999,1,0,0)
         self.builder.get_object('arc-max-starts').set_digits(0)
         self.builder.get_object('arc-max-starts-adj').configure(3,1,9,1,0,0)
         self.builder.get_object('arc-restart-delay').set_digits(0)
-        self.builder.get_object('arc-restart-delay-adj').configure(1,1,60,1,0,0)
-        self.builder.get_object('arc-voltage-offset').set_digits(2)
-        self.builder.get_object('arc-voltage-offset-adj').configure(0,-999999,999999,0.01,0,0)
+        self.builder.get_object('arc-restart-delay-adj').configure(3,1,60,1,0,0)
+        self.builder.get_object('arc-voltage-offset').set_digits(3)
+        self.builder.get_object('arc-voltage-offset-adj').configure(0,-999999,999999,0.001,0,0)
         self.builder.get_object('arc-voltage-scale').set_digits(6)
         self.builder.get_object('arc-voltage-scale-adj').configure(1,-9999,9999,0.000001,0,0)
-        self.builder.get_object('centre-spot-time').set_digits(0)
-        self.builder.get_object('centre-spot-time-adj').configure(0,0,999,1,0,0)
-        self.builder.get_object('centre-spot-time').set_value(0)
+        self.builder.get_object('spotting-threshold').set_digits(0)
+        self.builder.get_object('spotting-threshold-adj').configure(0,0,199,1,0,0)
+        self.builder.get_object('spotting-threshold').set_value(0.0)
+        self.builder.get_object('spotting-time').set_digits(0)
+        self.builder.get_object('spotting-time-adj').configure(0,0,9999,1,0,0)
+        self.builder.get_object('spotting-time').set_value(0)
         self.builder.get_object('cornerlock-threshold').set_digits(0)
         self.builder.get_object('cornerlock-threshold-adj').configure(90,1,99,1,0,0)
         self.builder.get_object('kerfcross-override').set_digits(0)
@@ -77,14 +81,12 @@ class HandlerClass:
         self.builder.get_object('pid-d-gain').set_value(0)
         self.builder.get_object('scribe-arm-delay').set_digits(1)
         self.builder.get_object('scribe-arm-delay-adj').configure(0,0,9,0.1,0,0)
-        self.builder.get_object('scribe-start-delay').set_digits(1)
-        self.builder.get_object('scribe-start-delay-adj').configure(0,0,9,0.1,0,0)
+        self.builder.get_object('scribe-on-delay').set_digits(1)
+        self.builder.get_object('scribe-on-delay-adj').configure(0,0,9,0.1,0,0)
         self.builder.get_object('thc-delay').set_digits(1)
         self.builder.get_object('thc-delay-adj').configure(1.5,0,9,0.1,0,0)
         self.builder.get_object('thc-threshold').set_digits(2)
         self.builder.get_object('thc-threshold-adj').configure(1,0.05,9,0.01,0,0)
-        self.builder.get_object('torch-off-delay').set_digits(1)
-        self.builder.get_object('torch-off-delay-adj').configure(0,0,9,0.1,0,0)
         if self.i.find('TRAJ', 'LINEAR_UNITS').lower() == 'mm':
             self.builder.get_object('float-switch-travel').set_digits(2)
             self.builder.get_object('float-switch-travel-adj').configure(1.5,0,25,0.01,0,0)
@@ -122,7 +124,7 @@ class HandlerClass:
             self.builder.get_object('skip-ihs-distance-adj').configure(0,0,99,.1,0,0)
             self.builder.get_object('skip-ihs-distance').set_value(0)
         else:
-            print '*** incorrect [TRAJ]LINEAR_UNITS in ini file'
+            print('*** incorrect [TRAJ]LINEAR_UNITS in ini file')
 
     def periodic(self):
         units = hal.get_value('halui.machine.units-per-mm')
@@ -211,7 +213,8 @@ class HandlerClass:
             theme = self.i.find('PLASMAC', 'THEME') or gtk.settings_get_default().get_property('gtk-theme-name')
             font = self.i.find('PLASMAC', 'FONT') or gtk.settings_get_default().get_property('gtk-font-name')
             fSize = int(font.split()[1])
-            font = '{} {}'.format(font.split()[0],fSize - 1 if fSize < 12 else fSize - 2)
+#            font = '{} {}'.format(font.split()[0],fSize - 1 if fSize < 12 else fSize - 2)
+            font = '{} {}'.format(font.split()[0],fSize)
             gtk.settings_get_default().set_property('gtk-font-name', font)
         gtk.settings_get_default().set_property('gtk-theme-name', theme)
 
@@ -310,18 +313,6 @@ class HandlerClass:
         else:
             print('*** plasmac run tab configuration file, {} is invalid ***'.format(runFile))
 
-    def check_hal_connections(self):
-        level = int(self.i.find('TRAJ', 'SPINDLES')) or 1
-        if hal.get_value('plasmac.multi-tool'):
-            if level >= 2:
-                hal.new_sig('plasmac:scribe-is-on',hal.HAL_BIT)
-                hal.connect('spindle.1.on','plasmac:scribe-is-on')
-                hal.connect('plasmac.scribe-on','plasmac:scribe-is-on')
-            if level == 3:
-                hal.new_sig('plasmac:centre-spot-is-on',hal.HAL_BIT)
-                hal.connect('spindle.2.on','plasmac:centre-spot-is-on')
-                hal.connect('plasmac.centre-spot-on','plasmac:centre-spot-is-on')
-
     def idle_changed(self, halpin):
         if not halpin.get():
             for key in sorted(self.configDict.iterkeys()):
@@ -329,6 +320,9 @@ class HandlerClass:
                     self.builder.get_object(key).update()
 
     def __init__(self, halcomp,builder,useropts):
+
+        self.plasmacVersion = 'PlasmaC v0.124'
+
         self.halcomp = halcomp
         self.builder = builder
         self.i = linuxcnc.ini(os.environ['INI_FILE_NAME'])
@@ -350,7 +344,6 @@ class HandlerClass:
         self.builder.get_object('probe-feed-rate-adj').set_upper(self.builder.get_object('setup-feed-rate').get_value())
         self.load_settings()
         self.set_theme()
-        self.check_hal_connections()
         gobject.timeout_add(100, self.periodic)
 
 def get_handlers(halcomp,builder,useropts):
