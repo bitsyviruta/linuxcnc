@@ -1,22 +1,22 @@
-(info: Multiple circles at radius R, use 0 for current val)
-;Notes:
-;  1) z axis not altered (remains at current z)
-;  2) for  inside polygon cutting (fnum==0):
-;     start with rfraction negative
-;     and gradually increase rfraction to zero as program runs
-;     multiple circles
-;  3) for outside polygon cutting (fnum==1):
-;     start with rfraction positive
-;     and gradually decrease to zero as program runs multiple
-;     circles
-;
-; Alternate method for polygons:
-;  1) use #<radius>=0 and jog to safe starting position
-;  2) use #<revs>=1, run progam for one revolution
-;  3) Run program repeatedly and manually jog x (radius)
-;     before each program start to increase/decrease
-;     current radius for inside/outside polygon respectively
 
+(info: múltiples círculos en el radio R, use 0 para el valor actual)
+; Notas:
+; 1) eje z no alterado (permanece en z actual)
+; 2) para corte interior de polígonos (fnum == 0):
+; comenzar con rfracción negativa
+; y gradualmente aumente la fracción a cero a medida que el programa ejecuta 
+; círculos
+; 3) para corte de polígono exterior (fnum == 1):
+; comenzar con rfracción positiva
+; y gradualmente disminuye a cero a medida que el programa ejecuta
+; círculos
+;
+; Método alternativo para polígonos:
+; 1) use #<radius>=0 y trote hasta la posición de inicio segura
+; 2) use #<revs>=1, ejecute el programa para una revolución
+; 3) Ejecute el programa repetidamente y haga jog manualmente x (radio)
+; antes de que cada programa comience a aumentar/disminuir
+; radio actual para polígono interior/exterior respectivamente
 o<circles> sub
      #<radius> = #1 (=  1 R  0==>current)
      #<aspeed> = #2 (=  8 aspeed: RPM)
