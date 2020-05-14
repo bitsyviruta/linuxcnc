@@ -2,7 +2,7 @@ LÉAME para autores de documentos
 
 Agregar archivos:
 -----------------
-Para agregar un archivo a los documentos,se deben actualizar Submakefile, docs.xml e index.tmpl.
+Para agregar un archivo a los documentos, se deben actualizar Submakefile, docs.xml e index.tmpl.
 
 docs.xml se usa para crear los botones "anterior" y "siguiente" en la parte superior de cada documento html individual.
 En general, los documentos debe coincidir con el orden de index.tmpl
@@ -16,15 +16,15 @@ invoque src/configure, y ejecute make desde src
 Notas sobre los dibujos:
 ------------------------
 
-N.T. Muchos de los inconvenientes que aqui se comentan estan superados en las versiones
-actuales de los correspondientes programas.
+-N.T. Muchos de los inconvenientes que aqui se comentan estan superados en las versiones
+actuales de los correspondientes programas.N.T.-
 
 Muchos de los documentos incluyen dibujos. La mayoría de ellos fueron creados
 originalmente con EasyCad, una aplicación de Windows no gratuita, y luego exportados a archivos .eps
 e incluido en los documentos. Los archivos originales 'fuente' (formato EasyCad .FC7)
 no se podían usar en un sistema gratuito. Para solucionar este problema, todos
 los archivos fuente se han convertido a archivos .dxf y se han agregado a git.
-Los archivos .dxf pueden editarse con múltiples paquetes CAD y servir como
+Los archivos .dxf pueden editarse con diferentes paquetes CAD y servir como
 archivos 'fuente' para futuros cambios en los dibujos. Se pueden convertir
 de .dxf a postscript (no .eps) usando Qcad, que está disponible como
 paquete ubuntu (y creo que también está disponible para debian).
@@ -96,18 +96,18 @@ No hay un paso de instalación, el ejecutable se descarga en el directorio de co
 Tampoco hay una página man, pero al ejecutarla sin argumentos imprime las siguiente
 instrucciones de uso:
 
-**************************************************************************
-Uso: vec2web <archivo de entrada> <archivo de salida> [opciones]         *
-Donde las opciones son:                                                  *
-        -x # 	tamaño x máximo para el mapa de bits de salida en píxeles*
-        -y # 	tamaño máximo y para el mapa de bits de salida en píxeles*
-        -b 	negro/blanco en lugar de usar colores                        * 
-        -o [l|p]orientación para salida PS (horizontal o vertical)       *
-        -s ..	tamaño de página para salida PS (A4, A5)                 *
-									                                     *
-p.ej. vec2web drawing.dxf drawing.png					                 *
-        convierte drawing.dxf en un gráfico .png			             *
-**************************************************************************
+
+Uso: vec2web <archivo de entrada> <archivo de salida> [opciones]
+Donde las opciones son:
+        -x # 	tamaño x máximo para el mapa de bits de salida en píxeles
+        -y # 	tamaño máximo y para el mapa de bits de salida en píxeles
+        -b 	negro/blanco en lugar de usar colores
+        -o [l|p]orientación para salida PS (horizontal o vertical)
+        -s ..	tamaño de página para salida PS (A4, A5)
+								
+p.ej. vec2web drawing.dxf drawing.png
+        convierte drawing.dxf en un gráfico .png
+
 
 Mis intentos iniciales de usar vec2web dieron como resultado la conversion de
 las partes gráficas del dibujo, pero todo el texto se perdió. No sé si 
@@ -138,7 +138,7 @@ paquete linuxcnc/linuxcnc-sim.
 N.T. Actualmente, control.in esta dividido en control.top.in y control.bottom.in, siendo
 este ultimo el que contiene los parrafos Package:
 
-Agregue el nuevo idioma a la lista en variable DOCS_PACKAGES en debian/configure.
+Agregue el nuevo idioma a la lista en la variable DOCS_PACKAGES en debian/configure.
 Si hay un paquete texlive-lang-$NEWLANGUAGE para su nuevo idioma,
 agréguelo a todas las líneas EXTRA_BUILD apropiadas en debian/configure.
 N.T La variable que contiene los texlive-lang-$NEWLANGUAGE es DOC_DEPENDS
