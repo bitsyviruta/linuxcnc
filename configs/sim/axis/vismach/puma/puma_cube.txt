@@ -11,3 +11,19 @@ Usage:
 Example gocde (.ngc) files are:
 ./puma_cube.ngc
 ./puma_seam_weld.ngc
+
+
+puma_cube.ini - Archivo de configuración para un robot tipo PUMA usando el módulo de cinemática específica pumakins. Esta configuración proporciona un archivo gcode de inicio ([DISPLAY]OPEN)FILE) que establece los desplazamientos de coordenadas utilizables para trazar un contorno de un cubo. La velocidad, la aceleración y los límites posicionales se establecen grandes para mayor comodidad y no son representativos de una máquina real.
+
+Uso:
+  # Seleccionar y ejecutar puma_cube
+
+  F1 --------- Estop Off
+  F2 --------- Máquina encendida
+  Ctrl-Home - Home Todo
+  R ---------- Ejecutar
+
+Los archivos de ejemplo de gocde (.ngc) son:
+./puma_cube.ngc
+./puma_seam_weld.ngc
+
