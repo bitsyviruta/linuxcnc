@@ -66,9 +66,9 @@ install: build
 	mkdir -p debian/tmp
 
 	# La versión 0.22 y más reciente del programa de validación de archivos de escritorio
-	# (en Jessie y versiones posteriores) puede manejar archivos múltiples especificados
+	# (en Jessie y versiones posteriores) puede manejar múltiples archivos especificados
 	# en la línea de comando. La versión 0.20 (en Wheezy) dice que puede,
-	# pero no lo hace. Así que de los archivos uno por uno.
+	# pero no lo hace. Daremos los archivos uno por uno.
 	for F in $(shell find debian/extras/ -name *.desktop); do \
 		desktop-file-validate $$F; \
 	done

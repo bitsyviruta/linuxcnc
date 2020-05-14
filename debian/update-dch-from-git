@@ -11,7 +11,7 @@ githelper $1
 
 GIT_VERSION=$(scripts/get-version-from-git $GIT_BRANCH)
 if [ $? -ne 0 ]; then
-    echo "error determinando version!"
+    echo "error al determinar version!"
     exit 1
 fi
 
