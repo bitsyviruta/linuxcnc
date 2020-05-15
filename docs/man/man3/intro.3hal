@@ -5,11 +5,11 @@ hal \- Introducción a la API HAL
 
 .SH DESCRIPCIÓN
 
-HAL significa Capa de abstracción de hardware y LinuxCNC lo utiliza para transferir
+HAL significa Capa de abstracción de hardware y LinuxCNC la utiliza para transferir
 datos en tiempo real desde y hacia dispositivos de E/S y otros módulos de bajo nivel.
 
-\fBhal.h\fR define la API y las estructuras de datos utilizadas por HAL. Este archivo es
-incluido en componentes HAL en tiempo real y en tiempo no real. HAL usa la interfaz RTAPI
+\fBhal.h\fR define la API y las estructuras de datos utilizadas por HAL. Este archivo se
+incluye en componentes HAL en tiempo real y en tiempo no real. HAL usa la interfaz RTAPI
 en tiempo real, y los símbolos #define RTAPI y ULAPI se utilizan para
 distinguir entre código en tiempo real y no real. La API definida en este
 archivo se implementa en hal_lib.c y se puede compilar para vincularla
@@ -20,7 +20,7 @@ El objetivo de HAL es permitir que un integrador de sistemas conecte un
 grupo de componentes de software juntos para cumplir con los requisitos de E/S que él (o
 ella) necesita. Esto incluye E/S en tiempo real y no real, así como 
 control básico del motor hasta, e incluyendo, un lazo de posición PID. La funcion que tienen
-en común que todos ellos procesan señales. En general, una señal es un
+en común todos ellos es que procesan señales. En general, una señal es un
 elemento de datos que se actualiza a intervalos regulares. Por ejemplo, un bucle PID obtiene el
 comando de posición y señales de retroalimentación, y produce una señal de comando de velocidad.
 
@@ -28,7 +28,7 @@ HAL se basa en el enfoque utilizado para diseñar circuitos electrónicos. En
 electrónica, los componentes listos para usar, como circuitos integrados, se colocan en una
 placa de circuito y sus pines están interconectados para construir lo que, en general, se necesite.
 Los componentes individuales pueden ser tan simples como un amplificador operacional,
-o tan complejo como un procesador de señal digital. Cada componente puede ser
+o tan complejo como un procesador digital de señal. Cada componente puede ser
 probado individualmente, para asegurarse de que funciona según lo diseñado. Después, los componentes
 se colocan en un circuito más grande y las señales que los conectan pueden ser
 monitoreadas para pruebas y resolución de problemas.
@@ -43,7 +43,7 @@ conectado a una señal, el puntero del pin está configurado para apuntar al val
 Esto permite que el componente acceda a la señal con muy poca sobrecarga de
 tiempo de ejecución . (Si un pin no está vinculado a ninguna señal, el puntero apunta
 a una ubicación ficticia, por lo que el código en tiempo real no tiene que tratar con
-punteros nulos o tratar las variables no vinculadas como un caso especial de cualquier manera).
+punteros nulos o tratar las variables no vinculadas como un caso especial).
 
 Hay tres enfoques para escribir un componente HAL. Los que no
 requieren un rendimiento en tiempo real se pueden escribir como un proceso de modo de usuario único.
@@ -54,9 +54,9 @@ puede usar tanto un módulo de kernel para la parte en tiempo real como un proce
 manejar el acceso a archivos ini, la interfaz de usuario (posiblemente incluyendo funciones de GUI) y
 otros detalles.
 
-HAL utiliza la interfaz RTAPI/ULAPI. Si RTAPI está #define en hal_lib.c hará
+HAL utiliza la interfaz RTAPI/ULAPI. Si RTAPI está definido en hal_lib.c hará
 generar un módulo kernel hal_lib.o que esté insmoded y proporcione las funciones
-para todos los componentes basados ​​en módulos del núcleo. El mismo archivo fuente compilado con el
+para todos los componentes basados ​​en módulos del núcleo. El mismo archivo fuente compilado con
 #define ULAPI lo haría en espacio de usuario hal_lib.o que está vinculado estáticamente al
 código de espacio de usuario para hacer ejecutables de espacio de usuario. Las listas de variables y la informacion
 de enlaces se almacena en un bloque de memoria compartida y se protege con mutexes,
@@ -68,7 +68,7 @@ Para obtener una explicación de las consideraciones en tiempo real, consulte \f
 
 .SH CÓDIGOS DE ESTADO HAL
 Excepto como se indica en páginas específicas del manual, HAL devuelve valores errno negativos
-para errores y valores no negativos para éxito.
+para errores y valores no negativos en caso de éxito.
 
 .SH VER TAMBIÉN
 \fBintro(3rtapi)\fR

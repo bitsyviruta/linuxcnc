@@ -5,10 +5,10 @@ rtapi_get_msg_level, rtapi_set_msg_level \- Obtiene o establece el nivel de regi
 
 .SH SINTAXIS
 .HP
-  int rtapi_set_msg_level(int \fIlevel\fR)
+ int rtapi_set_msg_level(int \fIlevel\fR)
 
 .HP
-  int rtapi_get_msg_level()
+ int rtapi_get_msg_level()
 
 .SH ARGUMENTOS
 .IP \fIlevel\fR

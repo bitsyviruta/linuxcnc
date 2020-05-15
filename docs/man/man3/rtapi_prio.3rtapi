@@ -9,9 +9,9 @@ int rtapi_prio_highest()
 .HP
 int rtapi_prio_lowest()
 .HP
-int rtapi_prio_next_higher (int \fIprio\fR)
+int rtapi_prio_next_higher(int \fIprio\fR)
 .HP
-int rtapi_prio_next_lower (int \fIprio\fR)
+int rtapi_prio_next_lower(int \fIprio\fR)
 
 .SH ARGUMENTOS
 .IP \fIprio\fR

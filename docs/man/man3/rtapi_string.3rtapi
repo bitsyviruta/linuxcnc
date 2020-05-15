@@ -28,9 +28,9 @@ Sintaxis .SH
 .HP
 #include <rtapi_string.h>
 .HP
-char **rtapi_argv_split(rtapi_gfp_t g, const char * argstr, int * argc);
+char **rtapi_argv_split(rtapi_gfp_t g, const char *argstr, int *argc);
 .HP
-void rtapi_argv_free(char ** argv);
+void rtapi_argv_free(char **argv);
 .HP
 char *rtapi_kstrdup(const char *s, rtapi_gfp_t t);
 .SH DESCRIPCIÓN
@@ -38,7 +38,7 @@ En el espacio del kernel, cada identificador rtapi_xxx o RTAPI_XXX se asigna a l
 funcionalidad del núcleo subyacente, si está disponible.
 
 En el espacio de usuario o en núcleos donde no se proporciona una funcionalidad subyacente
-por un núcleo, se proporciona generalmente otra implementación, posiblemente con una reducción
+por un núcleo, se proporciona generalmente otra implementación, posiblemente con una reducción de
 funcionalidad. (Por ejemplo, la implementación del espacio de usuario para
 rtapi_device_register siempre tiene éxito)
 .SH CONSIDERACIONES EN TIEMPO REAL

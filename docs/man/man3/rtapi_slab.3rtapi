@@ -34,14 +34,14 @@ void *rtapi_kzalloc(size_t size, gfp_t g);
 .HP
 void *rtapi_krealloc(size_t size, gfp_t g);
 .HP
-void rtapi_kfree (nulo *);
+void rtapi_kfree(void *);
 .SH DESCRIPCIÓN
 En el espacio del kernel, cada identificador rtapi_xxx o RTAPI_XXX se asigna a la
 funcionalidad del núcleo subyacente, si está disponible.
 
 En el espacio de usuario o en núcleos donde no se proporciona la funcionalidad subyacente
-por un núcleo, generalmente otra implementación, posiblemente con una reducción
-funcionalidad: se proporciona. (Por ejemplo, la implementación del espacio de usuario para
+por un núcleo, generalmente se proporciona otra implementación, posiblemente con una reducción de
+funcionalidad. (Por ejemplo, la implementación del espacio de usuario para
 rtapi_device_register siempre tiene éxito)
 .SH CONSIDERACIONES EN TIEMPO REAL
 Llame solo desde el código de inicio/limpieza, no desde tareas en tiempo real. Esta

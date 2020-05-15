@@ -24,7 +24,7 @@
 
 rtapi_stdint.h \- Contenedores RTAPI para la funcionalidad del kernel de Linux
 
-Sintaxis .SH
+.SH SINTAXIS
 .HP
 #include <rtapi_stdint.h>
 .HP
@@ -59,8 +59,8 @@ En el espacio del kernel, cada identificador rtapi_xxx o RTAPI_XXX se asigna al
 funcionalidad del núcleo subyacente, si está disponible.
 
 En el espacio de usuario o en núcleos donde no se proporciona la funcionalidad subyacente
-por un núcleo, generalmente otra implementación, posiblemente con una reducción
-funcionalidad: se proporciona. (Por ejemplo, la implementación del espacio de usuario para
+por un núcleo, generalmente se proporciona otra implementación, posiblemente con una reducción de
+funcionalidad. (Por ejemplo, la implementación del espacio de usuario para
 rtapi_device_register siempre tiene éxito)
 .SH CONSIDERACIONES EN TIEMPO REAL
 Ninguna.

@@ -52,8 +52,7 @@ muchas API de rtapi como \fRrtapi_shmem_new(3)\fR.
 
 .SS Simulador 
 Para que un módulo RTAPI se pueda construir en el entorno "sim" (sistema falso en tiempo real sin privilegios especiales),
-no debe usar \fBninguna\fR API del kernel de Linux, 
-y no debe usar las API RTAPI para el acceso directo al dispositivo, como
+no debe usar \fBninguna\fR API del kernel de Linux y no debe usar las API RTAPI para el acceso directo al dispositivo, como
 \fBrtapi_inb(3)\fR. Esto incluye automáticamente cualquier controlador de dispositivo de hardware,
 y también dispositivos que usan API de kernel de Linux para hacer cosas como crear
 dispositivos o entradas especiales en el sistema de archivos \fB/proc\fR.

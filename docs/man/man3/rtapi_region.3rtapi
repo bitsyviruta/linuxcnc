@@ -28,6 +28,6 @@ Solo se puede llamar desde el código de limpieza/inicio en tiempo real.
 
 .SH VALOR DEVUELTO
 \fBrtapi_request_region\fR devuelve NULL si la asignación falla y un valor no NULL
-de lo contrario.
+en caso contrario.
 
 \fBrtapi_release_region\fR no tiene valor de retorno.

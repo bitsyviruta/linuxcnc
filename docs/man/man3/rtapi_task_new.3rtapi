@@ -3,7 +3,7 @@
 
 rtapi_task_new \- crea una tarea en tiempo real
 
-.SH Sintaxis 
+.SH SINTAXIS 
 .HP
 int rtapi_task_new(void (*\fItaskcode\fR) (void *), void *\fIarg\fR,
 int \fIprio\fR, unsigned long \fIstacksize\fR, int \fIuses_fp\fR)

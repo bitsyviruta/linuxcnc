@@ -70,5 +70,5 @@ and
 have no return value.
 
 .SH SEE ALSO
-.BR <stdatomic.h> " (C11), " <rtapi_bitops.h> " (for other atomic memory operations supported by rtapi)"
+.BR <stdatomic.h> " (C11), " <rtapi_bitops.h> "(para otras operaciones de memoria atómica compatibles con rtapi)"
 

@@ -3,7 +3,7 @@
 
 rtapi_task_pause, rtapi_task_resume \- pausa y reanuda las tareas en tiempo real
 
-.SH Sintaxis 
+.SH SINTAXIS
 .HP
 void rtapi_task_pause(int \fItask_id\fR)
 .HP
