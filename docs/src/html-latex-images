@@ -1,6 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env linuxcnc-python
 # vim: sts=4 sw=4 et
 
+from __future__ import absolute_import
+from __future__ import print_function
 import os, shutil, sys, subprocess
 import tempfile, hashlib
 import lxml.etree as ET
@@ -63,9 +65,9 @@ def latex(txt, block=False):
     fp.write(latex_footer)
     fp.close()
     r = subprocess.call(latex_cmd, cwd=tmpdir)
-    if r: raise RuntimeError("Compilation failed")
+    if r: raise RuntimeError("Compilacion fallida")
     r = subprocess.call(dvipng_cmd, cwd=tmpdir)
-    if r: raise RuntimeError("Compilation failed")
+    if r: raise RuntimeError("Compilacion fallida")
 
 def substitute(f):
     xml = ET.parse(open(f), ET.HTMLParser())
@@ -75,7 +77,7 @@ def substitute(f):
     for e in xml.xpath('//div[@class="latexmath"]', namespaces=nsmap):
         images += build_img(f, e, block=True)
     if not images: return
-    print "Added %d images" % images
+    print("Added %d images" % images)
     fp = open(f + ".math", 'w')
     fp.write(ET.tostring(xml, pretty_print=True, xml_declaration=False, encoding="utf-8"))
     fp.close()
@@ -88,4 +90,4 @@ try:
     for f in sys.argv[1:]:
         substitute(f)
 finally:
-    shutil.rmtree(tmpdir)
+shutil.rmtree(tmpdir)

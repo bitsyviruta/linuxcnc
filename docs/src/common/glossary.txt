@@ -10,11 +10,11 @@ Alimentacion (feed)::
      (((alimentación))) Movimiento relativamente lento y controlado de la herramienta, utilizado
     al hacer un corte. Tambien se conoce como avance.
 
-Archivo ini ::
+Archivo ini::
      (((INI))) Un archivo de texto que contiene la mayor parte de la información
     que configura LinuxCNC para una máquina en particular.
 
-Articulacion ::
+Articulacion::
      (((Joint))) Punto o puntos de un par cinematico donde quedan restringidos algunos grados de libertad de uno de los eslabones del par sobre el otro eslabon. Las articulaciones mas tipicas son la cilindrica, la rotula y la guia corredera.
 
 AXIS (GUI)::
@@ -155,6 +155,16 @@ Entero sin signo::
      ((((Entero sin signo))) Un número entero que no tiene signo. En HAL
     se lo conoce como u32. (Un entero de 32 bits sin signo tiene un rango útil de
     cero a 4,294,967,296.)
+
+Error de seguimiento::
+	 (((Error de seguimiento))) La diferencia entre valores de la señal de retroalimentación con la señal ordenada para
+ 	 verificar que el motor está siguiendo el comando. Hay un límite ajustable del error permitido durante un
+	 movimiento. Cuando se excede el límite, se crea una condición de error que informa un error en este límite.
+
+Ganancia FF::
+	 Mientras que las ganancias P-I-D son reactivas (son función del error que ya ha ocurrido) las ganancias FF (o  
+	 Feed-Forward o en avance) son proactivas. Las ganancias de avance, que incluyen avance de velocidad y avance de
+	 aceleración, preceden a los comandos necesarios para lograr un error cero y los inyectan en el bucle de control.
 
 Gmoccapy (GUI)::
      (((GUI))) Interface de usuario gráfica disponible para los usuarios de

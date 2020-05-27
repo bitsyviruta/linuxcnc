@@ -1,24 +1,27 @@
-[[cha:stepper-config]]
+:lang: es
+:toc
 
-= Stepper Configuration
+[[cha: stepper-config]]
+
+= Configuracion de un sistema de pasos (dir/step)
 
 == Introduction
 
-The preferred way to set up a standard stepper machine is with the
-Step Configuration Wizard. See the 
-<<cha:stepconf-wizard,Stepper Configuration Wizard>> Chapter.
+La forma preferida de configurar una máquina de pasos estándar es con el
+asistente de configuración de pasos. Ver el Capítulo
+<<cha:stepconf-wizard,Asistente de configuracion Stepconf>> .
 
-This chapter describes some of the more common settings for manually
-setting up a stepper based system. These systems are using stepper motors
-with drives that accept step & direction signals.
+Este capítulo describe algunas de las configuraciones más comunes para
+configurar un sistema basado en pasos. Estos sistemas utilizan motores paso a paso
+con unidades que aceptan señales de paso y dirección.
 
-It is one of the simpler setups, because the motors run open-loop (no
-feedback comes back from the motors), yet the system needs to be
-configured properly so the motors don't stall or lose steps.
+Es una de las configuraciones más simples, porque los motores funcionan en bucle abierto (ninguna
+retroalimentación proviene de los motores), pero el sistema debe ser
+configurado correctamente para que los motores no se detengan o pierdan pasos.
 
-Most of this chapter is based on a sample config released along with
-LinuxCNC. The config is called stepper_inch, and can be found by running the
-<<cha:running-emc,Configuration Picker>>.
+La mayor parte de este capítulo se basa en una configuración de muestra publicada junto con
+LinuxCNC. La configuración se llama stepper_inch, y se puede encontrar ejecutando el
+<<cha:running-emc,Selector de configuración >>.
 
 == Maximum step rate
 

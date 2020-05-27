@@ -10,7 +10,7 @@ Manual del Desarrollador V{lversion}, {localdate}
 
 image::common/images/emc2-intro.*[]
 
-include::common/overleaf.txt[]
+include::common/overleaf_es.txt[]
 
 
 :leveloffset: 1

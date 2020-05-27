@@ -1,16 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env linuxcnc-python
 # vim: sts=4 sw=4 et
 
+from __future__ import absolute_import
+from __future__ import print_function
 import os, sys
 
 try:
     from os.path import relpath
 except:
     def relpath(path, start=os.path.curdir):
-        """Retorna la version relativa de un path"""
+        """Retornar la version relativa del path"""
         
         if not path:
-            raise ValueError("path no especificado")
+            raise ValueError("no se ha especificado path")
         
         start_list = os.path.abspath(start).split(os.path.sep)
         path_list = os.path.abspath(path).split(os.path.sep)
@@ -44,4 +46,4 @@ if len(sys.argv) > 3:
 
 l = sys.argv[2]
 if l in links:
-    print relpath(links[l] + '.html', path)
+print(relpath(links[l] + '.html', path))

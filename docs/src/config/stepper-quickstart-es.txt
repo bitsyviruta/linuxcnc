@@ -1,55 +1,37 @@
-= Configuración de motores a pasos
-
 [[cha:stepper-quickstart]]
 
-////
-ATTENTION TRANSLATORS before translating this document copy the base document
-into this copy to get the latest version. Untranslated documents are not kept
-up to date with the English documents. 
+= Configuración rápida de motores a pasos
 
-Do not translate anchors or links, translate only the text of a link after the
-comma.
-Anchor [[anchor-name]]
-Link <<anchor-name,text after the comma can be translated>>
-
-Make sure the documents build after translating.
-////
-
-Esta sección asume que una instalación estándar a partir de un LiveCd 
-ha sido realizada. Posterior a la instalación es recomendable conectar 
-la computadora al internet y esperar por la aparición del manejador de 
+Esta sección asume que ha sido realizada una instalación estándar a partir de un LiveCd.
+Posterior a la instalación es recomendable conectar 
+la computadora a internet y esperar la aparición del manejador de 
 actualizaciones y obtener las ultimas actualizaciones para el EMC 
-y Ubuntu antes de continuar. Para instalaciones mas complejas vea el 
+y Linux antes de continuar. Para instalaciones mas complejas vea el 
 manual del integrador.
 
 == Prueba de Latencia
 
 La prueba de latencia determina cuanto tiempo le toma al procesador 
 de su computadora responder a una solicitud de procesamiento. Algunos 
-Hardware pueden interrumpir el procesamiento lo que puede traducirse 
-a la perdida de algunos pasos cuando se opera una maquina CNC. Esto 
+hardware pueden interrumpir el procesamiento lo que puede traducirse 
+a la perdida de algunos pasos cuando se opera una maquina CNC. Esta 
 es la primer cosa que se requiere hacer posterior a la instalación.
+Siga las instrucciones de <<cha:latency-test,aqui>> para correr
+la prueba de latencia.
 
-////
-Put this link back when the latency-test-es.txt is translated.
-Siga las instrucciones de la sección <<cha:latency-test,here>> Para correr
-La prueba de latencia.
-////
 
-[[sec:Sherline]]
+[[sec:Sherline]](((Sherline)))
 == Sherline
-(((Sherline)))
 
-Si usted posee una maquina marca Sherline varias configuraciones predefinidas
-están disponibles. Estas configuraciones se encuentran en el menú principal 
-CNC/EMC donde puede seleccionar la configuración que sea compatible con el tipo de 
+Si usted posee una maquina Sherline, están disponibles varias configuraciones predefinidas.
+Estas configuraciones se encuentran en el menú principal CNC/EMC donde puede seleccionar 
+la configuración que sea compatible con el tipo de 
 maquina que posea y hacer clic, para copiarla y salvarla.
 
-[[sec:Xylotex]]
+[[sec:Xylotex]](((Xylotex)))
 == Xylotex
-(((Xylotex)))
 
-Si usted tiene una maquina marca Xylotex, usted puede escapar las siguientes secciones 
+Si usted tiene una maquina Xylotex, usted puede saltar las siguientes secciones 
 para pasar directamente a la sección de Asistente de Configuración de Motores a Pasos 
 ubicada en <<cha:stepconf-wizard,Wizard>>. EMC provee una configuración rápida para maquinas 
 Xylotex.
