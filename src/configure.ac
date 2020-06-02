@@ -48,7 +48,7 @@
 # Llamada a procedimiento remoto. check para rpc/rpc.h
 ##############################################################################
 # macro version minima de Autoconf
-AC_PREREQ(2.53
+AC_PREREQ(2.53)
 # macro Cada script de configuración debe llamar primero a AC_INIT(package, version, [bug-report], [tarname], [url])
 # Usa macro m4 esyscmd() para extraer version del archivo VERSION
 # m4_normalize() elimina espacios y tabs iniciales y finales, secuencias barra-nuevalínea, reemplaza espacios múltiples, 
@@ -1091,6 +1091,7 @@ AC_ARG_WITH(python,
         PYTHON=$withval
     ],[
         PYTHON=python
+        PYTHON=python2
     ])
 AC_PATH_PROG(PYTHON,$PYTHON,"none")
 if test $PYTHON = "none"
@@ -1151,7 +1152,7 @@ if ( test "$BUILD_DOCS" = "yes" ) ; then
     fi
 
     AC_MSG_CHECKING([si se debe especificar latex.encoding])
-    temp_asciidoc=`tempfile --suffix=.txt`
+    temp_asciidoc=`mktemp --suffix=.txt`
     cat > $temp_asciidoc <<EOF
 :lang: fr
 :ascii-ids:
@@ -1179,8 +1180,9 @@ EOF
     AC_MSG_CHECKING([dblatex version])
     set -- `dblatex --version`; DBLATEX_VER=$3
     set -- `echo $DBLATEX_VER | sed 's/[[.-]]/ /g'`
+    micro=`echo $3 | sed 's/\([[0-9]]*\).*/\1/g'`
 
-    if test $1 -eq 0 -a \( $2 -lt 2 -o \( $2 -eq 2 -a ${3:-0} -lt 12 \) \); then
+    if test $1 -eq 0 -a \( $2 -lt 2 -o \( $2 -eq 2 -a ${micro:-0} -lt 12 \) \); then
         AC_MSG_ERROR([version dblatex $DBLATEX_VER menor que 0.2.12.
 No se puede construir documentación.])
     fi
@@ -1206,11 +1208,6 @@ fi
 
 # Programas requeridos para documentacion PDF
 if ( test "$BUILD_DOCS_PDF" = "yes" ) ; then
-    AC_PATH_PROG(DBLATEX,dblatex,"none")
-    if ( test "none" = "$DBLATEX" ) ; then
-	AC_MSG_ERROR([no hay dblatex, no se puede construir documentación PDF])
-    fi
-
     AC_PATH_PROG(PDFLATEX,pdflatex,"none")
     if ( test "none" = "$PDFLATEX" ) ; then
 	AC_MSG_ERROR([no hay pdflatex, no se puede construir documentación PDF])
@@ -1623,6 +1620,7 @@ fi
 
 AC_MSG_CHECKING([si licencia readline es compatible con GPL-2])
 AC_TRY_COMPILE([
+        #include <stdio.h>
         #include <readline/readline.h>
     ],[
         #if RL_VERSION_MAJOR > 5
@@ -1817,19 +1815,27 @@ AC_SUBST([LIBPYTHON])
 AC_SUBST([INCLUDEPY])
 AC_SUBST([SITEPY])
 
+AC_SUBST([CFLAGS])
+AC_SUBST([CPPFLAGS])
+AC_SUBST([CXXFLAGS])
+AC_SUBST([LDFLAGS])
+
 
 ##############################################################################
-# files that get created by ./configure                                      #
+# archivos creados por ./configure                                           #
 ##############################################################################
 #AC_CONFIG_FILES([../configs/rtapi.conf ../configs/emc.conf ../configs/hal.conf config.h])
 AC_CONFIG_FILES([../scripts/rtapi.conf])
 AC_CONFIG_FILES([../scripts/linuxcnc], [chmod +x ../scripts/linuxcnc])
+AC_CONFIG_FILES([../scripts/linuxcnc-python], [chmod +x ../scripts/linuxcnc-python])
+AC_CONFIG_FILES([../scripts/linuxcnc_info], [chmod +x ../scripts/linuxcnc_info])
 AC_CONFIG_FILES([../scripts/halrun], [chmod +x ../scripts/halrun])
 AC_CONFIG_FILES([../scripts/rip-environment], [chmod +x ../scripts/rip-environment])
 AC_CONFIG_FILES([../scripts/haltcl], [chmod +x ../scripts/haltcl])
 AC_CONFIG_FILES([../scripts/halcmd_twopass], [chmod +x ../scripts/halcmd_twopass])
 AC_CONFIG_FILES([../scripts/realtime], [chmod +x ../scripts/realtime])
 AC_CONFIG_FILES([../scripts/linuxcnc_var], [chmod +x ../scripts/linuxcnc_var])
+AC_CONFIG_FILES([../scripts/linuxcnc-checklink], [chmod +x ../scripts/linuxcnc-checklink])
 AC_CONFIG_FILES(Makefile.inc)
 AC_CONFIG_FILES(Makefile.modinc)
 AC_CONFIG_FILES(../tcl/linuxcnc.tcl)

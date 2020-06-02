@@ -155,11 +155,11 @@ YAPPS = @YAPPS@
 # Para deshabilitar la compilación de cualquier módulo en particular,
 # edite las siguientes líneas reemplazando "m" por "n".
 # #
-# Con el tiempo, podemos tener algo sofisticado para configurar
+# Con el tiempo, podemos tener algo mas sofisticado para configurar
 # estas opciones en tiempo de compilación.
 
-# usualmente necesitas rtapi,
-# así que probablemente no quiera cambiar esto
+# usualmente se necesita rtapi,
+# así que probablemente no se quiera cambiar esto
 CONFIG_RTAPI=m
 
 # ejemplos rtapi

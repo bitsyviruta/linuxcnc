@@ -16,5 +16,5 @@ for line in kbuild.stderr:
 
     sys.stderr.write(line)
 
-raise SystemExit, kbuild.wait()
+raise SystemExit(kbuild.wait())
 

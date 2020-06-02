@@ -2,11 +2,11 @@
 Version=1.0
 Name=Manual para Integradores
 Type=Application
-Exec=/usr/bin/see /usr/share/doc/linuxcnc/LinuxCNC_Integrator_Manual_es.pdf
+Exec=xdg-open /usr/share/doc/linuxcnc/LinuxCNC_Integrator_Manual_es.pdf
 Icon=linuxcncicon
 X-GNOME-DocPath=
 Terminal=false
 Comment=Manual de instalacion y configuracion
 StartupNotify=false
-Categories=X-CNC;
+Categories=Utility;Engineering;X-CNC;
 Keywords=cnc;linuxcnc;
