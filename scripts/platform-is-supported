@@ -67,14 +67,14 @@ if os == 'linux':
     cpu = subprocess.check_output(['dpkg-architecture', '-qDEB_HOST_ARCH_CPU']).strip()
     distributor = subprocess.check_output(['lsb_release', '--id', '--short']).strip()
     release = subprocess.check_output(['lsb_release', '--release', '--short']).strip()
-
-    release_major = int(major)
-    release_minor = int(minor)
     try:
         major, minor = re.split('\.', release)
     except ValueError as e:
         major = release
         minor = "0"
+    release_major = int(major)
+    release_minor = int(minor)
+
     uname = subprocess.check_output(['uname', '-r']).strip()
     kernel_flavor = detect_kernel_flavor(uname)
 
