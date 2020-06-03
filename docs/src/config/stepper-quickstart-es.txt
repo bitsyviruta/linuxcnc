@@ -1,183 +1,174 @@
-[[cha:stepper-quickstart]]
+﻿[[cha: stepper-quickstart]]
 
-= Configuración rápida de motores a pasos
+= Inicio rápido paso a paso
 
-Esta sección asume que ha sido realizada una instalación estándar a partir de un LiveCd.
-Posterior a la instalación es recomendable conectar 
-la computadora a internet y esperar la aparición del manejador de 
-actualizaciones y obtener las ultimas actualizaciones para el EMC 
-y Linux antes de continuar. Para instalaciones mas complejas vea el 
-manual del integrador.
+En esta sección se supone que ha realizado una instalación estándar desde Live
+DISCOS COMPACTOS. Después de la instalación, se recomienda que conecte la computadora
+a Internet y espere a que aparezca el administrador de actualizaciones y obtenga el
+últimas actualizaciones para LinuxCNC y Ubuntu antes de continuar.
 
-== Prueba de Latencia
+== Prueba de latencia
 
-La prueba de latencia determina cuanto tiempo le toma al procesador 
-de su computadora responder a una solicitud de procesamiento. Algunos 
-hardware pueden interrumpir el procesamiento lo que puede traducirse 
-a la perdida de algunos pasos cuando se opera una maquina CNC. Esta 
-es la primer cosa que se requiere hacer posterior a la instalación.
-Siga las instrucciones de <<cha:latency-test,aqui>> para correr
-la prueba de latencia.
+La prueba de latencia determina qué tan tarde llega el procesador de su computadora
+respondiendo a una solicitud. Parte del hardware puede interrumpir el procesamiento.
+lo que podría causar pasos perdidos al ejecutar una máquina CNC. Este es el
+Lo primero que debes hacer. Sigue las instrucciones
+<< prueba de latencia, aquí >> para ejecutar la prueba de latencia.
 
+[[sec: sherline]] (((Sherline)))
 
-[[sec:Sherline]](((Sherline)))
 == Sherline
 
-Si usted posee una maquina Sherline, están disponibles varias configuraciones predefinidas.
-Estas configuraciones se encuentran en el menú principal CNC/EMC donde puede seleccionar 
-la configuración que sea compatible con el tipo de 
-maquina que posea y hacer clic, para copiarla y salvarla.
+Si tiene un Sherline, se proporcionan varias configuraciones predefinidas.
+Esto está en el menú principal CNC / EMC, luego seleccione la configuración Sherline
+que coincida con el tuyo y guardar una copia.
 
-[[sec:Xylotex]](((Xylotex)))
+[[sec: xylotex]] (((Xylotex)))
+
 == Xylotex
 
-Si usted tiene una maquina Xylotex, usted puede saltar las siguientes secciones 
-para pasar directamente a la sección de Asistente de Configuración de Motores a Pasos 
-ubicada en <<cha:stepconf-wizard,Wizard>>. EMC provee una configuración rápida para maquinas 
-Xylotex.
+Si tiene un Xylotex, puede omitir las siguientes secciones e ir
+directamente al << cha: stepconf-wizard, Stepper Config Wizard >>.
+LinuxCNC ha proporcionado una configuración rápida para las máquinas Xylotex.
 
-== Información sobre la Maquina
+== Información de la máquina
 
-Obtenga la información sobre cada eje de su maquina.
+Reúna la información sobre cada eje de su máquina.
 
-Los tiempos de los controladores están en nanosegundos. Si usted no esta seguro 
-con respecto a los tiempos de su controlador de motor a pasos algunos tiempos 
-específicos para controladores populares están incluidos en el asistente de configuración 
-de motores a pasos.
-Nota: Algunos controladores marca Gecko de nueva generación tienen tiempos 
-que difieren con los originales. Una lista con tiempos de diversos controladores es mantenida 
-en el sitio wiki del LinuxCNC que es administrado por los mismos usuarios, 
-en la siguiente dirección: http://wiki.linuxcnc.org/[list]
+El tiempo de manejo es en nano segundos. Si no estás seguro sobre el momento
+Se incluyen muchas unidades populares en el asistente de configuración paso a paso.
+Tenga en cuenta que algunas unidades Gecko más nuevas tienen una sincronización diferente a la original
+uno. Un http://wiki.linuxcnc.org/[list] también está en LinuxCNC mantenido por el usuario
+sitio wiki de más unidades.
 
-[width="100%", options="header"]
-|====================================================================
-|Eje  | Tipo de controlador | Tiempo de paso en ns | Tiempo entre pasos en ns | Dir. Mantener en ns | Dir. Cambiar en ns
-|X    |                     |                      |                          |                     | 
-|Y    |                     |                      |                          |                     | 
-|Z    |                     |                      |                          |                     | 
-|     |                     |                      |                          |                     | 
-|====================================================================
+[ancho = "100%", opciones = "encabezado"]
+| ================================================= ===================
+| Eje | Tipo de unidad | Paso Tiempo ns | Paso espacio ns | Dir. Hold ns | Dir. Configurar ns
+| X | El | El | El | El |
+| Y | El | El | El | El |
+| Z | El | El | El | El |
+El | El | El | El | El | El |
+| ================================================= ===================
 
-== Información de los pines de salida
+== Información de pinout
 
-Obtenga la información sobre las conecciones de su maquina hacia el puerto 
-Paralelo de su computadora.
+Reúna la información sobre las conexiones de su máquina a la
+Puerto paralelo de PC.
 
-[width="100%", options="header"]
-|==============================================================================
-|Pin de Salida | Función Típica         | Si es Diferente | Pin de Entrada | Función típica   | Si es Diferente
-|1            | Salida de Paro E-stop  |                 | 10       	  | X Limite/Casa   | 
-|2            | Paso eje X             |                 | 11        	  | Y Limite/Casa   | 
-|3            | Dirección Eje X        |                 | 12             | Z Limite/Casa   | 
-|4            | Paso eje Y             |                 | 13             | A Limite/Casa   | 
-|5            | Dirección Eje Y        |                 | 15             | Zonda de Prueba | 
-|6            | Paso eje Z             |                 |                |                 | 
-|7            | Dirección Eje Z        |                 |                |                 | 
-|8            | Paso eje A             |                 |                |                 | 
-|9            | Dirección Eje A        |                 |                |                 | 
-|14           | Husillo CW             |                 |                |                 | 
-|16           | Husillo PWM            |                 |                |                 | 
-|17           | Amplificador Habilitado |                 |                |                 | 
-|==============================================================================
+[ancho = "100%", opciones = "encabezado"]
+| ================================================= =============================
+| Pin de salida | Typ. Función | Si diferente | Pin de entrada | Typ. Función | Si es diferente
+| 1 | E-Stop Out | El | 10 | Límite X / Inicio |
+| 2 | X paso | El | 11 | Límite Y / Inicio |
+| 3 | Dirección X | El | 12 | Límite Z / Inicio |
+| 4 | Paso Y | El | 13 Un límite / Inicio |
+| 5 | Dirección Y | El | 15 | Sonda en |
+| 6 | Paso Z | El | El | El |
+| 7 | Dirección Z | El | El | El |
+| 8 | Un paso | El | El | El |
+| 9 | Una dirección | El | El | El |
+| 14 | Husillo CW | El | El | El |
+| 16 | Husillo PWM | El | El | El |
+| 17 | Amplificador habilitado | El | El | El |
+| ================================================= =============================
 
-Nota: Cualquier pin no usado debe ser definido como *Unused* en el menú desplegable de configuaracion.
-Esto puede ser cambiado posteriormente ejecutando de nuevo el programa Stepconf
+Tenga en cuenta que los pines no utilizados deben establecerse en Sin usar en el cuadro desplegable.
+Estos siempre se pueden cambiar más tarde ejecutando Stepconf nuevamente.
 
-== Información Mecánica
+== Información mecánica
 
+Recopilar información sobre pasos y engranajes. El resultado de esto son pasos
+por unidad de usuario que se usa para ESCALA en el archivo .ini.
 
-Obtenga la información de sus motores a pasos y en caso de existir de las reducciones mecánicas que este usando.
-El resultado sera el desplazamiento lineal en cada eje por paso en el motor, esta información sera utilizada
-en el parámetro SCALE del archivo de configuración .ini.
+[ancho = "100%", opciones = "encabezado"]
+| ================================================= =============================
+| Eje | Pasos / Rev. El | Micro Pasos | Dientes del motor | Dientes de husillo | Paso de tornillo de plomo
+| X | El | El | El | El |
+| Y | El | El | El | El |
+| Z | El | El | El | El |
+El | El | El | El | El | El |
+| ================================================= =============================
 
-[width="100%", options="header"]
-|==============================================================================
-|Eje  | Pasos/Rev. | Micro Pasos | Dientes del motor | Dientes en el tornillo guía | Paso del tornillo guía
-|X    |            |             |                   |                             | 
-|Y    |            |             |                   |                             | 
-|Z    |            |             |                   |                             | 
-|     |            |             |                   |                             | 
-|==============================================================================
+* 'Pasos por revolución': cuántos pasos de motor paso a paso se necesitan para girar
+El motor paso a paso una revolución.
+Típico es 200.
 
-* 'Pasos por revolución' - indica cuantos pasos del motor le toma a la flecha del motor
-completar una revolución completa, un valor típico es 200 Pasos/Rev.
+* 'Micro Steps': cuántos pasos necesita la unidad
+mover el motor paso a paso un paso completo.
+Si no se utiliza microstepping, este número será 1.
+Si se utiliza microstepping, el valor dependerá de
+paso a paso de hardware.
 
-* 'Micro Pasos' - este parámetro indica cuantos pasos generador por el software 
-necesita el controlador del motor para producir un paso completo en el motor
-Algunos controladores dividen los pasos del motor para aumentar la resolución
-si no se utilizaran Micro Pasos este parámetro debe ser puesto en 1, en caso
-de utilizar micro pasos el valor dependera del Hardware especifico usado. 
+* 'Dientes del motor y dientes de tornillo' - es si tienes alguna reducción
+(engranajes, cadena, correa de distribución, etc.) entre el motor y el tornillo de avance.
+De lo contrario, establezca ambos en 1.
 
-* 'Dientes del Motor y *Dientes del tornillo guía' - estos parámetros se utilizan si 
-se esta utilizando algún tipo de reducción mecánica (engranes, cadenas, bandas de tiempo, etc.) 
-entre el motor y el tornillo guía. 
-Si no se utiliza reducción el parámetro debe ser puesto al valor 1. 
+* 'Paso de tornillo de plomo': es la cantidad de movimiento que se produce
+(en unidades de usuario) en una vuelta de tornillo guía.
+Si está configurando en pulgadas, entonces es pulgadas por turno.
+Si está configurando en milímetros, entonces son milímetros por turno.
 
-* 'Paso del tornillo guía' - es cuanto movimiento lineal ocurre
-(en las unidades de usuario) cuando el tornillo guía da una vuelta completa. 
-Si se utilizan pulgadas entonces es pulgadas por revolución.
-Si se utilizan milímetros entonces es milímetros por revolución 
+El resultado neto que está buscando es cuántos pasos de salida CNC necesita
+para mover una unidad de usuario (pulgadas o mm).
 
-El resultado de la combinación de parámetros que se busca es cuantos
-pasos producidos por el software CNC le tomara al eje moverse linealmente
-una unidad de usuario (pulgadas o mm).
-
-.Unidades Pulgadas
+.Unidades pulgadas
 ============================================
 ............................................
-Motor a Pasos             = 200 Pasos por revolución
-Controlador de Motor      =  10 micro pasos por paso
-Dientes del motor         =  20
-Dientes del tornillo guía =  40
-Paso del tornillo guía    =   0.2000 pulgadas por revolución
+Paso a paso = 200 pasos por revolución
+Unidad = 10 micro pasos por paso
+Dientes del motor = 20
+Dientes de husillo = 40
+Paso de husillo = 0.2000 pulgadas por vuelta
 ............................................
 ============================================
 
-A partir de la información anterior, el tornillo guía se mueve 0.200 pulgadas por vuelta.
- - El motor da  2 vueltas por una vuelta del tornillo guía. 
- - El controlador necesita 10 micro pasos de entrada para hacer al motor dar un paso. 
- - El controlador necesita 2000 pasos para hacer que el motor de una revolución. 
-Por lo tanto la escala necesitada es:
+De la información anterior, el tornillo de avance se mueve 0.200 pulgadas por turno.
+ - El motor gira 2.000 veces por 1 vuelta de husillo.
+ - La unidad toma 10 entradas de microstep para hacer el paso a paso una vez.
+ - La unidad necesita 2000 pasos para convertir el paso a paso una revolución.
+Entonces la escala necesaria es:
 
-image::images/step-calc-inch-math.png[align="center"]
+image :: images / step-calc-inch-math.png [align = "center"]
 
 ////////////////////////////////////////////
-latexmath:[ 
-\frac{200 pasos del motor}{1 revolución del motor} \times 
-\frac{10 micro pasos}{1 paso del motor} \times
-\frac{2 revoluciones del motor}{1 revoluciones del tornillo guía} \times 
-\frac{1 revoluciones del tornillo guía}{0.2000 pulgadas} 
-= \frac{20,000 micro pasos}{pulgadas}]
-///////////////////////////////////////////
+latexmath: [
+\ frac {200 pasos del motor} {1 motor rev} \ times
+\ frac {10 microsteps} {1 paso motor} \ times
+\ frac {2 revoluciones del motor} {1 husillo rev}} veces
+\ frac {1 revoluciones de husillo} {0.2000 pulgadas}
+= \ frac {20,000 microsteps} {inch}]
+///////////////////////////////////////////.
 
 .Unidades mm
 ============================================
 ............................................
-Motor a Pasos             = 200 Pasos por revolución
-Controlador de Motor      =  8 micro pasos por paso
-Dientes del motor         =  30
-Dientes del tornillo guía =  90
-Paso del tornillo guía    =   5.00 mm por revolución 
+    Paso a paso = 200 pasos por revolución
+    Unidad = 8 micro pasos por paso
+    Dientes del motor = 30
+    Dientes de husillo = 90
+    Paso de husillo = 5.00 mm por vuelta
 ............................................
-============================================   
+============================================
 
-A partir de la información anterior, el tornillo guía se mueve 5.00 mm por vuelta.
- - El motor da  3 vueltas por una vuelta del tornillo guía. 
- - El controlador necesita 8 micro pasos de entrada para hacer al motor dar un paso. 
- - El controlador necesita 1600 pasos para hacer que el motor de una revolución. 
-Por lo tanto la escala necesitada es:
+De la información anterior:
+ - El tornillo de avance se mueve 5,00 mm por vuelta.
+ - El motor gira 3.000 veces por 1 vuelta de husillo.
+ - La unidad toma 8 entradas de microstep para hacer el paso a paso una vez.
+ - La unidad necesita 1600 pasos para convertir el paso a paso una revolución.
+Entonces la escala necesaria es:
 
-image::images/step-calc-mm-math.png[align="center"]
+imagen :: images / step-calc-mm-math.png [align = "center"]
 
-//////////////////////////////////////////////
-latexmath:[ 
-\frac{200 pasos del motor}{1 revolución del motor} \times 
-\frac{8 micro pasos}{1 paso del motor} \times
-\frac{3 revoluciones del motor}{1 revolución del tornillo guía} \times 
-\frac{1 revoluciones del tornillo guía}{5.000 mm} 
-= \frac{960 micro pasos}{mm}]
-//////////////////////////////////////////////
+//////////////////////////////////////////////(
+latexmath: [
+\ frac {200 pasos del motor} {1 motor rev} \ times
+\ frac {8 microsteps} {1 paso motor} \ times
+\ frac {3 revoluciones del motor} {1 husillo rev}} veces
+\ frac {1 rev. de husillo} {5.000 mm}
+= \ frac {960 microsteps} {mm}]
+/////////////////////////////////////////////
 
-// vim: set syntax=asciidoc:
+// vim: set syntax = asciidoc:
+
 
 

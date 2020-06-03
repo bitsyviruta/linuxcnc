@@ -1,0 +1,81 @@
+﻿= Configuración de torno
+
+[[cha: configuración de torno]]
+
+== Plano predeterminado
+
+Cuando el intérprete de LinuxCNC se escribió por primera vez, fue diseñado para fábricas.
+Es por eso que el plano predeterminado es XY (G17). Un torno normal solo usa el
+Avión XZ (G18). Para cambiar el plano predeterminado, coloque la siguiente línea en
+el archivo .ini en la sección RS274NGC.
+
+----
+RS274NGC_STARTUP_CODE = G18
+----
+
+Lo anterior se puede sobrescribir en un programa de código g, por lo que siempre debe configurar cosas importantes
+en el preámbulo del archivo de código g.
+
+== Configuración INI
+
+Las siguientes configuraciones .ini son necesarias para el modo torno en Axis además de
+o reemplazando la configuración normal en el archivo .ini. Estas configuraciones históricas usan
+cinemática de identidad (trivkins) y 'tres' articulaciones (0,1,2) correspondientes a
+coordenadas x, y, z. Se requiere la unión 1 para el eje y no utilizado, pero no se utiliza
+en estas configuraciones históricas. Las configuraciones de torno simuladas pueden usar estas
+ajustes históricos
+Gmoccapy también usa las configuraciones mencionadas, pero ofrece configuraciones adicionales,
+verifique la sección << cha: gmoccapy, gmoccapy >> para más detalles.
+
+----
+[MONITOR]
+PANTALLA = eje
+TORNO = 1
+...
+
+[KINS]
+CINEMÁTICA = trivkins
+JUNTAS = 3
+
+[TRAJ]
+COORDENADAS = X Z
+...
+
+[JUNTA_0]
+...
+[JUNTA_2]
+...
+[AXIS_X]
+...
+[AXIS_Z]
+...
+----
+
+Con la incorporación de joint_axes, se puede hacer una configuración más simple con solo
+las dos articulaciones requeridas especificando trivkins con las 'coordenadas ='
+parámetro:
+
+----
+[MONITOR]
+PANTALLA = eje
+TORNO = 1
+...
+
+[KINS]
+CINEMÁTICA = coordenadas trivkins = xz
+JUNTAS = 2
+
+[TRAJ]
+COORDENADAS = X Z
+...
+
+[JUNTA_0]
+...
+[JOINT_1]
+...
+[AXIS_X]
+...
+[AXIS_Z]
+...
+----
+

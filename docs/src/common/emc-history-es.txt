@@ -1,0 +1,122 @@
+﻿[[cha: linuxcnc-history]]
+
+== Origen
+
+EMC (el controlador de máquina mejorado) fue creado por
+http://www.nist.gov/index.html[NIST], el Instituto Nacional de Normas
+y Tecnología, que es una agencia del Departamento de Comercio de los Estados
+Gobierno de los estados.
+
+NIST primero se interesó en escribir un paquete de control de movimiento como prueba
+plataforma de conceptos y estándares. Patrocinio temprano de General Motors
+resultó en una adaptación de la versión incipiente de EMC usando PMAC
+tableros de control inteligentes que se ejecutan en una versión "en tiempo real" de Windows NT
+y controlar una gran fresadora.
+
+Como se requiere de todos los 'productos de trabajo' de los empleados del gobierno federal de EE. UU.,
+el software resultante y el informe al respecto deben estar en el
+dominio público y un informe al respecto debidamente publicado, incluso en el
+Internet. Fue allí donde Matt Shaver descubrió EMC. Él contactó a NIST
+y entró en conversaciones con Fred Proctor sobre la adaptación del código para
+utilizar para controlar hardware menos costoso que se utilizará para actualizaciones y
+reemplazos de controles de CNC que estaban obsoletos o simplemente muertos. NIST
+estaba intrigado porque ellos también querían algo menos costoso. A fin de que
+lanzar un esfuerzo cooperativo, se creó un acuerdo formal que garantizó
+que el código resultante y el diseño permanecerían en el dominio público.
+
+Las primeras consideraciones se centraron en reemplazar el costoso y temperamental
+Sistema de Windows NT "en tiempo real". Se propuso que una relativamente nueva (en el
+tiempo) se intentará la extensión en tiempo real del sistema operativo Linux. Esta idea
+fue perseguido con éxito. El siguiente fue el tema del costoso inteligente
+tableros de control de movimiento. Para entonces, el poder de procesamiento de una PC era
+considerado lo suficientemente grande como para tomar el control directo de las rutinas de movimiento.
+Una búsqueda rápida de hardware disponible resultó en la selección de un
+http://www.servotogo.com/[Servo-To-Go] placa de interfaz como la primera plataforma
+para permitir que la PC controle directamente los motores. Software para trayectoria
+planificación y control de bucle PID se agregó a la interfaz de usuario existente y
+Intérprete RS274. Matt utilizó con éxito esta versión para actualizar un par
+de máquinas con controles muertos y este se convirtió en el sistema EMC que primero
+llamó la atención del mundo exterior. Mención de EMC en el
+rec.crafts.metalworking El grupo de noticias USENET resultó en los primeros en adoptar
+como http://pico-systems.com/motion.html[Jon Elson] sistemas de construcción
+para aprovechar EMC.
+
+NIST creó una lista de correo para las personas interesadas en EMC. El paso del tiempo,
+otros fuera del NIST se interesaron en mejorar EMC. Mucha gente solicitó
+o pequeñas mejoras codificadas en el código. Ray Henry quería refinar el usuario
+interfaz. Como Ray era reacio a intentar alterar el código C en el que
+se escribió la interfaz de usuario, se buscó un método más simple. Fred Proctor de
+NIST sugirió un lenguaje de secuencias de comandos y escribió código para interactuar con Tcl / Tk
+lenguaje de script para las comunicaciones internas NML de EMC. Con esta herramienta
+Ray pasó a escribir un programa Tcl / Tk que se convirtió en el usuario predominante
+interfaz para EMC en el momento.
+
+Para la perspectiva del NIST, vea esto
+http://web.archive.org/web/20120417094958/http://www.isd.mel.nist.gov/documents/shackleford/4191_05.pdf[paper]
+escrito por William Shackleford y Frederick Proctor, describiendo el
+historia de EMC y su transición al código abierto.
+
+En este momento, el interés en EMC comienza a recuperarse sustancialmente. Como más
+y más personas intentaron instalar EMC, la dificultad de
+parchar un kernel de Linux con las extensiones en tiempo real y compilar el
+El código EMC se volvió notoriamente obvio. Muchos intentos de documentar el proceso y
+Se intentaron escribir guiones, algunos con éxito moderado. El problema de
+haciendo coincidir la versión correcta de los parches y compiladores con la seleccionada
+La versión de Linux siguió apareciendo. Paul Corner vino al rescate con el
+BDI (instalación de muerte cerebral) que era un CD del cual un sistema de trabajo completo
+(Linux, parches y EMC) podrían instalarse. El enfoque BDI abrió el
+mundo de EMC a una comunidad de usuarios mucho más grande. A medida que esta comunidad continuó
+para crecer, la lista de correo de EMC y los archivos de código se movieron a
+http://www.sourceforge.net/projects/emc/[SourceForge] y la web LinuxCNC
+Se estableció el sitio.
+
+Con una comunidad más grande de usuarios participando, EMC se convirtió en un foco principal de
+El interés en las exposiciones CNC en curso en NAMES y NAMES se convirtió en el anual
+evento de reunión para EMC. Durante los primeros años, las reuniones solo
+sucedió porque las partes interesadas estaban en NAMES. En 2003, el usuario de EMC
+comunidad tuvo su primera reunión pública anunciada. Se celebró el lunes
+después de NAMES en el vestíbulo de la arena donde se celebró el espectáculo NAMES.
+La organización era floja, pero la idea de una capa de abstracción de hardware
+(HAL) nació y el movimiento para reestructurar el código para facilitar
+desarrollo (EMC2) fue propuesto.
+
+== Cambio de nombre
+
+En la primavera de 2011, la Junta Directiva de LinuxCNC fue contactada por
+una firma de abogados que representa a EMC Corporation (www.emc.com) sobre el uso de
+"EMC" y "EMC2" para identificar el software ofrecido en linuxcnc.org. EMC
+Corporation ha registrado varias marcas comerciales relacionadas con EMC y EMC²
+(EMC con numeral superíndice dos).
+
+Después de varias conversaciones con el representante de EMC
+Corporación, el resultado final es que, comenzando con el próximo gran
+lanzamiento del software, linuxcnc.org dejará de identificar el software
+usando "emc" o "EMC", o aquellos términos seguidos de dígitos. En la medida
+que la Junta Directiva de LinuxCNC controla los nombres utilizados para identificar
+el software ofrecido en linuxcnc.org, la junta ha aceptado esto.
+
+Como resultado, fue necesario elegir un nuevo nombre para el software. De
+las opciones que la junta consideró, hubo consenso de que "LinuxCNC" es
+La mejor opción, ya que este ha sido el nombre de nuestro sitio web durante años.
+
+En preparación para el nuevo nombre, hemos recibido una sublicencia del
+Marca registrada LINUX® de la Fundación Linux (www.linuxfoundation.org),
+protegiendo nuestro uso del nombre LinuxCNC. (LINUX® es la marca registrada
+de Linus Torvalds en los EE. UU. y otros países).
+
+El esfuerzo de cambio de marca incluirá el sitio web linuxcnc.org, el IRC
+canales y versiones del software y la documentación que comienzan con
+2.5.0.
+
+== Información adicional
+
+NIST publicó un artículo que describe el
+https://www.nist.gov/node/704046[RS274NGC] idioma y el resumen
+centro de mecanizado que controla, así como una implementación temprana de EMC.
+El documento también está disponible en http://linuxcnc.org/files/RS274NGCv3.pdf
+
+NIST también publicó un artículo sobre la historia de EMC y sus
+transición a https://www.nist.gov/node/702276[open
+fuente]. El documento también está disponible en
+http://linuxcnc.org/files/Use-of-Open-Source-Distribution-for-a-Machine-Tool-Controller.pdf
+

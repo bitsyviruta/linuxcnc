@@ -1,0 +1,131 @@
+﻿= Diagnóstico paso a paso
+
+[[cha: diagnóstico paso a paso]]
+
+Si lo que obtienes no es lo que esperas muchas veces, solo tienes
+experiencia. Aprender de la experiencia aumenta tu comprensión
+de la totalidad. La mejor manera de diagnosticar problemas es dividir y conquistar.
+Con esto quiero decir si puedes eliminar la mitad de las variables de la ecuación
+cada vez encontrarás el problema más rápido. En el mundo real esto
+No siempre es el caso, pero generalmente es un buen lugar para comenzar.
+
+== Problemas comunes
+
+=== Stepper mueve un paso
+
+La razón más común en una nueva instalación para que un motor paso a paso no
+movimiento es que se intercambian las señales de paso y dirección. Si presiona el
+trotar hacia adelante y hacia atrás, alternativamente, y el paso a paso se mueve
+un paso cada vez, y en la misma dirección, ahí está tu pista.
+
+=== No se mueven los steppers
+
+Muchas unidades tienen un pin de activación o necesitan una bomba de carga para activar
+salida.
+
+=== Distancia no correcta
+
+Si le ordena al eje que se mueva una distancia específica y no
+mueva esa distancia, entonces su ajuste de escala es incorrecto.
+
+== Mensajes de error
+
+=== Error de seguimiento
+
+El concepto de un error de seguimiento es extraño cuando se habla de pasos
+motores Como son un sistema de circuito abierto, no hay posición
+comentarios para hacerle saber si realmente está fuera de alcance. LinuxCNC
+calcula si puede mantenerse al día con el movimiento solicitado, y si no, entonces
+da un siguiente error. Los siguientes errores generalmente son el resultado de
+uno de los siguientes en sistemas paso a paso.
+
+ - FERROR demasiado pequeño
+ - MIN_FERROR demasiado pequeño
+ - MAX_VELOCITY demasiado rápido
+ - MAX_ACCELERATION demasiado rápido
+ - BASE_PERIOD establecido demasiado tiempo
+ - Contragolpe agregado a un eje
+
+Cualquiera de los anteriores puede hacer que el pulso en tiempo real no pueda mantenerse al día
+la tasa de pasos solicitada. Esto puede suceder si no ejecutó la latencia
+prueba el tiempo suficiente para obtener un buen número para conectarse al Asistente de Stepconf,
+o si configura la Velocidad Máxima o la Aceleración Máxima demasiado alta.
+
+Si agregó una reacción violenta, debe aumentar el STEPGEN_MAXACCEL hasta
+duplique MAX_ACCELERATION en la sección AXIS del archivo INI para
+cada eje al que agregaste la reacción. LinuxCNC utiliza "aceleración adicional" en un
+inversión para tomar la reacción. Sin corrección de reacción, paso
+la aceleración del generador puede ser solo un pequeño porcentaje por encima del movimiento
+Planificador de aceleración.
+
+=== Error RTAPI
+
+Cuando recibes este error:
+
+    RTAPI: ERROR: retraso inesperado en tiempo real en la tarea n
+
+Rtapi genera este error basándose en una indicación de RTAI de que
+se perdió un plazo. Suele ser una indicación de que el BASE_PERIOD
+en la sección [EMCMOT] del archivo ini está configurado demasiado bajo. Deberías correr
+la prueba de latencia durante un período prolongado de tiempo para ver si tiene alguna
+retrasos que causarían este problema. Si utilizó el Asistente de Stepconf,
+ejecútelo de nuevo y pruebe la fluctuación del período base nuevamente, y ajuste la base
+Period Maximum Jitter en la página Información básica de la máquina. Usted puede
+tiene que dejar la prueba en funcionamiento durante un período prolongado de tiempo para encontrar
+si algún hardware causa problemas intermitentes.
+
+LinuxCNC rastrea el número de ciclos de CPU entre invocaciones de
+hilo en tiempo real. Si algún elemento de su hardware está causando demoras o
+sus subprocesos en tiempo real se configuran demasiado rápido, obtendrá este error.
+
+NOTA: Este error solo se muestra una vez por sesión. Si tuvieras tu
+BASE_PERIOD demasiado bajo, podría obtener cientos de miles de errores
+mensajes por segundo si se mostró más de uno.
+
+== Pruebas
+
+=== Tiempo de paso
+
+Si está viendo un eje que termina en la ubicación incorrecta sobre
+movimientos múltiples, es probable que no tenga la dirección correcta
+tiempos de espera o sincronización de pasos para sus conductores paso a paso. Cada dirección
+el cambio puede estar perdiendo un paso o más. Si los motores se estancan, es
+También es posible que tenga el conjunto MAX_ACCELERATION o MAX_VELOCITY
+demasiado alto para ese eje.
+
+El siguiente programa probará la configuración correcta del eje Z
+preparar. Copie el programa en su directorio ~ / emc2 / nc_files y asígnele un nombre
+TestZ.ngc o similar. Ponga a cero su máquina con Z = 0.000 en la mesa
+parte superior. Cargue y ejecute el programa. Hará 200 movimientos de ida y vuelta
+de 0.5 a 1 ". Si tiene un problema de configuración, encontrará que
+la posición final no terminará 0.500 "que la ventana del eje es
+demostración. Para probar otro eje, simplemente reemplace la Z con su eje en el
+Líneas G0.
+
+    (programa de prueba para ver si el eje Z pierde posición)
+    (mensaje, prueba 1 de configuración del eje Z)
+    G20 # 1000 = 100 (bucle 100 veces)
+    (este bucle tiene retrasos después de los movimientos)
+    (prueba acc y ajustes de velocidad)
+    o100 mientras [# 1000]
+    G0 Z1.000
+    G4 P0.250
+    G0 Z0.500
+    G4 P0.250
+    # 1000 = [# 1000 - 1]
+    o100 final mientras
+    (mensaje, prueba 2 de la configuración del eje Z S para continuar)
+    M1 (para aquí)
+    # 1000 = 100 (bucle 100 veces)
+    (el siguiente ciclo no tiene demoras después de los movimientos)
+    (prueba los tiempos de retención de dirección en la configuración del controlador y también la configuración de aceleración máxima)
+    o101 mientras [# 1000]
+    G0 Z1.000
+    G0 Z0.500
+    # 1000 = [# 1000 - 1]
+    o101 mientras tanto
+    (mensaje, Listo ... Z debe estar exactamente .5 "arriba de la tabla)
+    M2
+
+
+

@@ -1,0 +1,290 @@
+﻿= Componente de traslado
+
+[[cha: traslado]]
+
+El componente Hal de desplazamiento es un método exclusivo de Hal
+para implementar compensaciones. Ver la página de manual ('$ man moveoff')
+para las limitaciones y advertencias IMPORTANTES.
+
+El componente de desplazamiento se utiliza para compensar las posiciones conjuntas utilizando Hal personalizado
+conexiones Implementar una funcionalidad offset-while-program-is-paused es
+compatible con conexiones apropiadas para los pines de entrada. Nueve articulaciones son
+soportado.
+
+Los valores de los pines de desplazamiento del eje (offset-in-M) se aplican continuamente (respetando
+límites de valor, velocidad y aceleración) a los pines de salida
+(offset-current-M, pos-plusoffset-M, fb-minusoffset-M) cuando ambos permiten la entrada
+los pines (aplicar-compensaciones y mover-habilitar) son VERDADEROS. Las dos entradas habilitadoras son
+Anded internamente. Se establece un 'pin de advertencia' y se emite un mensaje si el
+el pin apply-offsets se desassertó mientras se aplican los offsets. El pin de advertencia
+permanece VERDADERO hasta que se eliminen las compensaciones o se establezca el pin de aplicar compensaciones.
+
+Normalmente, el pin de habilitación de movimiento está conectado a controles externos y el
+el pin apply-offsets está conectado a halui.program.is-paused (solo para compensaciones
+mientras está en pausa) o establecido en VERDADERO (para compensaciones aplicadas continuamente).
+
+Las compensaciones aplicadas se 'devuelven automáticamente' a cero (respetando los límites)
+cuando cualquiera de las entradas de habilitación está desactivada. El valor cero
+la tolerancia se especifica mediante el valor del pin de entrada epsilon.
+
+Los puntos de referencia se registran cuando el componente de desplazamiento está habilitado. Los puntos de referencia son
+gestionado con los waypoint-sample-secs y los pines de umbral de waypoint. Cuando el
+el pin de habilitación de retroceso es VERDADERO, la ruta de retorno automático sigue la grabación
+waypoints Cuando la memoria disponible para waypoints se agota, las compensaciones son
+congelado y se afirma el pin de límite de waypoint. Esta restricción aplica
+independientemente del estado del pin de habilitación de retroceso. Un pin de habilitación debe ser
+desassertado para permitir un retorno al original (posición sin desplazamiento).
+
+Retroceder a través de puntos de ruta resulta en tasas de movimiento 'más lentas' a medida que
+los movimientos son punto a punto respetando la velocidad y la configuración de aceleración. los
+Los pasadores de límite de velocidad y aceleración se pueden gestionar dinámicamente para controlar
+compensaciones en todo momento.
+
+Cuando backtrack-enable es FALSE, el movimiento de retorno automático es * NOT *
+coordinado, cada eje vuelve a cero a su propio ritmo. Si una ruta controlada
+se desea en esta condición, cada eje debe devolverse manualmente a cero
+antes de desassertar un pin de habilitación.
+
+Se evalúan los segundos de muestra de waypoint, umbral de waypoint y pines epsilon
+solo cuando el componente está inactivo.
+
+El pin de salida aplicado por desplazamiento se proporciona para indicar el estado actual a un
+GUI para que se pueda gestionar la reanudación del programa. Si el desplazamiento (s) no es cero
+cuando se desascribe el pin apply-offsets (por ejemplo, cuando se reanuda un programa
+cuando se compensa durante una pausa), las compensaciones se devuelven a cero (respetando
+límites) y se emite un mensaje de 'Error'.
+
+[PRECAUCIÓN]
+Si las compensaciones están habilitadas y aplicadas y la máquina está apagada para cualquier
+razón, cualquier lógica Hal 'externa' que maneje los pines habilitadores y el
+las entradas offset-en-M son responsables de su estado cuando la máquina está
+posteriormente se volvió a encender.
+
+LinuxCNC generalmente no conoce este medio de compensación de Hal-only
+ni disponible en las pantallas de vista previa de la GUI. * No se proporciona protección * para
+movimientos compensados ​​que exceden los límites suaves administrados por LinuxCNC. Desde límites suaves
+no se cumplen, un movimiento de compensación puede encontrar límites duros (o * CRASH * si
+no hay interruptores de límite). Uso de las entradas offset-min-M y offset-max-M
+Se recomienda limitar el viaje. Disparar un límite duro se apagará
+la máquina - vea * Precaución * arriba.
+
+Los valores de desplazamiento en M pueden establecerse con configuraciones inifile, controladas por una GUI,
+o gestionado por otros componentes y conexiones Hal. Los valores fijos pueden ser
+apropiado en casos simples donde la dirección y la cantidad de desplazamiento es
+bien definido pero se requiere un método de control para desactivar una habilitación
+pin para devolver las compensaciones a cero. Las GUI pueden proporcionar medios para que los usuarios
+establecer, incrementar, disminuir y acumular valores de compensación para cada eje y puede
+establezca los valores de offset en M en cero antes de desassertar un pin de habilitación.
+
+Los valores predeterminados para accel, vel, min, max, epsilon, waypoint-sample-secs y
+El umbral del punto de referencia puede no ser adecuado para ninguna aplicación en particular. Esta
+El componente Hal desconoce los límites impuestos por LinuxCNC en otros lugares.
+Los usuarios deben probar el uso en una aplicación de simulador y comprender todo
+riesgos antes de su uso en hardware.
+
+
+Configuraciones Sim que demuestran el componente y un
+gui (moveoff_gui) se encuentran en:
+
+* configs / sim / axis / moveoff (axis-ui)
+* configs / sim / touchy / ngcgui (touchy-ui)
+
+
+== Modificar una configuración existente
+
+Se puede utilizar un halfile proporcionado por el sistema (LIB: hookup_moveoff.tcl) para adaptar un
+configuración existente para usar el componente de traslado. Archivo ini adicional
+la configuración admite el uso de una simple interfaz gráfica de usuario (moveoff_gui) para controlar las compensaciones.
+
+Cuando el medio del sistema (LIB: hookup_moveoff.tcl) se especifica correctamente en
+un archivo ini de configuración, que:
+
+. Desconecte la junta original.N.motor-pos-cmd y la junta.N.motor-pos-fb pin
+  conexiones
+. Cargue (loadrt) el componente de desplazamiento (usando el nombre mv) con una personalidad
+  configurado para acomodar todos los ejes identificados en el archivo ini
+. Agregue (addf) las funciones del componente de desplazamiento en la secuencia requerida
+. Vuelva a conectar los pines joint.N.motor-pos-cmd y joint.N.motor-pos-fb para usar
+  el componente de traslado
+. Establezca los parámetros operativos y los límites del componente de movimiento para cada eje.
+  de acuerdo con la configuración adicional del archivo ini
+
+
+Nota: La aplicación moveoff_gui admite configuraciones que utilizan conocidos
+módulos de cinemática con KINEMATICS_TYPE = KINEMATICS_IDENTITY. Soportado
+los módulos incluyen: trivkins. Con parientes de identidad, moveoff_gui
+asigna cada nombre de eje especificado con el parámetro de línea de comando '-axes axisnames'
+a la articulación correspondiente.
+
+Modifique una configuración existente de la siguiente manera:
+
+Asegúrese de que haya una entrada de archivo ini para [HAL] HALUI y cree una nueva
+[HAL] Entrada HALFILE para LIB: hookup_moveoff.tcl.
+La entrada para LIB: hookup_moveoff.tcl debe seguir todas las entradas HALFILE =
+para halfiles que conectan los pines para la unión. N..motor-pos-cmd,
+joint.N.motor-pos-fb, y cualquier componente conectado a estos pines (pid
+y componentes del codificador en un sistema servo, por ejemplo).
+
+----
+[HAL]
+HALUI = halui
+MEDIO = existente_configuration_halfile_1
+...
+MEDIO = existente_configuration_halfile_n
+HALFILE = LIB: hookup_moveoff.tcl
+----
+
+Agregue entradas de archivo ini para la configuración por eje para cada eje en uso (si un
+la entrada no está definida, la entrada correspondiente de la sección [AXIS_n] será
+utilizado, si no se encuentra ninguna entrada, se utilizará el componente predeterminado de desplazamiento.
+Nota: Uso de valores predeterminados de componentes o valores de sección [AXIS_n] para el desplazamiento por eje
+NO se recomienda la configuración.
+----
+[MOVEOFF_n]
+MAX_LIMIT =
+MIN_LIMIT =
+MAX_VELOCITY =
+MAX_ACCELERATION =
+----
+
+Agregar entradas de archivo ini para la configuración del componente de traslado
+(omita usar los valores predeterminados de traslado):
+----
+[MOVIMIENTO]
+EPSILON =
+WAYPOINT_SAMPLE_SECS =
+WAYPOINT_THRESHOLD =
+----
+
+Moveoff_gui se usa para hacer conexiones adicionales requeridas y proporcionar
+una gui emergente para:
+
+. Proporcionar un botón de control para habilitar / deshabilitar las compensaciones
+. Proporcione un botón de control para activar / desactivar el seguimiento
+. Proporcione botones de control para aumentar / disminuir / cero cada desplazamiento del eje
+. Mostrar el valor actual de desplazamiento de cada eje
+. Mostrar el estado de desplazamiento actual (deshabilitado, activo, eliminando, etc.)
+
+Los botones de control provistos son opcionales dependiendo del estado de
+el componente de movimiento de activación de movimiento pin. Tanto una pantalla como controles
+para habilitar la compensación se proporcionan si el pin mv.move-enable
+NO está conectado cuando se inicia moveoff_gui. Para este caso,
+moveoff_gui administra el pin de habilitación de movimiento del componente de desplazamiento
+(denominado mv.move-enable), así como los desplazamientos (mv.move-offset-in-M)
+y el backtracking enable (mv.backtrack-enable)
+
+Si el pin mv.move-enable está conectado cuando moveoff_gui
+se inicia, moveoff_gui proporcionará una pantalla pero NO controles.
+Este modo admite configuraciones que usan una rueda de selección u otros métodos
+de controlar las entradas de desplazamiento y los pines de habilitación (mv.offset-in-M,
+mv.move-enable, mv.backtrack-enable).
+
+Moveoff_gui realiza las conexiones necesarias para los pines del componente de desplazamiento:
+mv.power_on y mv.apply-offsets. El pin mv.power_on está conectado al
+pin habilitado para motion.motion (una nueva señal se crea automáticamente si es necesario).
+Mv.apply-offsets está conectado a halui.program.is-paused o se establece en 1
+dependiendo de la opción de línea de comando -mode [onpause | siempre ]. Una nueva señal
+se crea automáticamente si es necesario.
+
+Para usar moveoff_gui, agregue una entrada en el archivo ini [APLICACIONES]
+sección de la siguiente manera:
+----
+[APLICACIONES]
+# Nota: un retraso (especificado en segundos) puede ser requerido si las conexiones
+# se hacen usando halfiles postgui ([HAL] POSTGUI_HALFILE =)
+RETARDO = 0
+APP = moveoff_gui opción1 opción2 ...
+----
+
+Cuando el medio percentil LIB: hookup_moveoff.tcl se usa para cargar y conectar el
+componente de desplazamiento, el pin mv.move-enable no se conectará y
+Se utilizarán los controles locales proporcionados por moveoff_gui. Este es el
+método más simple para probar o demostrar el componente de movimiento cuando
+modificando una configuración ini existente.
+
+Para habilitar controles externos mientras se usa la pantalla moveoff_gui
+para valores de desplazamiento y estado, halfiles que siguen a LIB: hookup_moveoff.tcl
+debe hacer conexiones adicionales. Por ejemplo, la demostración proporcionada
+configs (configs / sim / axis / moveoff / *. ini) usa un medio sistema simple
+(llamado LIB: moveoff_external.hal) para conectar mv.move-enable, mv.offset-in-M,
+y pines mv.bactrack-enable para señales:
+----
+[HAL]
+HALUI = halui
+...
+HALFILE = LIB: hookup_moveoff.tcl
+MEDIO = LIB: moveoff_external.hal
+----
+
+Las conexiones realizadas por LIB: moveoff_external.hal (para un eje tres
+configuración) son:
+----
+net external_enable mv.move-enable
+
+net external_offset_0 mv.offset-in-0
+net external_offset_1 mv.offset-in-1
+net external_offset_2 mv.offset-in-2
+
+net external_backtrack_en mv.backtrack-enable
+----
+
+Estas señales (external_enable, external_offset_M, external_backtrack_en) pueden
+ser administrado por HALFILES posteriores (incluidos POSTGUI_HALFILEs) para proporcionar
+control personalizado del componente mientras se usa la pantalla moveoff_gui
+para valores de compensación actuales y estado de compensación.
+
+Moveoff_gui está configurado con opciones de línea de comando. Para detalles
+sobre la operación de moveoff_gui, vea la página del manual:
+----
+$ man moveoff_gui
+----
+Para obtener una breve lista de las opciones de línea de comando para moveoff_gui, use el comando
+opción de ayuda de línea:
+----
+$ moveoff_gui --help
+
+Uso:
+moveoff_gui [Opciones]
+
+Opciones:
+    [--ayuda | -? El | - -h] (Este texto)
+
+    [-modo [en pausa | siempre]] (predeterminado: en pausa)
+                                  (en pausa: muestra la interfaz gráfica de usuario cuando el programa está en pausa)
+                                  (siempre: muestra gui siempre)
+
+    [-axes axisnames] (predeterminado: xyz (sin espacios))
+                              (letras del conjunto de: x y z a b c u v w)
+                              (ejemplo: -axes z)
+                              (ejemplo: -axes xz)
+                              (ejemplo: -axes xyz)
+    [-incvalor de incremento] (predeterminado: 0.001 0.01 0.10 1.0)
+                              (especifique uno por cada (hasta 4))
+                              (ejemplo: -inc 0.001 -inc 0.01 -inc 0.1)
+    [entero de tamaño] (predeterminado: 14
+                              (El tamaño general emergente de la interfaz gráfica de usuario se basa en el tamaño de la fuente)
+    [-loc center | + x + y] (predeterminado: centro)
+                              (ejemplo: -loc + 10 + 200)
+    [-autoresume] (predeterminado: no utilizado)
+                              (reanudar el programa cuando move-enable desasserted)
+    [-delay delay_secs] (predeterminado: 5 (retraso de reanudación))
+
+Opciones para casos especiales:
+    [-noentry] (predeterminado: no utilizado)
+                              (no cree widgets de entrada)
+    [-no_resume_inhibit] (predeterminado: no utilizado)
+                              (no use un pin de reanudar inhibición)
+    [-no_pause_requirement] (predeterminado: no utilizado)
+                              (sin verificación de halui.program.is-paused)
+    [-no_cancel_autoresume] (predeterminado: no utilizado)
+                              (útil para retractaciones con simple)
+                              (control externo                       )
+    [-no_display] (predeterminado: no utilizado)
+                              (Usar cuando tanto los controles externos como las pantallas)
+                              (están en uso (ver Nota)))
+
+Nota: Si el pin de movimiento de habilitación de movimiento (mv.move-enable) está conectado cuando
+      moveoff_gui se inicia, se requieren controles externos y solo
+      Se proporcionan pantallas.
+----
+
