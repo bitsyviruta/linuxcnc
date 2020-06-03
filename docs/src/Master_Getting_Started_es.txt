@@ -10,17 +10,17 @@ El Equipo LinuxCNC
 
 image::common/images/emc2-intro.*[]
 
-include::common/overleaf.txt[]
+include::common/overleaf-es.txt[]
 
-include::getting-started/about-linuxcnc.txt[]
+include::getting-started/about-linuxcnc-es.txt[]
 
-include::getting-started/system-requirements.txt[]
+include::getting-started/system-requirements-es.txt[]
 
-include::getting-started/getting-linuxcnc.txt[]
+include::getting-started/getting-linuxcnc-es.txt[]
 
-include::getting-started/updating-linuxcnc.txt[]
+include::getting-started/updating-linuxcnc-es.txt[]
 
-include::common/glossary.txt[]
+include::common/glossary-es.txt[]
 
 include::common/gpld-copyright.txt[]
 

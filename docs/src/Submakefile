@@ -34,48 +34,6 @@ endif
 
 ifeq ($(BUILD_DOCS),yes)
 DOC_SRCS_EN := \
-	code/code-notes.txt \
-	code/style-guide.txt \
-	code/nml-messages.txt \
-	code/rs274.txt \
-	code/adding-configs.txt \
-	code/contributing-to-linuxcnc.txt \
-	code/building-linuxcnc.txt \
-	common/emc-history.txt \
-	common/glossary.txt \
-	common/gpld-copyright.txt \
-	common/overleaf.txt \
-	config/core-components.txt \
-	config/ini-config.txt \
-	config/ini-homing.txt \
-	config/integrator-concepts.txt \
-	config/lathe-config.txt \
-	config/moveoff.txt \
-	config/pncconf.txt \
-	config/python-interface.txt \
-	config/stepconf.txt \
-	config/stepper-diagnostics.txt \
-	config/stepper.txt \
-	config/stepper-quickstart.txt \
-	drivers/ax5214h.txt \
-	drivers/vfs11.txt \
-	drivers/mitsub_vfd.txt \
-	drivers/gm.txt \
-	drivers/gs2.txt \
-	drivers/hostmot2.txt \
-	drivers/mb2hal.txt \
-	drivers/motenc.txt \
-	drivers/opto22.txt \
-	drivers/pico-ppmc.txt \
-	drivers/pluto-p.txt \
-	drivers/pmx485.txt \
-	drivers/servo-to-go.txt \
-	drivers/shuttle.txt \
-	examples/gcode.txt \
-	examples/gs2-example.txt \
-	examples/mpg.txt \
-	examples/pci-parallel-port.txt \
-	examples/spindle.txt \
 	gcode/coordinates.txt \
 	gcode/g-code.txt \
 	gcode/machining-center.txt \
@@ -153,9 +111,51 @@ DOC_SRCS_EN := \
 	user/user-intro.txt \
 	Master_Getting_Started.txt \
 	Master_Documentation.txt \
-	Master_Developer.txt
 
 DOC_SRCS_ES := \
+	common/emc-history-es.txt \
+	common/glossary-es.txt \
+	common/gpld-copyright.txt \
+	common/overleaf-es.txt \
+	code/code-notes-es.txt \
+	code/style-guide-es.txt \
+	code/nml-messages-es.txt \
+	code/rs274-es.txt \
+	code/adding-configs-es.txt \
+	code/contributing-to-linuxcnc-es.txt \
+	code/building-linuxcnc-es.txt \
+	config/core-components-es.txt \
+	config/ini-config-es.txt \
+	config/ini-homing-es.txt \
+	config/integrator-concepts-es.txt \
+	config/lathe-config-es.txt \
+	config/moveoff-es.txt \
+	config/pncconf-es.txt \
+	config/python-interface-es.txt \
+	config/stepconf-es.txt \
+	config/stepper-diagnostics-es.txt \
+	config/stepper-es.txt \
+	config/stepper-quickstart-es.txt \
+	drivers/ax5214h-es.txt \
+	drivers/vfs11-es.txt \
+	drivers/mitsub_vfd-es.txt \
+	drivers/gm-es.txt \
+	drivers/gs2-es.txt \
+	drivers/hostmot2-es.txt \
+	drivers/mb2hal-es.txt \
+	drivers/motenc-es.txt \
+	drivers/opto22-es.txt \
+	drivers/pico-ppmc-es.txt \
+	drivers/pluto-p-es.txt \
+	drivers/pmx485-es.txt \
+	drivers/servo-to-go-es.txt \
+	drivers/shuttle-es.txt \
+	examples/gcode-es.txt \
+	examples/gs2-example-es.txt \
+	examples/mpg-es.txt \
+	examples/pci-parallel-port-es.txt \
+	examples/spindle-es.txt \
+    examples/probe-G38-es.txt \
 	getting-started/about-linuxcnc-es.txt \
 	getting-started/getting-linuxcnc-es.txt \
 	common/linux-faq-es.txt \
@@ -163,6 +163,7 @@ DOC_SRCS_ES := \
 	config/stepconf-es.txt \
 	config/stepper-quickstart-es.txt \
 	getting-started/system-requirements-es.txt \
+	Master_Developer_es.txt \
 
 DOC_SRCS = $(DOC_SRCS_EN) $(DOC_SRCS_ES)
 

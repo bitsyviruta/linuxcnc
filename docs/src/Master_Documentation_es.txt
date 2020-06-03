@@ -3,7 +3,7 @@ LinuxCNC V{lversion}, {localdate}
 =================================
 :lang: es
 
-= Contenidoss
+= Contenidos
 
 :masterdir: {indir}
 
@@ -222,6 +222,8 @@ include::examples/spindle.txt[]
 include::examples/mpg.txt[]
 
 include::examples/gs2-example.txt[]
+
+include::examples/probe-G38-es.txt
 
 :leveloffset: 1
 
