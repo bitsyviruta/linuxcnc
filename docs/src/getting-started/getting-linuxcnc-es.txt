@@ -1,198 +1,331 @@
-= Obteniendo LinuxCNC
+﻿[[cha: getting-linuxcnc]]
 
-== Descarga Normal
+= Obtener LinuxCNC
 
-Descargue el Live-CD de:
+Esta sección describe la forma recomendada de descargar
+y realice una nueva instalación de LinuxCNC. También hay
+<< _ alternate_install_methods, Métodos alternativos de instalación >> para el
+aventurero. Si tiene una instalación existente que desea actualizar,
+vaya a la sección << cha: updated-linuxcnc, Actualizando LinuxCNC >>.
 
-http://www.linuxcnc.org/[La pagina principal del LinuxCNC www.linuxcnc.org]
+Las nuevas instalaciones de LinuxCNC se crean más fácilmente usando Live / Install
+Imagen. Esta es una imagen del sistema de archivos ISO híbrido que se puede escribir en un
+Dispositivo de almacenamiento USB o DVD y se utiliza para iniciar una computadora. En el momento del arranque usted
+se le dará la opción de arrancar el sistema "Live" (para ejecutar LinuxCNC
+sin hacer cambios permanentes en su computadora) o arrancar el
+Instalador (para instalar LinuxCNC y su sistema operativo en su
+disco duro de la computadora).
 
-y siga el vinculo para descarga.
+El esquema del proceso se ve así:
 
-== Descarga Multi-sesion (((Descarga Multi-sesion)))
+. Descargue la imagen Live / Install.
+. Escriba la imagen en un dispositivo de almacenamiento USB o DVD.
+. Inicie el sistema Live para probar LinuxCNC.
+. Inicie el instalador para instalar LinuxCNC.
 
-Si el archivo es demasiado grande para ser descargado en una sesión debido a una conexión a internet lenta o defectuosa, utilice `wget` (o bittorrent) para permitir restaurar la descarga despues de una interrupción.
 
-Linux Wget:: (((Linux Wget)))
-Abra una ventana de terminal. En Ubuntu valla a Applications/Accessories/Terminal.
-Utilice 'cd' para cambiar al directorio donde desea guardar el ISO.
-Si lo necesita utilice 'mkdir' para crear un nuevo directorio.
-+
-Note que los nombres de los archivos pueden cambiar, usted debería de ir a 
-http://www.linuxcnc.org/[http://www.linuxcnc.org/] 
-y seguir el vinculo de descarga para obtener el nombre actual del archivo.
-En la mayoría de los buscadores usted puede hacer clic derecho en el vinculo y seleccionar la opción de copiar la locación del vinculo, posteriormente pegue esa locación en la ventana de la terminal utilizando un clic del botón derecho y seleccionando la opción pegar.
+== Descargar la imagen
 
-.Ubuntu 10.04 Lucid Lynx y LinuxCNC (versión actual)
-*********************************************************************
-Para obtener la versión Ubuntu 10.04 Lucid Lynx,
-copie una de las siguientes direcciones en la ventana de terminal y presione la tecla enter:
+Esta sección describe algunos métodos para descargar Live / Install
+Imagen.
 
-Para el espejo en USA:
-wget http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc3-i386.iso
 
-Para el espejo en Europa:
-wget http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-10.04-linuxcnc3-i386.iso
+=== Descarga normal
 
-La md5sum del archivo anterior es: '5283b33b7e23e79da1ee561ad476b05f' 
-*********************************************************************
-+
-Para continuar una descarga parcial que fue interrumpida
-agregue la opción -c al comando wget:
-+
-wget -c http://www.linuxcnc.org/iso/ubuntu-10.04-linuxcnc1-i386.iso
-+
-Para detener una descarga en progreso utilice Ctrl-C o cierre la pantalla de la terminal.
-+
-.Ubuntu 8.04 Hardy Heron y LinuxCNC (antiguo)
-*********************************************************************
-Si usted requiere una versión antigua de Ubuntu, usted puede descargar Ubuntu 8.04.
-La imagen CD siguiente tiene el antiguo emc 2.3.x en ella, pero puede ser actualizada a
-la versión 2.4.x siguiendo las instrucciones en el wiki de LinuxCNC.org que se encuentran aquí:
-http://wiki.linuxcnc.org/cgi-bin/emcinfo.pl?UpdatingTo2.4
+Descargue el CD Live / Install haciendo clic aquí:
 
-Para el espejo en USA:
-wget http://www.linuxcnc.org/iso/ubuntu-8.04-desktop-emc2-aj13-i386.iso
+http://www.linuxcnc.org/iso/linuxcnc-2.7.14-wheezy.iso
 
-Para el espejo en Europa:
-wget http://dsplabs.upt.ro/~juve/emc/get.php?file=ubuntu-8.04-desktop-emc2-aj13-i386.iso
 
-La md5sum del archivo anterior es: '1bab052ec879f941628927c988863f14'
-*********************************************************************
-+
-Cuando la descarga sea completada usted encontrara el archivo ISO en el
-directorio que selecciono. A continuación quemaremos el CD.
+=== Descargar usando zsync
 
-Wget Windows:: (((Wget Windows)))
-El programa wget se encuentra también disponible para Windows descargado de:
-+
-http://gnuwin32.sourceforge.net/packages/wget.htm
-+
-Siga las instrucciones de la pagina de internet para descargar e instalar la versión de Windows
-del programa wget.
-+
-Para correr wget abra una ventana de linea de comandos.
-+
-En la mayoría de las instalaciones de Windows esto se hace en Programs/Accessories/Command Prompt
-+
-Primero usted tiene que cambiarse al directorio donde wget esta instalado.
-+
-Típicamente es en  C:\Program Files\GnuWin32\bin por lo tanto en la ventana de la linea de comandos escriba:
-+
----
-'cd C:\Program Files\GnuWin32\bin'
----
-+
-y el prompt debería de cambiar a: 'C:\Program Files\GnuWin32\bin>'
-+
-Escriba el comando wget en la ventana de la linea de comandos como se describió en las secciones anteriores dependiendo
-de la versión de LinuxCNC que requiera y presione enter.
+zsync es una aplicación de descarga que reanuda eficientemente interrupciones
+descarga y transfiere archivos grandes de manera eficiente con pequeñas modificaciones
+(si tiene una copia local anterior). Use zsync si tiene problemas
+descargando la imagen usando << _ normal_download, Descarga normal >>
+método.
 
-== Quemando el CD de LinuxCNC
+.zsync en Linux
 
-LinuxCNC es distribuido como una imagen de CD con un formato llamado ISO.
-Para instalar LinuxCNC, usted necesitara primero quemar el archivo ISO en un CD.
-Usted necesita un quemador CD/DVD que funcione y un CD en blanco de 80 minutos (700Mb) para hacer esto.
-Si la escritura del CD falla trate de nuevo con una velocidad de escritura mas baja.
+. Instale zsync usando Synaptic o, ejecutando lo siguiente en un << faq: terminal, terminal >>
++
+----
+sudo apt-get install zsync
+----
+. Luego ejecute este comando para descargar la iso a su computadora
++
+----
+zsync http://www.linuxcnc.org/iso/linuxcnc-2.7.14-wheezy.iso.zsync
+----
 
-Verificando la integridad del CD con md5sum en Linux::
+.zsync en Windows
 
-Antes de quemar el CD, es altamente recomendable que verifique el md5sum (hash)
-del archivo .iso.
-+
-Abra una ventana de terminal.
-En Ubuntu valla a Applications/Accessories/Terminal.
-+
-Cambie el directorio a donde el archivo ISO fue descargado.
-+
----
-cd download_directory
----
-+
-Ejecute el comando de verificación de md5sum con el nombre del archivo guardado.
-+
----
-md5sum -b ubuntu-10.04-linuxcnc1-i386.iso
----
-+
-El comando md5sum deberá de imprimir una linea sencilla después de calcular el hash.
+Hay un puerto de Windows de zsync. Funciona como una aplicación de consola. Puede ser
+descargado de:
 
-En computadoras lentas esto puede tardar un minuto o dos.
+https://www.assembla.com/spaces/zsync-windows/documents
+
+=== Verificar la imagen
+
+(Este paso es innecesario si usó zsync)
+
+. Después de la descarga, verifique la suma de comprobación de la imagen para garantizar la integridad.
 +
----
-5283b33b7e23e79da1ee561ad476b05f *ubuntu-10.04-linuxcnc1-i386.iso
----
+----
+md5sum linuxcnc-2.7.14-wheezy.iso
+----
 +
-Ahora compare este valor con el que realmente debería de ser.
+o
 +
-Si descarga el md5sum asi como el iso,
-usted puede preguntar al programa md5sum el hacer la revisión por usted.
-En el mismo directorio:
+----
+sha256sum linuxcnc-2.7.14-wheezy.iso
+----
+. Entonces compare con estas sumas de verificación
 +
----
-md5sum -c ubuntu-10.04-linuxcnc1-i386.iso.md5
----
+-----
+md5sum: bdd85ad00f05d7c67e5037a72bae4934
+sha256sum: 079ba1fae48861b0814187b8048d6f2f299f943427d8c4806b65519f3a560d48
+-----
+
+.Verify md5sum en Windows o Mac
+
+Windows y Mac OS X no vienen con un programa md5sum, pero hay
+alternativas. Se puede encontrar más información en:
+https://help.ubuntu.com/community/HowToMD5SUM[How To MD5SUM]
+
+== Escribir la imagen en un dispositivo de arranque
+
+La imagen Live / Install de LinuxCNC es una imagen ISO híbrida que se puede escribir
+directamente a un dispositivo de almacenamiento USB (unidad flash) o un DVD y se utiliza para arrancar
+un ordenador. La imagen es demasiado grande para caber en un CD.
+
+Escribir la imagen en un dispositivo de almacenamiento USB en Linux.
+
+. Conecte un dispositivo de almacenamiento USB (por ejemplo, una unidad flash o pulgar
+  dispositivo de tipo de unidad).
+. Determine el archivo del dispositivo correspondiente a la unidad flash USB.
+  Esta información se puede encontrar en la salida de `dmesg` después
+  conectando el dispositivo. `/ proc / partitions` también puede ser útil.
+. Use el comando `dd` para escribir la imagen en su dispositivo de almacenamiento USB.
+  Por ejemplo, si su dispositivo de almacenamiento aparece como `/ dev / sde`,
+  luego usa este comando:
 +
-Si todo va bien despues de una pausa la terminal deveria de imprimir:
-+
----
-ubuntu-10.04-linuxcnc1-i386.iso: OK
----
-+
+-----
+dd if = linuxcnc-2.7.14-wheezy.iso de = / dev / sde
+-----
 
-Quemando el archivo ISO en Linux::
+Escribir la imagen en un DVD en Linux
 
- . Inserte un CD en blanco en su quemador. Una ventana de 'CD/DVD creador' o 'Seleccione tipo de disco' aparecera seleccione no hacer nada y cierre la ventana.
- . Busque la imagen Iso en el buscador de archivos.
- . Haga click derecro sobre la imagen ISO y seleccione la opcion escrivir a disco.
- . Seleccione la velocidad de escritura. Si se esta quemando un disco Live CD de Ubuntu seleccione la velocidad mas baja posible.
- . Inicie el proceso de quemado.
- . Si una ventana con el titulo 'seleccione el nombre para la imagen de disco' aparece, solo seleccione la opcion OK.
+. Inserte un DVD en blanco en su grabadora. Un 'Creador de CD / DVD' o 'Elegir tipo de disco'
+  se abrirá una ventana. Cierra esto, ya que no lo usaremos.
+. Busque la imagen descargada en el explorador de archivos.
+. Haga clic derecho en el archivo de imagen ISO y elija Escribir en disco.
+. Seleccione la velocidad de escritura. Se recomienda que escriba al mínimo
+  posible velocidad.
+. Comienza el proceso de grabación.
+. Si aparece la ventana 'elegir un nombre de archivo para la imagen del disco', simplemente elija Aceptar.
 
-Verificar md5sum con Windows::
+Escribir la imagen en un DVD en Windows
 
-Antes de quemar el CD, es altamente recomendable que verifique el md5sum (hash)
-del archivo .iso que se descargo.
-+
-Windows no incluye un programa de verificacion de mdsum. Se tendra que descargar e instalar uno para provar la md5sum. mas informacion puede ser encontrada en:
-+
-https://help.ubuntu.com/community/HowToMD5SUM
+. Descargue e instale Infra Recorder, una imagen gratuita y de código abierto
+  programa de grabación: http://infrarecorder.org/
+. Inserte un CD en blanco en la unidad y seleccione No hacer nada o Cancelar si
+  aparece el cuadro de diálogo de ejecución automática.
+. Abra Infra Recorder y seleccione el
+ Menú 'Acciones', luego 'Grabar imagen'.
 
-Quemando el archivo ISO en Windows::
+== Prueba de LinuxCNC
 
- . Descargue e instale Infra Recorder, el cual es un programa para quemar imagenes de disco gratuito y libre: http://infrarecorder.org/
- . Inserte un CD en blanco en la unidad de disco y seleccione la opcion de hacer nada o cancelar si alguna pantalla emergente aparece.
- . Abra Infra Recorder, seleccione la opcion 'Acciones' del menu, posteriormente seleccione 'Quemar Imagen'.
+Con el dispositivo de almacenamiento USB conectado o el DVD en la unidad de DVD, el
+apague la computadora y luego vuelva a encenderla. Esto arrancará
+la computadora desde Live / Install Image y elija la opción Live boot.
+Una vez que la computadora se ha iniciado, puede probar LinuxCNC sin instalar
+eso. No puede crear configuraciones personalizadas o modificar la mayoría de los sistemas
+configuraciones como resolución de pantalla a menos que instale LinuxCNC.
 
-== Probando LinuxCNC
+Para probar LinuxCNC desde el menú Aplicaciones / CNC, elija LinuxCNC. Luego seleccione
+una configuración sim para probar.
 
-Con el Live CD en la unidad CD/DVD apague la computadora y enciéndala de nuevo. 
-Esto hará que la computadora arranque desde el Live CD.
-Una vez que la computadora haya arrancado usted puede probar LinuxCNC sin instalarlo.
-Usted no puede crear configuraciones personalizadas o modificar la mayoría de los 
-parámetros del sistema tales como la resolución de pantalla amenos que instale LinuxCNC.
-
-Para probar LinuxCNC desde el menú de Applications/CNC seleccione LinuxCNC. Entonces seleccione
-una configuración sim (simulador) para hacer pruebas.
-
-Para revisar si su computadora es candidata apta para la generación de pasos por software
-corra una prueba de latencia como se describe en la sección (<<sub:latency-test,Latency Test>>)
+Para ver si su computadora es adecuada para la generación de pulsos por pasos de software
+ejecute la Prueba de latencia como se muestra << prueba de latencia, aquí >>.
 
 == Instalar LinuxCNC
 
-Si le gustan los resultados que obtuvo probando LinuxCNC, solo haga clic en el icono de instalación del escritorio,
-conteste unas cuantas preguntas (su nombre, zona horaria, contraseña) y la instalación se completara en unos pocos minutos. Asegúrese de conservar el nombre y la contraseña que introdujo. Una vez que el proceso de instalación concluya y usted se encuentre en linea el administrador de actualizaciones le permitirá actualizar a la ultima versión estable de LinuxCNC.
+Para instalar LinuxCNC desde el LiveCD, seleccione 'Instalar (gráfico)' en el arranque.
 
-== Actualizaciones a LinuxCNC(((Actualizaciones a LinuxCNC)))
+== Actualizaciones a LinuxCNC (((Actualizaciones a LinuxCNC)))
 
-Con la instalación normal el agente de actualizaciones le notificara de las actualizaciones disponibles para LinuxCNC cuando se conecte a internet, y usted podrá actualizar sin necesidad de conocer mas sobre LINUX.
+Con la instalación normal, el Administrador de actualizaciones le notificará las actualizaciones.
+a LinuxCNC cuando se conecta y le permite actualizar fácilmente sin
+Se necesita conocimiento de Linux.
+Está bien actualizar todo excepto el sistema operativo cuando se le solicite.
 
-Si usted desea actualizar a 10.04 de 8.04 se recomienda una instalación limpia de EMC.
-Es correcto actualizar todo cuando se le pregunte por hacerlo exepto el sistema operativo.
+[ADVERTENCIA]
+No actualice el sistema operativo si se le solicita que lo haga.
 
-Advertencia: No actualice Ubuntu a una versión que no sea LTS (Por ejemplo de 8.04 a 8.10) lo anterior arruinara su instalación de EMC y no podrá utilizarlo.
+== Problemas de instalación
 
-== Problemas con la instalación
+En casos excepcionales, es posible que deba restablecer el BIOS a la configuración predeterminada si
+durante la instalación del Live CD no puede reconocer el disco duro
+durante el arranque.
 
-En casos raros deberá de resetear el BIOS a su configuración de fabrica si durante el proceso de instalación desde el Live CD el disco duro no es detectado correctamente.
+== Métodos alternativos de instalación
 
-// vim: set syntax=asciidoc:
+La forma más fácil y preferida de instalar LinuxCNC es usar Live / Install
+Imagen como se describe arriba. Ese método es tan simple y confiable como nosotros
+puede hacerlo, y es adecuado para usuarios novatos y usuarios experimentados por igual.
+
+Además, para usuarios experimentados que están familiarizados con el sistema Debian
+administración (encontrar imágenes de instalación, manipular fuentes aptas, cambiar
+kernel flavors, etc.), las nuevas instalaciones son compatibles con las siguientes plataformas:
+
+[opciones = "encabezado"]
+| ================================================= ==================
+El | Distribución | Arquitectura | kernel | Uso típico
+El | Debian Jessie | amd64 e i386 | Stock | solo simulación
+El | Debian Wheezy | i386 | RTAI | control de máquina y simulación
+El | Debian Wheezy | amd64 e i386 | Preempt-RT | control de máquina y simulación
+El | Debian Wheezy | amd64 e i386 | Stock | solo simulación
+El | Ubuntu Precise | i386 | RTAI | control de máquina y simulación
+El | Ubuntu Precise | amd64 e i386 | Stock | solo simulación
+El | Ubuntu Lucid | i386 | RTAI | control de máquina y simulación
+El | Ubuntu Lucid | amd64 e i386 | Stock | solo simulación
+| ================================================= ==================
+
+Los núcleos RTAI están disponibles para descargar desde linuxcnc.org
+Archivo Debian. La fuente adecuada es:
+
+* Debian Wheezy: `deb http://linuxcnc.org wheezy base`
+* Ubuntu Precise: `deb http://linuxcnc.org base precisa`
+* Ubuntu Lucid: `deb http://linuxcnc.org lucid base`
+
+Los núcleos Preempt-RT están disponibles para Debian Wheezy desde
+archivo regular de debian.org. Los paquetes se llaman `linux-image-rt-amd64`
+y `linux-image-rt-686-pae`.
+
+=== Instalación en Debian Wheezy (con kernel Preempt-RT)
+
+. Instale Debian Wheezy (Debian versión 7),
+  ya sea i386 o amd64. Puede descargar el instalador aquí:
+  https://www.debian.org/releases/. Una versión que se prueba es la red.
+  instale 'debian-7.9.0-i386-netinst.iso'. Tenga cuidado y no descargue Debian
+  8)
+
+. Después de quemar la iso y arrancar si no quieres Gnome Desktop, selecciona
+  'Opciones avanzadas'> 'Entornos de escritorio alternativos' y elige el que
+  me gusta. Luego seleccione 'Instalar' o 'Instalación gráfica'.
++
+ADVERTENCIA: No ingrese una contraseña de root, si sudo está deshabilitado y no lo hará
+poder completar los siguientes pasos.
+
+. Ejecute lo siguiente en un << faq: terminal, terminal >> para que la máquina funcione
+  Fecha con los últimos paquetes.
++
+----
+sudo apt-get update
+sudo apt-get dist-upgrade
+----
+
+. Instale el kernel y los módulos Preempt-RT
++
+----
+sudo apt-get install linux-image-rt-amd64
+o
+sudo apt-get install linux-image-rt-686-pae
+----
+
+. Reinicie y seleccione el kernel Linux 3.2.0-4-rt-686-pae. Cuando usted
+  inicie sesión, verifique que `PREEMPT RT` sea informado por el siguiente comando.
++
+----
+uname -v
+----
+
+. Abra el Menú de aplicaciones> Sistema> Synaptic Package Manager busque
+  'linux-image' y haga clic derecho en 'linux-image-3.2.0-4-686-pae' y seleccione
+  'Marcar para eliminación completa'. Haga lo mismo para 'linux-image-686-pae'. Reiniciar.
+
+. Agregue la clave de firma de archivo LinuxCNC a su llavero apto ejecutando
++
+----
+sudo apt-key adv --keyserver hkp: //keys.gnupg.net --recv-key 3cb9fd148f374fef
+----
+
+. Agregue un repositorio de apt:
++
+----
+sudo add-apt-repository "deb http://linuxcnc.org/ wheezy base 2.7-uspace"
+----
+
+. Actualice la lista de paquetes de linuxcnc.org
++
+----
+sudo apt-get update
+----
+
+. Instalar uspace (puede ser necesario reiniciar antes de instalar uspace)
++
+----
+sudo apt-get install linuxcnc-uspace
+----
+
+
+=== Instalación en Ubuntu Precise
+
+. Instale Ubuntu Precise 12.04 x86 (32 bits). Cualquier sabor debe
+  trabajo (Ubuntu normal, Xubuntu, Lubuntu, etc.). 64 bits (AMD64)
+  Actualmente no es compatible. Puede descargar el instalador aquí:
+  http://releases.ubuntu.com/precise/
+
+. Ejecute lo siguiente para actualizar la máquina con los últimos paquetes
+  en Ubuntu Precise.
++
+----
+sudo apt-get update
+sudo apt-get dist-upgrade
+----
+
+. Agregue la clave de firma de archivo LinuxCNC a su llavero apto ejecutando
++
+----
+sudo apt-key adv --keyserver hkp: //keys.gnupg.net --recv-key 3cb9fd148f374fef
+----
+
+. Agregar una nueva fuente de apt
++
+----
+sudo add-apt-repository "deb http://linuxcnc.org/ precisa base 2.7-rtai"
+----
+
+. Obtenga la lista de paquetes de linuxcnc.org.
++
+----
+sudo apt-get update
+----
+
+. Instale el kernel y los módulos RTAI ejecutando
++
+----
+sudo apt-get install linux-image-3.4-9-rtai-686-pae rtai-modules-3.4-9-rtai-686-pae
+----
+
+. Si quieres poder construir LinuxCNC desde la fuente usando el repositorio git,
+  también corre
++
+----
+sudo apt-get install linux-headers-3.4-9-rtai-686-pae
+----
+
+. Reinicie y asegúrese de iniciar en el kernel rtai. Cuando inicias sesión,
+  Verifique que el nombre del núcleo sea 3.4-9-rtai-686-pae.
++
+----
+uname -r
+----
+
+. correr
++
+----
+sudo apt-get install linuxcnc
+----
+
