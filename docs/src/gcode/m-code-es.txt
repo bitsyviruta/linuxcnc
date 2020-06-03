@@ -1,0 +1,794 @@
+﻿[[cha: códigos m]]
+
+= Códigos M
+
+: ini: {basebackend @ docbook: '': ini}
+: hal: {basebackend @ docbook: '': hal}
+: ngc: {basebackend @ docbook: '': ngc}
+
+== Tabla de referencia rápida de código M
+
+[ancho = "60%", opciones = "encabezado", cols = "2 ^, 5 <"]
+| ========================================
+| Código | Descripción
+| << mcode: m0-m1, M0 M1 >> | Pausa del programa
+| << mcode: m2-m30, M2 M30 >> | Fin del programa
+| << mcode: m60, M60 >> | Paleta Cambio Pausa
+| << mcode: m3-m4-m5, M3 M4 M5 >> | Control de husillo
+| << mcode: m6, M6 >> | Cambio de herramienta
+| << mcode: m7-m8-m9, M7 M8 M9 >> | Control de refrigerante
+| << mcode: m19, M19 >> | Husillo de Oriente
+| << mcode: m48-m49, M48 M49 >> | Anulaciones de avance y husillo Activar / Desactivar
+| << mcode: m50, M50 >> | Control de anulación de alimentación
+| << mcode: m51, M51 >> | Control de anulación del husillo
+| << mcode: m52, M52 >> | Control adaptativo de alimentación
+| << mcode: m53, M53 >> | Control de parada de alimentación
+| << mcode: m61, M61 >> | Establecer número de herramienta actual
+| << mcode: m62-m65, m62-m65 >> | Control de salida
+| << mcode: m66, M66 >> | Control de entrada
+| << mcode: m67, M67 >> | Control de salida analógica
+| << mcode: m68, M68 >> | Control de salida analógica
+| << mcode: m70, M70 >> | Guardar estado modal
+| << mcode: m71, M71 >> | Invalidar estado modal almacenado
+| << mcode: m72, M72 >> | Restaurar estado modal
+| << mcode: m73, M73 >> | Guardar estado modal de Autorestore
+| << mcode: m98-m99, M98 M99 >> | Llamar y regresar del subprograma
+| << mcode: m100-m199, M100-M199 >> | Códigos M definidos por el usuario
+| ========================================
+
+
+[[mcode: m0-m1]]
+== M0, M1 Pausa del programa
+(((M0, M1 Pausa del programa)))
+
+* 'M0': pausa temporalmente un programa en ejecución. LinuxCNC permanece en el modo automático
+         entonces MDI y otras acciones manuales no están habilitadas. Presionando el currículum
+         el botón reiniciará el programa en la siguiente línea.
+
+* 'M1': pausa temporalmente un programa en ejecución si el interruptor de parada opcional está activado.
+         LinuxCNC permanece en el modo automático, por lo que MDI y otras acciones manuales son
+         no disponible. Al presionar el botón de reanudar reiniciará el programa en el
+         línea siguiente
+
+[NOTA]
+Está bien programar 'M0' y 'M1' en modo MDI,
+pero el efecto probablemente no se notará,
+porque el comportamiento normal en modo MDI es
+para detenerse después de cada línea de entrada de todos modos.
+
+[[mcode: m2-m30]]
+== M2, M30 Fin del programa
+(((M2, M30 Program End)))
+
+* 'M2': finaliza el programa. Al presionar `Cycle Start` (" R "en la GUI del eje)
+         reiniciará el programa al comienzo del archivo.
+
+* 'M30': intercambia lanzaderas de paletas y finaliza el programa.
+          Presionando 'Cycle Start' comenzará el programa
+          al principio del archivo.
+
+Ambos comandos tienen los siguientes efectos:
+
+. Cambie del modo automático al modo MDI.
+. Las compensaciones de origen se establecen en el valor predeterminado (como 'G54').
+. El plano seleccionado se establece en el plano XY (como 'G17').
+. El modo de distancia se establece en modo absoluto (como 'G90').
+. El modo de velocidad de avance se establece en unidades por minuto (como 'G94').
+. Las anulaciones de avance y velocidad están activadas (como 'M48').
+. La compensación del cortador está desactivada (como 'G40').
+. El huso se detiene (como 'M5').
+. El modo de movimiento actual está configurado para alimentar (como 'G1').
+. El refrigerante está apagado (como 'M9').
+
+[NOTA]
+Las líneas de código después de M2 ​​/ M30 no se ejecutarán. Presionando `Cycle Start`
+iniciará el programa al comienzo del archivo.
+
+[ADVERTENCIA]
+Usar% para ajustar el código G no hace lo mismo que un 'Fin de programa'. Ver
+<< gcode: requisitos de archivo, Requisitos de archivo >> para obtener más información sobre qué usar
+% no hace.
+
+[[mcode: m60]]
+== Pausa de cambio de paleta M60
+(((Pausa de cambio de paleta M60)))
+
+* 'M60' - intercambia lanzaderas de paletas y luego detiene un programa en ejecución
+          temporalmente (independientemente de la configuración de la parada opcional
+          cambiar). Presionando el botón de inicio del ciclo
+          reiniciará el programa en la siguiente línea.
+
+[[mcode: m3-m4-m5]]
+== M3, M4, M5 Control de husillo
+(((Control de husillo M3, M4, M5)))
+
+* 'M3 [$ n]': inicia el husillo seleccionado en sentido horario a la velocidad 'S'.
+* 'M4 [$ n]': inicia el husillo seleccionado en sentido antihorario a la velocidad 'S'.
+* 'M5 [$ n]' - detiene el eje seleccionado.
+
+Use $ para operar en husos específicos. Si se omite $, entonces los comandos
+predeterminado para operar en el eje.0
+Use $ -1 para operar en todos los ejes activos.
+
+Este ejemplo iniciará los ejes 0, 1 y 2 simultáneamente en diferentes
+velocidades:
+[fuente, {ngc}]
+----
+S100 $ 0
+S200 $ 1
+S300 $ 2
+M3 $ -1
+----
+
+Este ejemplo invertirá el husillo 1 pero dejará los otros husillos.
+girando hacia adelante:
+[fuente, {ngc}]
+----
+M4 $ 1
+----
+
+Y esto detendrá el eje 2 y dejará rotar a los otros ejes:
+[fuente, {ngc}]
+----
+M5 $ 2
+----
+
+Si se omite $, entonces el comportamiento es exactamente el normal para un solo
+máquina de husillo
+
+Está bien usar 'M3' o 'M4' si << seg: set-spindle-speed, S >>
+la velocidad del husillo se establece en cero. Si esto se hace
+(o si el interruptor de anulación de velocidad está habilitado y configurado en cero),
+el husillo no comenzará a girar.
+Si, más tarde, la velocidad del husillo se establece por encima de cero
+(o el interruptor de anulación está activado),
+el husillo comenzará a girar.
+Está bien usar 'M3' o 'M4' cuando el eje ya está
+girar o usar 'M5' cuando el husillo ya está parado.
+
+[[mcode: m6]]
+== Cambio de herramienta M6
+(((Cambio de herramienta M6)))
+
+=== Cambio manual de herramienta
+
+Si el componente HAL hal_manualtoolchange está cargado,
+M6 detendrá el eje y le pedirá al usuario que cambie la herramienta
+basado en el último número 'T-' programado.
+Para más información sobre hal_manualtoolchange ver
+la sección << sec: manual-tool-change, Manual Tool Change >>.
+
+=== Cambiador de herramientas
+
+Para cambiar una herramienta en el huso de la herramienta actualmente en el huso
+a la herramienta seleccionada más recientemente (usando una palabra T - vea la Sección
+<< sec: select-tool, Select Tool >>), programa 'M6'.
+Cuando se completa el cambio de herramienta:
+
+* El husillo se detendrá.
+* La herramienta seleccionada (por una palabra T en la misma línea o en cualquier
+   línea después del cambio de herramienta anterior) estará en el eje.
+* Si la herramienta seleccionada no estaba en el eje antes del cambio de herramienta,
+   se colocará la herramienta que estaba en el eje (si hubiera)
+   de nuevo en la revista cambiador de herramientas.
+* Si está configurado en el archivo .ini, algunas posiciones de eje pueden moverse cuando un M6
+   se emite. Vea el << sec: sección emcio, sección EMCIO >> para más
+   información sobre opciones de cambio de herramienta.
+* No se realizarán otros cambios. Por ejemplo, el refrigerante continuará
+   fluya durante el cambio de herramienta a menos que haya sido desactivado por un 'M9'.
+
+[ADVERTENCIA]
+El desplazamiento de la longitud de la herramienta no cambia con 'M6', use '<< gcode: g43, G43 >>' después de
+'M6' para cambiar el desplazamiento de la longitud de la herramienta.
+
+El cambio de herramienta puede incluir el movimiento del eje.
+Está bien (pero no es útil) programar un cambio en la herramienta que ya está en el eje.
+Está bien si no hay ninguna herramienta en la ranura seleccionada;
+en ese caso, el eje estará vacío después del cambio de herramienta.
+Si la ranura cero se seleccionó por última vez,
+definitivamente no habrá herramienta en el eje después de un cambio de herramienta. La herramienta
+el cambiador tendrá que estar configurado para realizar el cambio de herramienta en hal y posiblemente
+Vejiga clásica.
+
+[[mcode: m7-m8-m9]]
+== M7, M8, M9 Control de refrigerante
+(((Control de refrigerante M7, M8, M9)))
+
+* 'M7' - activa el refrigerante de niebla. M7 controla iocontrol.0. Pin de neblina refrigerante.
+* 'M8': activa el refrigerante de inundación. M8 controla iocontrol.0. Pasador de inundación de refrigerante.
+* 'M9': apaga M7 y M8.
+
+Conecte uno o ambos pines de control de refrigerante en HAL antes de que M7 o M8
+controlar una salida. M7 y M8 se pueden usar para activar cualquier salida a través del código G.
+
+Está bien usar cualquiera de estos comandos, independientemente del refrigerante actual
+estado.
+
+[[mcode: m19]]
+== Huso M19 Oriente
+(((Huso M19 Oriente)))
+
+* 'M19 R- Q- [P-] [$ -]'
+
+* Posición 'R' para rotar de 0, el rango válido es 0-360 grados
+
+* 'Q' Número de segundos para esperar hasta que se complete la orientación. Si
+      spindle.N.is-orientado no se hace realidad dentro del tiempo de espera Q
+      se produce un error
+
+* Dirección 'P' para rotar a la posición.
+** '0' gira para el movimiento angular más pequeño (predeterminado)
+** '1' siempre gira en sentido horario (igual que la dirección M3)
+** '2' siempre gira en sentido antihorario (igual que en la dirección M4)
+
+* '$' El huso para orientar (en realidad solo determina qué pines HAL
+llevar los comandos de posición del husillo)
+
+M19 es eliminado por cualquiera de M3, M4, M5.
+
+La orientación del huso requiere un codificador de cuadratura con un índice para detectar el
+posición del eje del husillo y dirección de rotación.
+
+Configuración INI en la sección [RS274NGC].
+
+ORIENT_OFFSET = 0-360 (desplazamiento fijo en grados agregado a la palabra M19 R)
+
+HAL Pins
+
+* 'husillo.N.-ángulo de orientación' (flotación)
+Orientación deseada del husillo para M19. Valor del parámetro de palabra M19 R
+más el valor del parámetro ini [RS274NGC] ORIENT_OFFSET.
+
+* 'spindle.N.orient-mode' (salida s32)
+Modo de rotación del husillo deseado. Refleja la palabra del parámetro M19 P, Predeterminado = 0
+
+* 'husillo.N.oriente' (bit de salida)
+Indica el inicio del ciclo de orientación del husillo. Establecido por M19. Autorizado por cualquiera de
+M3, M4, M5.
+  Si la falla de orientación del husillo no es cero durante la orientación verdadera del husillo, el
+El comando M19 falla con un mensaje de error.
+
+* 'spindle.N.is-orientado' (en bits)
+Reconocer el pasador para orientar el husillo. Completa el ciclo de orientación. Si
+Oriente de husillo era cierto cuando orientado de husillo
+  se afirmó, el pasador de orientación del husillo se despejó y el husillo se bloqueó
+Se afirma el pin. Además, se afirma el pasador del freno del husillo.
+
+* 'spindle.N.orient-fault' (en s32)
+  Entrada del código de falla para el ciclo de orientación. Cualquier valor que no sea cero
+hacer que el ciclo de orientación se cancele.
+
+* 'spindle.N.locked' (bit de salida)
+Husillo orientar el pasador completo. Autorizado por cualquiera de M3, M4, M5.
+
+[[mcode: m48-m49]]
+== M48, M49 Velocidad y control de anulación de alimentación
+(((M48, M49 Velocidad y control de anulación de alimentación)))
+
+* 'M48': habilite los controles de anulación de velocidad del husillo y velocidad de avance.
+* 'M49': deshabilita ambos controles.
+
+Estos comandos también toman un parámetro $ opcional para determinar qué
+husillo en el que operan.
+
+Está bien habilitar o deshabilitar los controles cuando
+ya están habilitados o deshabilitados.
+Consulte la sección << sub: velocidad de alimentación, velocidad de alimentación >> para obtener más detalles.
+
+[[mcode: m50]]
+== Control de anulación de alimentación M50
+(((Control de anulación de alimentación M50)))
+
+* 'M50 <P1>' - habilita el control de anulación de la velocidad de alimentación. El P1
+               es opcional.
+* 'M50 P0': deshabilita el control de velocidad de avance.
+ 
+Mientras esté desactivado, la anulación de alimentación no tendrá influencia,
+y el movimiento se ejecutará a la velocidad de avance programada.
+(a menos que haya una anulación de velocidad de alimentación adaptativa activa).
+
+[[mcode: m51]]
+== Control de anulación de velocidad del husillo M51
+(((Anulación de velocidad del husillo M51)))
+
+* 'M51 <P1> <$ ->' - habilita el control de anulación de velocidad del husillo para el
+                   husillo seleccionado. El P1 es opcional.
+* 'M51 P0 <$ ->' - deshabilita el programa de control de anulación de velocidad del husillo.
+                   Mientras está deshabilitado, la anulación de velocidad del husillo tendrá
+                   sin influencia, y la velocidad del husillo tendrá la
+                   programa exacto valor especificado de la palabra S
+                   (descrito en << sec: set-spindle-speed, Spindle Speed ​​>> Section).
+
+[[mcode: m52]]
+== Control de alimentación adaptable M52
+(((Control de alimentación adaptable M52)))
+
+* 'M52 <P1>': utilice una alimentación adaptativa. El P1 es opcional.
+* 'M52 P0' - deje de usar alimentación adaptativa.
+ 
+Cuando la alimentación adaptativa está habilitada, algunos valores de entrada externa se usan juntos
+con el valor de anulación de alimentación de la interfaz de usuario y la velocidad de alimentación ordenada
+para establecer la velocidad de alimentación real. En LinuxCNC, el pin HAL 'motion.adaptive-feed'
+Se utiliza para este propósito. Los valores en 'motion.adaptive-feed' deberían variar
+de -1 (velocidad programada en reversa) a 1 (velocidad máxima). 0 es equivalente
+para alimentar-mantener.
+[NOTA]
+El uso de alimentación adaptativa negativa para marcha inversa es un nuevo
+característica y aún no está muy bien probado. El uso previsto es para plasma
+cortadores y erosores de alambre, pero no se limita a tales aplicaciones.
+
+[[mcode: m53]]
+== Control de parada de alimentación M53
+(((M53 Feed Stop Control)))
+
+* 'M53 <P1>' - activa el interruptor de parada de alimentación. El P1 es opcional.
+               Habilitar el interruptor de parada de alimentación permitirá que el movimiento sea
+               interrumpido por medio del control de parada de alimentación. En LinuxCNC,
+               el pin HAL 'motion.feed-hold' se usa para este propósito. Una verdad'
+               el valor hará que el movimiento se detenga cuando 'M53' esté activo.
+
+* 'M53 P0': deshabilita el interruptor de parada de alimentación. El estado de 'motion.feed-hold'
+             no tendrá ningún efecto en la alimentación cuando M53 no esté activo.
+
+[[mcode: m61]]
+== M61 Establecer herramienta actual
+(((M61 Establecer herramienta actual)))
+
+* 'M61 Q-' - cambia el número de herramienta actual mientras está en modo MDI o Manual sin
+             Un cambio de herramienta. Un uso es cuando enciende LinuxCNC con una herramienta
+             actualmente en el husillo puede establecer ese número de herramienta sin
+             haciendo un cambio de herramienta.
+
+[ADVERTENCIA]
+El desplazamiento de la longitud de la herramienta no cambia con 'M61', use '<< gcode: g43, G43 >>' después
+la 'M61' para cambiar el desplazamiento de la longitud de la herramienta.
+
+
+Es un error si:
+
+* Q- no es 0 o mayor
+
+[[mcode: m62-m65]]
+== M62 - Control de salida digital M65
+(((M62 - Control de salida digital M65)))
+
+* 'M62 P-' - activa la salida digital sincronizada con el movimiento.
+             La palabra P especifica el número de salida digital.
+
+* 'M63 P-' - apaga la salida digital sincronizada con el movimiento.
+             La palabra P especifica el número de salida digital.
+
+* 'M64 P-' - activa la salida digital de inmediato.
+             La palabra P especifica el número de salida digital.
+
+* 'M65 P-' - apaga la salida digital inmediatamente.
+             La palabra P especifica el número de salida digital.
+
+La palabra P varía de 0 a un valor predeterminado de 3. Si es necesario, el
+El número de E / S se puede aumentar utilizando el parámetro num_dio al cargar
+El controlador de movimiento. Vea el << sec: movimiento, Sección de movimiento >> para más
+información.
+
+Los comandos M62 y M63 se pondrán en cola. Comandos posteriores referentes
+al mismo número de salida sobrescribirá la configuración anterior. Mas que
+Se puede especificar un cambio de salida emitiendo más de un M62 / M63
+mando.
+
+El cambio real de las salidas especificadas ocurrirá en el
+comienzo del siguiente comando de movimiento. Si no hay movimiento posterior
+comando, los cambios de salida en cola no sucederán. Lo mejor es siempre
+programe un código G de movimiento (G0, G1, etc.) justo después del M62 / 63.
+
+M64 y M65 suceden inmediatamente cuando son recibidos por la moción
+controlador. No están sincronizados con el movimiento, y lo harán
+romper la mezcla
+
+[NOTA]
+M62-65 no funcionará a menos que los pines motion.digital-out-nn apropiados sean
+conectado en su archivo hal a las salidas.
+
+[[mcode: m66]]
+== M66 Esperar en entrada
+(((M66 Esperar en entrada)))
+
+----
+M66 P- | E- <L->
+----
+* 'P-': especifica el número de entrada digital de 0 a 3.
+* 'E-': especifica el número de entrada analógica de 0 a 3.
+* 'L-': especifica el tipo de modo de espera.
+** 'Modo 0: INMEDIATO': sin esperas, regresa de inmediato.
+       El valor actual de la entrada se almacena en el parámetro # 5399
+** 'Modo 1: RISE': espera la entrada seleccionada para realizar un evento de subida.
+** 'Modo 2: CAÍDA': espera la entrada seleccionada para realizar un evento de caída.
+** 'Modo 3: ALTO': espera a que la entrada seleccionada pase al estado ALTO.
+** 'Modo 4: BAJO': espera a que la entrada seleccionada pase al estado BAJO.
+* 'Q-': especifica el tiempo de espera en segundos para esperar. Si el tiempo de espera es
+         excedido, la espera se interrumpe y la variable # 5399 se mantendrá
+         el valor -1. El valor Q se ignora si la palabra L es cero (INMEDIATO).
+         Un valor Q de cero es un error si la palabra L no es cero.
+
+* El modo 0 es el único permitido para una entrada analógica.
+
+.M66 Líneas de ejemplo
+----
+M66 P0 L3 Q5 (espere hasta 5 segundos para que se active la entrada digital 0)
+----
+
+M66 esperar en una entrada detiene la ejecución posterior del programa, hasta que el
+se produce el evento seleccionado (o el tiempo de espera programado).
+
+Es un error programar M66 con una palabra P y una palabra E (por lo tanto
+seleccionando una entrada analógica y una digital). En LinuxCNC estos
+las entradas no se controlan en tiempo real y, por lo tanto, no se deben utilizar para
+aplicaciones de tiempo crítico.
+
+El número de E / S se puede aumentar utilizando el parámetro num_dio o num_aio
+al cargar el controlador de movimiento. Vea el << sec: movimiento, Sección de movimiento >>
+para más información.
+
+[NOTA]
+M66 no funcionará a menos que el movimiento apropiado. Pines digitales en nn o
+Los pines motion.analog-in-nn están conectados en su archivo hal a una entrada.
+
+Ejemplo de conexión HAL
+----
+nombre de señal neto motion.digital-in-00 <= parport.0.pin10-in
+----
+
+[[mcode: m67]]
+== Salida analógica M67, sincronizada
+(((Salida analógica M67, sincronizada)))
+
+----
+M67 E- Q-
+----
+* 'M67': establece una salida analógica sincronizada con movimiento.
+* 'E-' - número de salida que va de 0 a 3.
+* 'Q-': es el valor a configurar (establecer a 0 para desactivar).
+
+El cambio real de las salidas especificadas ocurrirá en el
+comienzo del siguiente comando de movimiento. Si no hay movimiento posterior
+comando, los cambios de salida en cola no sucederán. Lo mejor es siempre
+programe un código G de movimiento (G0, G1, etc.) justo después del M67. Funciones M67
+lo mismo que M62-63.
+
+El número de E / S se puede aumentar utilizando el parámetro num_dio o num_aio
+al cargar el controlador de movimiento. Vea el << sec: movimiento, Sección de movimiento >> para
+más información.
+
+[NOTA]
+M67 no funcionará a menos que los pines motion.analog-out-nn apropiados sean
+conectado en su archivo hal a las salidas.
+
+[[mcode: m68]]
+== Salida analógica M68, inmediata
+(((Salida analógica M68)))
+
+----
+M68 E- Q-
+----
+* 'M68': establece una salida analógica de inmediato.
+* 'E-' - número de salida que va de 0 a 3.
+* 'Q-': es el valor a configurar (establecer a 0 para desactivar).
+
+La salida M68 ocurre inmediatamente cuando son recibidos por el movimiento
+controlador. No están sincronizados con el movimiento, y lo harán
+romper la mezcla M68 funciona igual que M64-65.
+
+El número de E / S se puede aumentar utilizando el parámetro num_dio o num_aio
+al cargar el controlador de movimiento. Vea el << sec: movimiento, Sección de movimiento >> para
+más información.
+
+[NOTA]
+M68 no funcionará a menos que los pines motion.analog-out-nn apropiados sean
+conectado en su archivo hal a las salidas.
+
+[[mcode: m70]]
+== M70 Guardar estado modal
+(((M70 Guardar estado modal)))
+
+Para guardar explícitamente el estado modal en el nivel de llamada actual, programe
+'M70'. Una vez que el estado modal se ha guardado con 'M70', se puede restaurar
+exactamente a ese estado ejecutando un 'M72'.
+
+Un par de instrucciones 'M70' y 'M72' generalmente se utilizarán para
+proteger un programa contra cambios modales involuntarios dentro de
+subrutinas
+
+[[mcode: m70-saved-state]]
+
+El estado guardado consiste en:
+
+* configuración actual de G20 / G21 (imperial / métrica)
+* plano seleccionado (G17 / G18 / G19 G17.1, G18.1, G19.1)
+* estado de la compensación del cortador (G40, G41, G42, G41.1, G42,1)
+* modo distancia - relativo / absoluto (G90 / G91)
+* modo de alimentación (G93 / G94, G95)
+* sistema de coordenadas actual (G54-G59.3)
+* estado de compensación de longitud de herramienta (G43, G43.1, G49)
+* modo de retracción (G98, G99)
+* modo de husillo (G96-css o G97-RPM)
+* modo de distancia de arco (G90.1, G91.1)
+* modo de radio / diámetro de torno (G7, G8)
+* modo de control de ruta (G61, G61.1, G64)
+* avance y velocidad actuales (valores 'F' y 'S')
+* estado del cabezal (M3, M4, M5) - encendido / apagado y dirección
+* estado de niebla (M7) e inundación (M8)
+* configuración de anulación de velocidad (M51) y anulación de alimentación (M50)
+* ajuste de alimentación adaptativa (M52)
+* ajuste de retención de alimentación (M53)
+
+Tenga en cuenta que, en particular, el modo de movimiento (G1, etc.) NO se restaura.
+
+'nivel de llamada actual' significa:
+
+ * ejecutando en el programa principal. Hay una única ubicación de almacenamiento.
+ para el estado en el nivel principal del programa; si varias instrucciones 'M70'
+ se ejecutan a su vez, solo se restaura el estado guardado más recientemente
+ cuando se ejecuta un 'M72'.
+
+ * ejecutando dentro de una subrutina de código G. El estado guardado con 'M70'
+ dentro de una subrutina se comporta exactamente como un parámetro con nombre local:
+ solo se puede hacer referencia a esta invocación de subrutina con un
+ 'M72' y cuando la subrutina sale, el parámetro desaparece.
+
+Una invocación recursiva de una subrutina introduce un nuevo nivel de llamada.
+
+[[mcode: m71]]
+== M71 Invalidar estado modal almacenado
+(((M71 invalidar estado modal almacenado)))
+
+Estado modal guardado con un 'M70' o por un 'M73' en la llamada actual
+el nivel se invalida (ya no se puede restaurar).
+
+Un 'M72' posterior en el mismo nivel de llamada fallará.
+
+Si se ejecuta en una subrutina que protege el estado modal mediante un 'M73', un
+el retorno posterior o el subcapítulo * no * restaurará el estado modal.
+
+La utilidad de esta función es dudosa. No se debe confiar en él como podría
+vete.
+
+[[mcode: m72]]
+== M72 Restaurar estado modal
+(((M72 Restaurar estado modal)))
+
+<< mcode: m70-saved-state, el estado modal guardado con un código 'M70' >> puede ser
+restaurado ejecutando un 'M72'.
+
+El manejo de G20 / G21 se trata especialmente a medida que se interpretan los feeds
+de manera diferente dependiendo de G20 / G21: si las unidades de longitud (mm / in) están a punto de
+ser cambiado por la operación de restauración, 'M72' restaurará la distancia
+primero el modo y luego todos los demás estados, incluido el feed, para asegurarse de que
+el valor de alimentación se interpreta en la configuración correcta de la unidad.
+
+Es un error ejecutar un 'M72' sin guardar 'M70' previo
+operación a ese nivel.
+
+El siguiente ejemplo demuestra guardar y restaurar explícitamente
+estado modal alrededor de una llamada de subrutina usando 'M70' y 'M72'. Tenga en cuenta que
+la subrutina 'imperialsub' no es "consciente" de las características de M7x y puede ser
+usado sin modificar:
+
+[fuente, {ngc}]
+----
+O <showstate> sub
+(DEPURACIÓN, imperial = # <_imperial> absoluto = # <_absoluto> feed = # <_feed> rpm = # <_rpm>)
+O <showstate> endsub
+
+O <imperialsub> sub
+g20 (imperial)
+g91 (modo relativo)
+F5 (alimentación baja)
+S300 (bajas rpm)
+(depuración, en subrutina, estado ahora :)
+o <showstate> llamar
+O <imperialsub> endsub
+
+; programa principal
+g21 (métrico)
+g90 (absoluto)
+f200 (velocidad rápida)
+S2500 (rpm altas)
+
+(depuración, en estado principal, ahora :)
+o <showstate> llamar
+
+M70 (guardar el estado de la llamada en el nivel global)
+O llamada <imperialsub>
+M72 (restaurar explícitamente el estado)
+
+(depuración, de nuevo en main, estado ahora :)
+o <showstate> llamar
+m2
+----
+
+[[mcode: m73]]
+== M73 Guardar y Autorestore estado modal
+(((M73 Guardar y Autorestore Modal State)))
+
+Para guardar el estado modal dentro de una subrutina y restaurar el estado en
+subrutina 'endsub' o cualquier ruta de 'retorno', programa 'M73'.
+
+Anular un programa en ejecución en una subrutina que tiene un 'M73'
+la operación * no * restaurará el estado.
+
+Además, el final normal ('M2') de un programa principal que contiene un 'M73'
+* no * restaurará el estado.
+
+El uso sugerido es al comienzo de una subrutina de O-word como en
+siguiente ejemplo. Usar 'M73' de esta manera permite diseñar subrutinas
+que necesitan modificar el estado modal pero protegerán el programa de llamada
+contra cambios modales involuntarios. Tenga en cuenta el uso de
+<< gcode: parámetros con nombre predefinidos, parámetros con nombre predefinidos >> en
+la subrutina 'showstate'.
+
+[fuente, {ngc}]
+----
+O <showstate> sub
+(DEPURACIÓN, imperial = # <_imperial> absoluto = # <_absoluto> feed = # <_feed> rpm = # <_rpm>)
+O <showstate> endsub
+
+O <imperialsub> sub
+M73 (guardar el estado de la persona que llama en el contexto de la llamada actual, restaurar al devolver o finalizar el submenú)
+g20 (imperial)
+g91 (modo relativo)
+F5 (alimentación baja)
+S300 (bajas rpm)
+(depuración, en subrutina, estado ahora :)
+o <showstate> llamar
+
+; nota: no se necesita M72 aquí: el siguiente subgrupo o un
+; El 'retorno' explícito restaurará el estado del llamador
+O <imperialsub> endsub
+
+; programa principal
+g21 (métrico)
+g90 (absoluto)
+f200 (velocidad rápida)
+S2500 (rpm altas)
+(depuración, en estado principal, ahora :)
+o <showstate> llamar
+o llamada <imperialsub>
+(depuración, de nuevo en main, estado ahora :)
+o <showstate> llamar
+m2
+----
+
+[[mcode: m98-m99]]
+== M98 y M99 ==
+
+El intérprete admite programas principales y subprogramas de estilo Fanuc con
+Códigos M 'M98' y 'M99'. Ver << ocode: fanuc-style-programs, Fanuc-Style
+Programas >>.
+
+=== Restauración selectiva del estado modal
+
+Ejecutar un 'M72' o regresar de una subrutina que contiene un
+'M73' restaurará << mcode: m70-saved-state, * all * estado modal guardado >>.
+
+Si solo se deben preservar algunos aspectos del estado modal, un
+alternativa es el uso de << gcode: parámetros predefinidos con nombre,
+parámetros con nombre predefinidos >>, parámetros locales y condicionales
+declaraciones. La idea es recordar los modos que se restaurarán en el
+comienzo de la subrutina y restaure estos antes de salir. Aquí está
+un ejemplo, basado en el fragmento de 'nc_files / tool-length-probe.ngc':
+
+[fuente, {ngc}]
+----
+O <medida> sub (herramienta de referencia de medida)
+;
+# <absolute> = # <_absolute> (recuerde en la variable local si se configuró G90)
+;
+g30 (interruptor superior)
+g38.2 z0 f15 (medida)
+g91 g0z.2 (fuera del interruptor)
+# 1000 = # 5063 (guardar la longitud de la herramienta de referencia)
+(impresión, la longitud de referencia es # 1000)
+;
+O <restore_abs> if [# <absolute>]
+    g90 (restaurar G90 solo si se configuró en la entrada :)
+O <restore_abs> endif
+;
+O <medida> FinSub
+----
+
+[[mcode: m100-m199]]
+== M100 - M199 Comandos definidos por el usuario
+(((M100 - M199 Comandos definidos por el usuario)))
+
+----
+M1-- <P- Q->
+----
+
+* 'M1--' - un entero en el rango de 100 a 199.
+* 'P-': un número pasado al archivo como primer parámetro.
+* 'Q-': un número pasado al archivo como segundo parámetro.
+
+[NOTA]
+Después de crear un nuevo archivo 'M1nn' debe reiniciar la GUI para que tenga en cuenta
+del nuevo archivo, de lo contrario obtendrá un error de 'Código m desconocido'.
+
+El programa externo llamado 'M100' a 'M199' (sin extensión y un capitol M)
+se ejecuta con los valores opcionales P y Q como sus dos argumentos.
+La ejecución del archivo de código G se detiene hasta que sale del programa externo.
+Se puede usar cualquier archivo ejecutable válido. El archivo debe estar ubicado en la búsqueda
+ruta especificada en la configuración del archivo ini. Ver el
+<< sec: display-section, Display Section >> para obtener más información sobre las rutas de búsqueda.
+
+[ADVERTENCIA]
+No use un procesador de textos para crear o editar los archivos. Un procesador de textos
+dejará códigos invisibles que causarán problemas y pueden evitar una fiesta o
+archivo de Python de trabajo. Use un editor de texto como Gedit en Ubuntu o Notepad ++
+en otros sistemas operativos para crear o editar los archivos.
+
+El error 'Código M desconocido utilizado' denota uno de los siguientes
+
+* El comando definido por el usuario especificado no existe
+* El archivo no es un archivo ejecutable
+* El nombre del archivo tiene una extensión
+* El nombre del archivo no sigue este formato M1nn donde nn = 00 a 99
+* El nombre del archivo utiliza una M minúscula
+
+Por ejemplo, para abrir y cerrar una pinza más cercana que está controlada por un
+pin de puerto paralelo usando un archivo de script bash usando M101 y M102. Crea dos
+archivos llamados M101 y M102. Establecerlos como archivos ejecutables (generalmente
+clic derecho / propiedades / permisos) antes de ejecutar LinuxCNC. Asegúrate que
+el pin del puerto paralelo no está conectado a nada en un archivo HAL.
+
+Archivo de ejemplo .M101
+----
+#! / bin / bash
+# archivo para activar parport pin 14 para abrir el collar más cerca
+halcmd setp parport.0.pin-14-out True
+salida 0
+----
+
+Archivo de ejemplo .M102
+----
+#! / bin / bash
+# archivo para apagar parport pin 14 para abrir el collar más cerca
+halcmd setp parport.0.pin-14-out False
+salida 0
+----
+
+Para pasar una variable a un archivo M1nn, use la opción P y Q de esta manera:
+
+----
+M100 P123.456 Q321.654
+----
+
+Archivo de ejemplo .M100
+----
+#! / bin / bash
+voltaje = $ 1
+avance = $ 2
+halcmd setp thc.voltage $ voltaje
+halcmd setp thc.feedrate $ feedrate
+salida 0
+----
+
+Para mostrar un mensaje gráfico y detener hasta que se cierre la ventana del mensaje
+use un programa de visualización gráfica como Eye of Gnome para mostrar el gráfico
+archivo. Cuando lo cierre, el programa se reanudará.
+
+.M110 Archivo de ejemplo
+----
+#! / bin / bash
+eog /home/john/linuxcnc/nc_files/message.png
+salida 0
+----
+
+Para mostrar un mensaje gráfico y continuar procesando el archivo de código G
+sufijo un ampersand al comando.
+
+.M110 Ejemplo de visualización y sigue adelante
+----
+#! / bin / bash
+eog /home/john/linuxcnc/nc_files/message.png &
+salida 0
+----
+
+// vim: set syntax = asciidoc:
+

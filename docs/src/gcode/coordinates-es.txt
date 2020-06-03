@@ -1,0 +1,398 @@
+﻿= Sistemas de coordenadas
+
+[[cha: sistema de coordenadas]]
+
+== Introducción
+
+Este capítulo le presenta las compensaciones tal como las utiliza LinuxCNC.
+Éstas incluyen:
+
+* Coordenadas de la máquina (G53)
+* Nueve compensaciones del sistema de coordenadas (G54-G59.3)
+* Desplazamientos globales (G92) y desplazamientos locales (G52)
+
+[[sec.machine-corrdinate-system]]
+
+== Sistema de coordenadas de la máquina
+
+Cuando se inicia LinuxCNC, las posiciones de cada eje son el origen de la máquina. Una vez
+un eje ubicado en el origen de la máquina para ese eje se establece en la posición de inicio.
+El origen de la máquina es el sistema de coordenadas de la máquina que todas las demás coordenadas
+Los sistemas están basados. El código << gcode: g53, G53 >> G puede usarse para moverse en el
+Sistema de coordenadas de la máquina.
+
+== Sistemas de coordenadas
+
+Ejemplo de sistemas de coordenadas.
+image :: images / offsets.png [align = "center", alt = "Ejemplo de sistemas de coordenadas"]
+
+Desplazamientos del sistema de coordenadas
+
+* G54 - usa el sistema de coordenadas 1
+* G55 - usa el sistema de coordenadas 2
+* G56 - usa el sistema de coordenadas 3
+* G57 - usa el sistema de coordenadas 4
+* G58 - usa el sistema de coordenadas 5
+* G59 - usa el sistema de coordenadas 6
+* G59.1 - usar el sistema de coordenadas 7
+* G59.2 - usa el sistema de coordenadas 8
+* G59.3 - usa el sistema de coordenadas 9
+
+Las compensaciones del sistema de coordenadas se utilizan para desplazar el sistema de coordenadas desde
+Sistema de coordenadas de la máquina. Esto permite que el código G se programe para
+parte sin importar la ubicación de la parte en la máquina. Usando coordenadas
+las compensaciones del sistema le permitirán mecanizar piezas en múltiples ubicaciones con el
+mismo código G.
+
+Los valores de las compensaciones se almacenan en el archivo VAR solicitado por el INI
+archivo durante el inicio de un LinuxCNC.
+
+En el esquema de archivo VAR, el primer número variable almacena el desplazamiento X,
+el segundo, el desplazamiento Y, y así sucesivamente para los nueve ejes. Hay numerados
+establece así para cada una de las compensaciones del sistema de coordenadas.
+
+Cada una de las interfaces gráficas tiene una forma de establecer valores para estos
+compensaciones También puede establecer estos valores editando el propio archivo VAR
+y luego reinicie LinuxCNC para que LinuxCNC lea los nuevos valores
+Sin embargo, esta no es la forma recomendada. Usando G10, G52, G92, G28.1,
+etc son mejores formas de establecer las variables.
+
+Ejemplo de parámetros G55.
+[ancho = "40%", cols = "^, ^, ^", opciones = "encabezado"]
+| ====
+| Eje | Variable | Valor
+El | X | 5241 | 2.000000
+El | Y | 5242 | 1.000000
+El | Z | 5243 | -2.000000
+El | A | 5244 | 0,000000
+El | B | 5245 | 0.000000
+El | C | 5246 | 0.000000
+El | U | 5247 | 0.000000
+El | V | 5248 | 0.000000
+El | W | 5249 | 0.000000
+| ====
+
+Debería leer esto como mover las posiciones cero de G55 a X = 2
+unidades, Y = 1 unidad, y Z = -2 unidades lejos de la posición de cero absoluto.
+
+Una vez que hay valores asignados, una llamada a G55 en un bloque de programa
+desplazar la referencia cero por los valores almacenados. La siguiente línea sería
+luego mueva cada eje a la nueva posición cero. A diferencia de G53, G54 hasta
+G59.3 son comandos modales. Actuarán en todos los bloques de código después de uno
+de ellos se ha establecido. El programa que podría ejecutarse usando
+las compensaciones de accesorios requerirían solo una sola coordenada
+referencia para cada una de las ubicaciones y todo el trabajo a realizar
+allí. El siguiente código se ofrece como un ejemplo de cómo hacer un cuadrado
+usando las compensaciones G55 que configuramos arriba.
+
+----
+G55; utilizar el sistema de coordenadas 2
+G0 X0 Y0 Z0
+G1 F2 Z-0.2000
+X1
+Y1
+X0
+Y0
+G0 Z0
+G54; utilizar el sistema de coordenadas 1
+G0 X0 Y0 Z0
+M2
+----
+
+En este ejemplo, el G54 cerca del final deja el sistema de coordenadas G54 con todos
+cero compensaciones para que haya un código modal para el eje absoluto basado en máquina
+puestos. Este programa asume que lo hemos hecho y usamos el final
+comando como un comando para la máquina cero. Hubiera sido posible usar G53
+y llegar al mismo lugar pero ese comando no habría sido modal y
+cualquier comando emitido después de que hubiera vuelto a usar las compensaciones G55
+porque ese sistema de coordenadas todavía estaría en vigor.
+
+=== Sistema de coordenadas predeterminado
+
+Otra variable en el archivo VAR se vuelve importante cuando pensamos
+sobre sistemas offset. Esta variable se llama 5220. En los archivos predeterminados
+su valor se establece en 1.00000. Esto significa que cuando LinuxCNC se inicia,
+debería usar el primer sistema de coordenadas como predeterminado. Si configuras esto
+a 9.00000 usaría el noveno sistema de compensación como predeterminado para
+iniciar y restablecer. Cualquier valor que no sea un entero (decimal realmente)
+entre 1 y 9, o una variable 5220 que falta hará que LinuxCNC
+volver al valor predeterminado de 1.00000 al inicio.
+
+=== Configuración de compensaciones del sistema de coordenadas
+
+El comando G10 L2x se puede usar para establecer las compensaciones del sistema de coordenadas:
+
+* 'G10 L2 P (1-9)': establece los desplazamientos en un valor. Posición actual irrelevante.
+                         (vea << gcode: g10-l2, G10 L2 >> para más detalles)
+
+* 'G10 L20 P (1-9)' - Establezca los desplazamientos de modo que la posición actual se convierta en un valor.
+                         (vea << gcode: g10-l20, G10 L20 >> para más detalles)
+
+== Desplazamientos locales y globales [[sec: g52-and-g92-offsets]]
+
+=== El comando G52 [[sec: g52]]
+
+'G52' se usa en un programa de pieza como una "coordenada local" temporal
+desplazamiento del sistema "dentro del sistema de coordenadas de la pieza de trabajo. Un ejemplo de uso
+el caso es cuando se mecanizan varias características idénticas en diferentes
+ubicaciones en una parte. Para cada función, 'G52' programa un local
+punto de referencia dentro de las coordenadas de la pieza, y un subprograma es
+llamado para maquinar la característica relativa a ese punto.
+
+Los desplazamientos del eje 'G52' se programan en relación con la coordenada de la pieza de trabajo
+compensa 'G54' a 'G59.3'. Como compensación local, se aplica 'G52'
+después del desplazamiento de la pieza de trabajo, incluida la rotación. Por lo tanto, una característica parcial
+será mecanizado de forma idéntica en cada parte, independientemente de la parte
+Orientación en el palet.
+
+[PRECAUCIÓN]
+
+Como un desplazamiento temporal, establecer y desarmar dentro del alcance localizado de un
+parte del programa, en otros intérpretes de código g 'G52' no persiste
+después del reinicio de la máquina, 'M02' o 'M30'. En LinuxCNC, 'G52' comparte
+parámetros con 'G92' que, por razones históricas, * persiste *
+estos parámetros Ver << sec: g92-persistence-cautions, G92 Persistence
+Precauciones >> a continuación.
+
+[PRECAUCIÓN]
+
+'G52' y 'G92' comparten los mismos registros de desplazamiento. Por lo tanto, establecer
+'G52' anulará cualquier configuración anterior de 'G92' y 'G52' persistirá
+a través del reinicio de la máquina cuando la persistencia 'G92' está habilitada. Estas
+Las interacciones pueden dar lugar a compensaciones inesperadas. Ver
+<< sec: precauciones de interacción g92-g52, precauciones de interacción G92 y G52 >>
+abajo.
+
+La programación de 'G52 X1 Y2' compensa la coordenada actual de la pieza de trabajo
+sistema X eje por 1 e Y eje por 2. Por consiguiente, en el DRO, el
+Las coordenadas X e Y de la posición actual de la herramienta se reducirán en 1 y
+2, respectivamente. Ejes sin establecer en el comando, como Z en el anterior
+ejemplo, no se verá afectado: cualquier desplazamiento Z 'G52' anterior permanecerá
+en efecto, y de lo contrario el desplazamiento Z será cero.
+
+El desplazamiento local temporal puede cancelarse con 'G52 X0 Y0'. Cualquier hachas
+no puesto a cero explícitamente retendrá el desplazamiento anterior.
+
+'G52' comparte los mismos registros de compensación que 'G92', y por lo tanto
+'G52' es visible en el DRO y la vista previa está etiquetada con 'G92'.
+
+=== Los comandos G92 [[sec: comandos g92]]
+
+'G92' se usa típicamente de dos maneras conceptualmente diferentes: como un
+"desplazamiento del sistema de coordenadas global" o como un "sistema de coordenadas local
+offset ". El conjunto de comandos 'G92' incluye:
+
+* 'G92': este comando, cuando se usa con nombres de eje, establece valores para compensar
+    variables
+
+* 'G92.1': este comando establece valores cero para las variables G92.
+
+* 'G92.2': este comando suspende pero no pone a cero el G92
+    variables
+
+* 'G92.3': este comando aplica valores de desplazamiento que se han suspendido.
+
+Como compensación global, 'G92' se usa para cambiar todas las coordenadas de la pieza de trabajo
+sistemas 'G54' a 'G59.3'. Un ejemplo de caso de uso es cuando se mecaniza
+varias partes idénticas en accesorios con ubicaciones conocidas en una paleta,
+pero la ubicación del palet puede cambiar entre corridas o entre máquinas.
+Cada desplazamiento de ubicación del dispositivo, relativo a un punto de referencia en el
+palet, está preestablecido en uno de los sistemas de coordenadas de pieza, 'G54'
+a través de 'G59.3', y 'G92' se usa para "tocar" en el palet
+punto de referencia. Luego, para cada parte, la pieza de trabajo correspondiente
+Se selecciona el sistema de coordenadas y se ejecuta el programa de pieza.
+
+[NOTA]
+La rotación del sistema de coordenadas de la pieza 'G10 R-' es específica del
+intérprete 'rs274ngc', y el desplazamiento 'G92' se aplica 'después'
+rotación. Cuando se usa 'G92' como desplazamiento global, coordenada de pieza
+Las rotaciones del sistema pueden tener resultados inesperados.
+
+Como sistema de coordenadas local, 'G92' se usa como desplazamiento temporal
+dentro del sistema de coordenadas de la pieza de trabajo. Un ejemplo de caso de uso es cuando
+mecanizar una pieza con varias características idénticas en diferentes
+ubicaciones. Para cada función, 'G92' se usa para establecer una referencia local
+punto, y se llama a un subprograma para mecanizar la característica a partir de
+ese punto.
+
+[NOTA]
+Se desaconseja el uso de 'G92' para programar con coordenadas locales
+sistemas en un programa parcial. En cambio, vea << sec: g52, 'G52' >>, un local
+El desplazamiento del sistema de coordenadas es más intuitivo cuando se desea el desplazamiento relativo
+se conoce la pieza de trabajo, pero es posible que no se conozca la ubicación actual de la herramienta.
+
+La programación 'G92 X0 Y0 Z0' establece la ubicación actual de la herramienta en
+coordina X0, Y0 y Z0, sin movimiento. G92 * no * funciona desde
+coordenadas absolutas de la máquina. Funciona desde * ubicación actual *.
+
+'G92' también funciona desde la ubicación actual modificada por cualquier otro
+compensaciones que están vigentes cuando se invoca el comando 'G92'. Mientras
+probando las diferencias entre las compensaciones de trabajo y las compensaciones reales era
+descubrió que un desplazamiento 'G54' podría cancelar un 'G92' y, por lo tanto,
+Apariencia que no hay compensaciones en vigor. Sin embargo, el 'G92' fue
+todavía vigente para todas las coordenadas y produjo el trabajo esperado
+compensaciones para los otros sistemas de coordenadas.
+
+Por defecto, las compensaciones 'G92' se restauran después de que se inicia la máquina.
+Programadores que desean un comportamiento Fanuc, donde las compensaciones 'G92' son
+borrado al inicio de la máquina y después de un reinicio o finalización del programa, puede deshabilitar
+Persistencia 'G92' configurando 'DISABLE_G92_PERSISTENCE = 1' en el
+Sección '[RS274NGC]' del archivo '.ini'.
+
+[NOTA]
+
+Es una buena práctica eliminar las compensaciones 'G92' al final de su uso.
+con 'G92.1' o 'G92.2'. Al iniciar LinuxCNC con 'G92'
+persistencia habilitada (el valor predeterminado), cualquier desplazamiento en las variables 'G92'
+se aplicará cuando un eje esté orientado. Ver
+<< sec: g92-persistence-cautions, G92 Persistence Cautions >> a continuación.
+
+=== Configuración de valores G92
+
+Los comandos G92 funcionan desde la ubicación actual del eje y suman y restan
+correctamente para dar a la posición actual del eje el valor asignado por el
+Comando G92. Los efectos funcionan a pesar de que hay compensaciones anteriores.
+
+Entonces, si el eje X muestra actualmente 2.0000 como su posición, un 'G92 X0'
+establecerá un desplazamiento de -2.0000 para que la ubicación actual de X se convierta
+cero. Un 'G92 X2' establecerá un desplazamiento de 0.0000 y la posición mostrada
+no cambiará. Un 'G92 X5.0000' establecerá un desplazamiento de 3.0000 para que el
+La posición actual visualizada se convierte en 5.0000.
+
+=== Precauciones de persistencia G92 [[sec: g92-persistence-cautions]]
+
+Por defecto, los valores de un desplazamiento 'G92' se guardarán en el archivo VAR
+y se restaurará después de un reinicio o inicio de la máquina.
+
+Los parámetros G92 son:
+
+* 5210 - Activar / desactivar indicador (1.0 / 0.0)
+* 5211 - Compensación del eje X
+* 5212 - Desplazamiento del eje Y
+* 5213 - Compensación del eje Z
+* 5214 - Una compensación de eje
+* 5215 - Compensación del eje B
+* 5216 - Compensación del eje C
+* 5217 - Desplazamiento del eje U
+* 5218 - Compensación del eje V
+* 5219 - Compensación del eje W
+
+donde 5210 es el indicador de habilitación 'G92' (1 para habilitado, 0 para deshabilitado)
+y 5211 a 5219 son los desplazamientos de eje. Si ves inesperado
+posiciones como resultado de un movimiento ordenado, como resultado de almacenar un
+compensar en un programa anterior y no borrarlos al final entonces
+emita un G92.1 en la ventana MDI para borrar las compensaciones almacenadas.
+
+Si existen valores G92 en el archivo VAR cuando se inicia LinuxCNC, el G92
+los valores en el archivo var se aplicarán a los valores del actual
+ubicación de cada eje. Si esta es la posición inicial y la posición inicial es
+establecer como máquina cero todo será correcto. Una vez que el hogar ha sido
+establecido usando interruptores de máquina reales, o moviendo cada eje a un conocido
+posición inicial y emitiendo un comando de inicio del eje, cualquier desplazamiento G92 será
+aplicado. Si tiene un G92 X1 en efecto cuando aloja el eje X, el
+DRO leerá 'X: 1.000' en lugar del esperado 'X: 0.000' porque el
+G92 se aplicó al origen de la máquina. Si emite un G92.1 y el DRO
+ahora lee todos los ceros, entonces tuvo un desplazamiento G92 vigente la última vez
+corrió LinuxCNC.
+
+A menos que su intención sea usar las mismas compensaciones G92 en la próxima
+programa, la mejor práctica es emitir un G92.1 al final de cualquier G
+archivos de código donde utiliza compensaciones G92.
+
+Cuando un programa se aborta durante el procesamiento que tiene compensaciones 'G92' en
+efectuar un inicio hará que se activen nuevamente. Como un
+salvaguardar, siempre tenga su preámbulo para establecer el entorno como usted
+Esperar algo. Además, la persistencia 'G92' puede deshabilitarse configurando
+'DISABLE_G92_PERSISTENCE = 1' en la sección '[RS274NGC]' de la
+archivo '.ini'.
+
+=== Precauciones de interacción G92 y G52 [[sec: g92-g52-animation-cautions]]
+
+'G52' y 'G92' comparten los mismos registros de desplazamiento. A menos que 'G92'
+la persistencia está deshabilitada en el archivo '.ini' (vea << sec: comandos g92, G92
+Comandos >>), las compensaciones 'G52' también persistirán después del reinicio de la máquina,
+'M02' o 'M30'. Tenga en cuenta que una compensación 'G52' en efecto durante un programa
+abortar puede dar lugar a desplazamientos no deseados cuando se ejecuta el siguiente programa.
+Ver << sec: g92-persistence-cautions, G92 Persistence Cautions >> más arriba.
+
+== Programas de muestra usando compensaciones
+
+=== Programa de muestra utilizando desplazamientos de coordenadas de pieza
+
+Este proyecto de grabado de muestra moldea un conjunto de cuatro círculos de radio .1 en
+aproximadamente una forma de estrella alrededor de un círculo central. Podemos configurar el
+patrón de círculo individual como este.
+
+-------------------------------------------------- -------------------
+G10 L2 P1 X0 Y0 Z0 (asegúrese de que G54 esté configurado en la máquina cero)
+G0 X-0.1 Y0 Z0
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G0 Z0
+M2
+-------------------------------------------------- -------------------
+
+Podemos emitir un conjunto de comandos para crear compensaciones para los otros cuatro
+círculos como este
+
+-------------------------------------------------- ---------
+G10 L2 P2 X0.5 (compensa el valor de G55 X en 0,5 pulgadas)
+G10 L2 P3 X-0.5 (compensa el valor de G56 X en -0.5 pulgadas)
+G10 L2 P4 Y0.5 (compensa el valor G57 Y en 0.5 pulgadas)
+G10 L2 P5 Y-0.5 (compensa el valor G58 Y en -0.5 pulgadas)
+-------------------------------------------------- ---------
+
+Los reunimos en el siguiente programa:
+
+-------------------------------------------------- -------------------
+(un programa para fresar cinco círculos pequeños en forma de diamante)
+
+G10 L2 P1 X0 Y0 Z0 (asegúrese de que G54 sea la máquina cero)
+G10 L2 P2 X0.5 (compensa el valor de G55 X en 0,5 pulgadas)
+G10 L2 P3 X-0.5 (compensa el valor de G56 X en -0.5 pulgadas)
+G10 L2 P4 Y0.5 (compensa el valor G57 Y en 0.5 pulgadas)
+G10 L2 P5 Y-0.5 (compensa el valor G58 Y en -0.5 pulgadas)
+
+G54 G0 X-0.1 Y0 Z0 (círculo central)
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G0 Z0
+
+G55 G0 X-0.1 Y0 Z0 (primer círculo de desplazamiento)
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G0 Z0
+
+G56 G0 X-0.1 Y0 Z0 (segundo círculo de desplazamiento)
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G0 Z0
+
+G57 G0 X-0.1 Y0 Z0 (tercer círculo de desplazamiento)
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G0 Z0
+
+G58 G0 X-0.1 Y0 Z0 (cuarto círculo de desplazamiento)
+G1 F1 Z-0.25
+G3 X-0.1 Y0 I0.1 J0
+G54 G0 X0 Y0 Z0
+
+M2
+-------------------------------------------------- -------------------
+
+Ahora llega el momento en que podríamos aplicar un conjunto de compensaciones G92 a este
+programa. Verás que se está ejecutando en cada caso en Z0. Si el molino
+estaban en la posición cero, un G92 Z1.0000 emitido a la cabeza del
+programa cambiaría todo una pulgada. También puede cambiar el
+todo el patrón en el plano XY agregando algunos desplazamientos X e Y
+con G92. Si hace esto, debe agregar un comando G92.1 justo antes de
+M2 que finaliza el programa. Si no lo hace, otros programas que podría
+ejecutar después de este también usará ese desplazamiento G92. Además lo haría
+guarde los valores de G92 cuando cierre LinuxCNC y serán
+recordó cuando se inicia de nuevo.
+
+=== Programa de muestra usando compensaciones G52
+
+(Para ser escrito)
+
