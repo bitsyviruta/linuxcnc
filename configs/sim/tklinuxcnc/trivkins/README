@@ -1,10 +1,10 @@
-trivkins examples
+Ejemplos trivkins
 
 xz.ini           KINEMATICS_IDENTITY
 
 xz_both.ini      KINEMATICS_BOTH
 
-NOTE:
+NOTA:
 !!!  [TRAJ]COORDINATES MUST AGREE WITH KINS:
 !!!  [TRAJ]COORDINATES = xz
 

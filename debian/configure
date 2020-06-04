@@ -17,14 +17,14 @@ $P: Configura los archivos en debian/ para compilar contra un kernel en particul
 
 Uso:
     $P uspace [noauto | rtai | rtai=nombre_paquete | xenomai] ...
-        Compilar para espacio de usuario en sistemas de tiempo real o simulador.
+        Compilar para sistemas de tiempo real en espacio de usuario o simulador.
 
     $P sim
         Sinónimo en desuso para '$P uspace'.
 
     $P [version-kernel]
         Compilación para el kernel en tiempo real RTAI instalado especificado por
-        [version-kernel], por ejemplo "3.4.9-rtai-686-pae".
+        [kernel-version], por ejemplo "3.4.9-rtai-686-pae".
 
     $P -r
         Compilar para el kernel actual en ejecución; solo para tiempo real RTAI.
@@ -93,7 +93,7 @@ if [ ! -z "$RTAI_DEV" ]; then
     RTAI_DEV="$RTAI_DEV [i386], $RTAI_DEV [amd64]"
 fi
 # libxenomai-dev codifica las arquitecturas, pero tenemos que recurrir a terribles
-# shell juju para transformarlo en una lista de dependencias adecuada
+# shell juju? para transformarlo en una lista de dependencias adecuada
 XENOMAI_DEV="$(apt-cache search -n libxenomai-dev | head -1 | awk '{print $1}')"
 if [ ! -z "$XENOMAI_DEV" ]; then
     if [ `apt-cache showsrc libxenomai-dev 2>/dev/null | wc -l` -eq 0 ]; then

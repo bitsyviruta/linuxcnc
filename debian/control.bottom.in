@@ -17,10 +17,10 @@ Depends: ${shlibs:Depends}, @KERNEL_DEPENDS@,
     python-xlib, python-gtkglext1, python-configobj,
     tclreadline, procps, psmisc, module-init-tools | kmod, tclx,
     mesa-utils, blt
-Description: motion controller for CNC machines and robots
- LinuxCNC is the next-generation Enhanced Machine Controller which
- provides motion control for CNC machine tools and robotic
- applications (milling, cutting, routing, etc.).
+Description: controlador de movimiento para máquinas CNC y robots
+  LinuxCNC es el controlador de máquina mejorado de próxima generación que
+  proporciona control de movimiento para máquinas-herramienta CNC y aplicaciones
+  robotizadas (fresado, corte, fresado, etc.).
 
 Package: linuxcnc-doc-en
 Provides: linuxcnc-doc
@@ -39,9 +39,9 @@ Provides: linuxcnc-doc
 Architecture: all
 Depends: ${misc:Depends}
 Suggests: pdf-viewer
-Description: controlador de movimiento para máquinas CNC y robots (documentación en español)
+Description: controlador de movimiento para máquinas CNC y robots (documentación en Español)
   LinuxCNC es el controlador de máquina mejorado de próxima generación que
-  proporciona control de movimiento para máquinas herramientas CNC y aplicaciones
+  proporciona control de movimiento para máquinas-herramienta CNC y aplicaciones
   robotizadas (fresado, corte, fresado, etc.).
   .
   Este paquete contiene la documentación en Español.
