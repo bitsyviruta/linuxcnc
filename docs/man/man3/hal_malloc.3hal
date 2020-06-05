@@ -19,12 +19,6 @@ o NULL (0) en caso de error. El puntero devuelto se alineará correctamente para
 cualquier tipo de soporte HAL. Un componente debe asignar durante la inicialización toda
 la memoria que necesita.
 
-The allocator is very simple, and there is no `free'.  The entire HAL shared
-memory area is freed when the last component calls \fBhal_exit\fR.  This means
-that if you continuously install and remove one component while other
-components are present, you eventually will fill up the shared memory and an
-install will fail.  Removing all components completely clears memory and you
-start fresh.
 El asignador es muy simple y no hay "free". Todo el HAL compartiendo
 el área de memoria se libera cuando el último componente llama a \fBhal_exit\fR. Esto significa
 que si continuamente instala y elimina un componente mientras otros
