@@ -19,8 +19,7 @@ usr/share/axis/tcl/*
 usr/share/glade3
 usr/share/doc/linuxcnc/asciidoc-markup.txt
 usr/share/doc/linuxcnc/gcode.html
-usr/share/doc/linuxcnc/gcode_fr.html
-usr/share/doc/linuxcnc/gcode_vi.html
+usr/share/doc/linuxcnc/gcode_es.html
 usr/share/doc/linuxcnc/rtfaults.txt
 usr/share/doc/linuxcnc/AUTHORS
 usr/share/doc/linuxcnc/axis_light_background
@@ -40,4 +39,3 @@ usr/share/gtksourceview-2.0/
 usr/share/gscreen
 usr/share/gmoccapy
 usr/share/qtvcp
-

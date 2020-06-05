@@ -1,3 +1,9 @@
+N.T.
+¡¡¡ ATENCION !!! Esta GUI esta en desuso. La informacion en este archivo puede no corresponderse
+con el estado actual de Linuxcnc 
+
+
+
 Menús
 -----
 Archivo->Ejecutar ...: solicita que se ejecute un programa NC. Se necesita estar
@@ -238,10 +244,10 @@ Códigos G:
 
 G00 X Y Z 			avance rápido
 G01 X Y Z			Alimentación lineal , por ejemplo, G01 X10 Y20 Z30 F60 para 60 ipm
-G02 X Y Z I J 			alimentación circular en sentido horario (helicoidal con Z)
-G03 X Y Z I J 			alimentación circular en sentido antihorario (helicoidal con Z)
+G02 X Y Z I J 		alimentación circular en sentido horario (helicoidal con Z)
+G03 X Y Z I J 		alimentación circular en sentido antihorario (helicoidal con Z)
 G04 P <#> 			tiempo de espera de # segundos
-G10 L2 P <#> X Y Z		establece las coordenadas para el sistema #1-9, 1=G54, 9=G59.3
+G10 L2 P <#> X Y Z	establece las coordenadas para el sistema #1-9, 1=G54, 9=G59.3
 G17 XY				Interpolación circular en plano XY 
 G18 ZX				Interpolación circular en plano ZX
 G19 YZ				Interpolación circular en plano YZ
@@ -254,32 +260,32 @@ G43 H <#> 			usa el offset de longitud de la herramienta para la herramienta #, 
 G49 				cancelar offset de longitud de herramienta
 G53 				desactiva cualquier offset de coordenadas para este bloque
 G54 				usa offsets de coordenadas para el sistema #1, G10 L2 P1
-G55 							"" para el sistema #2, G10 L2 P2
-G56 							"" para el sistema #3, G10 L2 P3
-G57 							"" para el sistema #4, G10 L2 P4
-G58 							"" para el sistema #5, G10 L2 P5
-G59 							"" para el sistema #6, G10 L2 P6
-G59.1 							"" para el sistema #7, G10 L2 P7
-G59.2 							"" para el sistema #8, G10 L2 P8
-G59.3 							"" para el sistema #9, G10 L2 P9
-G61 				Modo de parada exacta
+G55 						"" para el sistema #2, G10 L2 P2
+G56 						"" para el sistema #3, G10 L2 P3
+G57 						"" para el sistema #4, G10 L2 P4
+G58 						"" para el sistema #5, G10 L2 P5
+G59 						"" para el sistema #6, G10 L2 P6
+G59.1 						"" para el sistema #7, G10 L2 P7
+G59.2 						"" para el sistema #8, G10 L2 P8
+G59.3 						"" para el sistema #9, G10 L2 P9
+G61 			Modo de parada exacta
 G64				Modo de corte 
 G76				Ciclo fijo de roscado 
-G80 				cancelar ciclo fijo
+G80 			cancelar ciclo fijo
 G81				Ciclo de taladrado, sin parada, salida rápida
 G82				Ciclo de taladrado, con parada, salida rápida
-G83 				Ciclo de taladrado, agujero profundo, picotear 
+G83 			Ciclo de taladrado, agujero profundo, picotear 
 G84				Ciclo de roscado 
 G85				Ciclo de mandrinado, sin parada, salida a alimentacion
 G86				Ciclo de mandrinado, con parada, salida rápida
-G87 				Ciclo de mandrinado posterior
+G87 			Ciclo de mandrinado posterior
 G88				Ciclo de mandrinado , sin parada, salida manual
 G89				Ciclo de mandrinado , con parada, salida a alimentación
 G90				Programación no incremental  (la habitual)
 G91				Programación incremental 
 G93				Modo de avance de tiempo inverso 
 G94				Modo de alimentación por minuto (el habitual)
-G98,G99 			establece el nivel de retorno del ciclo fijo
+G98,G99 		establece el nivel de retorno del ciclo fijo
 
 Códigos M:
 
@@ -293,16 +299,16 @@ M6				Cambio de herramienta , por ejemplo, T1 M6 para herramienta 1
 M7 				refrigerante de niebla ON
 M8 				refrigerante de inundación ON
 M9 				todo refrigerante apagado
-M48 				deshabilita el control de reajuste para los conmutadores M50-51
-M49 				habilita el control de reajuste para los conmutadores M50-51
-M50 				habilitar/deshabilitar reajuste de alimentación
-M51 				habilita/deshabilita reajuste de velocidad del husillo
-M52 				habilitar/deshabilitar reajuste de la alimentación adaptativa
-M53 				activar/desactivar mantenimiento de alimentación
-M62 				<|
+M48 			deshabilita el control de reajuste para los conmutadores M50-51
+M49 			habilita el control de reajuste para los conmutadores M50-51
+M50 			habilitar/deshabilitar reajuste de alimentación
+M51 			habilita/deshabilita reajuste de velocidad del husillo
+M52 			habilitar/deshabilitar reajuste de la alimentación adaptativa
+M53 			activar/desactivar mantenimiento de alimentación
+M62 			<|
 .. 			 	 |-control digital IO
-M65 				<|
-M100..M199 			comandos definidos por el usuario
+M65 			<|
+M100..M199 		comandos definidos por el usuario
 
 (Consulte el manual del usuario para más detalles).
 

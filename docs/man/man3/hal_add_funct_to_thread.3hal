@@ -21,8 +21,8 @@ El nombre del hilo.
 La ubicación deseada dentro del hilo. Esto determina cuándo ejecutar la función
 en relación con otras funciones en el hilo. Un número positivo indica
 la ubicación deseada medida desde el principio del hilo, y uno
-negativo mide desde el final. Por tanto, +1 significa que esta función se convertirá en
-la primero en ejecutarse, +5 significa que será la quinto en ejecutarse, \-2 significa que será
+negativo, medida desde el final. Por tanto, +1 significa que esta función se convertirá en
+la primero en ejecutarse, +5 significa que será la quinta en ejecutarse, \-2 significa que será
 la penúltima y \-1 significa que será la última. Cero es ilegal.  
 
 .SH DESCRIPCION
