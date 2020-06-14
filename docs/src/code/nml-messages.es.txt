@@ -1,5 +1,5 @@
 ﻿= Mensajes NML
-para más detalles vea src / emc / nml_intf / emc.hh
+para más detalles vea src/emc/nml_intf/emc.hh
 
     OPERADOR
 ----
@@ -38,7 +38,7 @@ para más detalles vea src / emc / nml_intf / emc.hh
     EMC_AXIS_STAT_TYPE
 ----
 
-    EMPUJONCITO
+    JOG
 ----
     EMC_JOG_CONT_TYPE
     EMC_JOG_INCR_TYPE
@@ -147,7 +147,7 @@ para más detalles vea src / emc / nml_intf / emc.hh
     EMC_AUX_STAT_TYPE
 ----
 
-    HUSO
+    HUSILLO
 ----
     EMC_SPINDLE_ON_TYPE
     EMC_SPINDLE_OFF_TYPE
@@ -178,7 +178,7 @@ para más detalles vea src / emc / nml_intf / emc.hh
     EMC_LUBE_STAT_TYPE
 ----
 
-    IO (ENTRADA / SALIDA)
+    IO (ENTRADA/SALIDA)
 ----
     EMC_IO_INIT_TYPE
     EMC_IO_HALT_TYPE
@@ -188,7 +188,7 @@ para más detalles vea src / emc / nml_intf / emc.hh
     EMC_IO_PLUGIN_CALL_TYPE
 ----
 
-    OTRO
+    OTROS
 ----
     EMC_NULL_TYPE
     EMC_SET_DEBUG_TYPE

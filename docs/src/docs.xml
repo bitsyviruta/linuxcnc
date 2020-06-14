@@ -108,9 +108,9 @@
 <doc name="common_System_Requirements_es" title="Requisitos del sistema"/>
 <doc name="common_Getting_EMC_es" title="Obtener LinuxCNC"/>
 <doc name="common_Updating_EMC_es" title="Actualizar LinuxCNC"/>
-<doc name="quickstart_stepper_quickstart_es" title="Inicio rápido para stepper "/>
+<doc name="quickstart_stepper_quickstart_es" title="Inicio rápido para Stepper"/>
 <doc name="config_stepconf_es" title="Asistente de configuración para máquinas basadas en steppers"/>
-<doc name="config_pncconf_es" title="Asistente de configuración apuntar y clic (para máquinas que usan Mesa)"/>
+<doc name="config_pncconf_es" title="Asistente de configuración Point and Click (para máquinas que usan Mesa)"/>
 <doc name="config_copy_and_run_es" title="Copiar y ejecutar"/>
 <doc name="common_Linux_FAQ_es" title="FAQ's sobre Linux"/>
 <doc name="common_GPLD_Copyright" title="Licencia de copyright y documentación"/>
@@ -124,16 +124,16 @@
 <doc name="gui_ngcgui_es" title="GUI: NGCGUI"/>
 <doc name="gui_tklinuxcnc_es" title="GUI: TkLinuxCNC"/>
 <doc name="gui_mini_es" title="GUI: Mini"/>
-<doc name="common_machining_center_es" title="Información del centro de mecanizado"/>
+<doc name="common_machining_center_es" title="Información sobre centros de mecanizado"/>
 <doc name="gcode_overview_es" title="Descripción general del Codigo G"/>
 <doc name="gcode_coordinates_es" title="Coordenadas en Codigo G"/>
 <doc name="gcode_tool-compensation_es" title="Compensación de herramienta en Codigo G"/>
 <doc name="gcode_main_es" title="El lenguaje Codigo G en LinuxCNC"/>
-<doc name="gcode_mill_canned_es" title="Ejemplos de ciclo fijo de fresa en Codigo G"/>
+<doc name="gcode_mill_canned_es" title="Ejemplos de ciclo fijo de fresado en Codigo G"/>
 <doc name="lathe_lathe-user_es" title="Información para el usuario de torno"/>
 <doc name="plasma_plasmac-user-guide_es" title="Guía del usuario de PlasmaC"/>
-<doc name="plasma_plasma-cnc-primer_es" title="Plasma CNC Primer"/>
-<doc name="gcode_rs274ngc_es" title="RS-274/NGC y Codigo G"/>
+<doc name="plasma_plasma-cnc-primer_es" title="Fundamentos sobre Plasma CNC"/>
+<doc name="gcode_rs274ngc_es" title="Codigo G RS-274/NGC"/>
 <doc name="examples_gcode_es" title="Ejemplos de Codigo G"/>
 <doc name="gui_image-to-gcode_es" title="Imagen a Codigo G"/>
 <doc name="common_glossary_es" title="Glosario"/>
@@ -178,16 +178,23 @@
 <doc name="motion_kinematics_es" title="Cinemática"/>
 <doc name="motion_tweaking_steppers_es" title="Afinación de Steppers"/>
 <doc name="motion_pid_theory_es" title="Teoría PID"/>
-<doc name="ladder_ladder_intro_es" title="Introducción a ladder"/>
+<doc name="ladder_ladder_intro_es" title="Introducción a la logica de escalera"/>
 <doc name="ladder_classic_ladder_es" title="ClassicLadder"/>
 <doc name="ladder_ladder_examples_es" title="Ejemplos de ClassicLadder"/>
 <doc name="examples_pci-parallel-port_es" title="Puerto paralelo PCI"/>
 <doc name="examples_spindle_es" title="Ejemplo de husillo"/>
 <doc name="examples_mpg_es" title="Ejemplo de MPG"/>
 <doc name="examples_gs2-example_es" title="Ejemplo GS2"/>
-<doc name="common_stepper-diagnostics_es" title="Inicio rápido steppers"/>
+<doc name="common_stepper-diagnostics_es" title="Inicio rápido de steppers"/>
 <doc name="common_Linux_FAQ_es" title="FAQ's sobre Linux"/>
 <doc name="common_glossary_es" title="Glosario"/>
+<doc name="common_gpld-copyright_es" title="Licencia de copyright y documentación"/>
+
+<doc name="common_overleaf_es" title="Texto al dorso"/>
+<doc name="code_code-notes_es" title="Notas sobre el codigo"/>
+<doc name="code_nml-messages_es" title="Mensajes NML"/>
+<doc name="code_style-guide_es" title="Guia de Estilo"/>
+<doc name="common_Glossary_es" title="Glossary"/>
 <doc name="common_gpld-copyright_es" title="Licencia de copyright y documentación"/>
 
 <doc name="xref_es" title="Índice de referencia cruzada"/>

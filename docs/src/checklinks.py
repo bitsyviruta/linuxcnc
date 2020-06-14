@@ -122,7 +122,7 @@ if unlisted_targets:
     for i in sorted(unlisted_targets):
         print "\t%r" % i
     print "Si todos los objetivos de link no están listados en el Submakefile, entonces los resultados de este programa no son confiables."
-print "links buenos: %d/%d" % (len(good), len(refs))
+print "links correctos: %d/%d" % (len(good), len(refs))
 if missing_anchor or missing_file or unlisted_targets:
 raise SystemExit, 1import os, sys, sgmllib, cookielib, urllib, htmlentitydefs
 

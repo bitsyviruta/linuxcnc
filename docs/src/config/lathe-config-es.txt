@@ -1,12 +1,12 @@
 ﻿= Configuración de torno
 
-[[cha: configuración de torno]]
+[[cha:lathe-configuration]]
 
 == Plano predeterminado
 
-Cuando el intérprete de LinuxCNC se escribió por primera vez, fue diseñado para fábricas.
+Cuando el intérprete de LinuxCNC se escribió por primera vez, fue diseñado para fresadoras.
 Es por eso que el plano predeterminado es XY (G17). Un torno normal solo usa el
-Avión XZ (G18). Para cambiar el plano predeterminado, coloque la siguiente línea en
+plano XZ (G18). Para cambiar el plano predeterminado, coloque la siguiente línea en
 el archivo .ini en la sección RS274NGC.
 
 ----
@@ -19,31 +19,31 @@ en el preámbulo del archivo de código g.
 == Configuración INI
 
 Las siguientes configuraciones .ini son necesarias para el modo torno en Axis además de
-o reemplazando la configuración normal en el archivo .ini. Estas configuraciones históricas usan
+o reemplazando a la configuración normal en el archivo .ini. Estas configuraciones históricas usan
 cinemática de identidad (trivkins) y 'tres' articulaciones (0,1,2) correspondientes a
-coordenadas x, y, z. Se requiere la unión 1 para el eje y no utilizado, pero no se utiliza
+coordenadas x, y, z. Se requiere la articulacion 1 para el eje Y no utilizado
 en estas configuraciones históricas. Las configuraciones de torno simuladas pueden usar estas
-ajustes históricos
-Gmoccapy también usa las configuraciones mencionadas, pero ofrece configuraciones adicionales,
-verifique la sección << cha: gmoccapy, gmoccapy >> para más detalles.
+ajustes históricos.
+Gmoccapy también usa las configuraciones mencionadas, pero ofrece configuraciones adicionales.
+Verifique la sección <<cha:gmoccapy,gmoccapy>> para más detalles.
 
 ----
-[MONITOR]
-PANTALLA = eje
-TORNO = 1
+[DISPLAY]
+DISPLAY = axis
+LATHE = 1
 ...
 
 [KINS]
-CINEMÁTICA = trivkins
-JUNTAS = 3
+KINEMATICS = trivkins
+JOINTS = 3
 
 [TRAJ]
-COORDENADAS = X Z
+COORDINATES = X Z
 ...
 
-[JUNTA_0]
+[JOINT_0]
 ...
-[JUNTA_2]
+[JOINT_2]
 ...
 [AXIS_X]
 ...
@@ -52,24 +52,23 @@ COORDENADAS = X Z
 ----
 
 Con la incorporación de joint_axes, se puede hacer una configuración más simple con solo
-las dos articulaciones requeridas especificando trivkins con las 'coordenadas ='
-parámetro:
+las dos articulaciones requeridas especificando trivkins con el parámetro 'coordinates =':
 
 ----
-[MONITOR]
-PANTALLA = eje
-TORNO = 1
+[DISPLAY]
+DISPLAY = axis
+LATHE = 1
 ...
 
 [KINS]
-CINEMÁTICA = coordenadas trivkins = xz
-JUNTAS = 2
+KINEMATICS = trivkins coordinates=xz
+JOINTS = 2
 
 [TRAJ]
-COORDENADAS = X Z
+COORDINATES = X Z
 ...
 
-[JUNTA_0]
+[JOINT_0]
 ...
 [JOINT_1]
 ...

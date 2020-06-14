@@ -1,112 +1,109 @@
 ﻿= Componentes principales
 = Componentes principales
 
-[[cha: componentes centrales]]
+[[cha:core-components]]
 
 Consulte también las páginas del manual 'motion (9)'.
 
-[[sec: movimiento]]
+[[sec:motion]]
 == Movimiento
 
 Estos pines y parámetros son creados por el módulo 'motmod' en tiempo real.
 Este módulo proporciona una interfaz HAL para el planificador de movimiento de LinuxCNC.
 Básicamente, motmod toma una lista de puntos de referencia y genera un buen
-flujo combinado y limitado por restricciones de posiciones conjuntas que se alimentarán
+flujo combinado y limitado por restricciones de posiciones de articulaciones que alimentarán
 a las unidades de motor.
 
-Opcionalmente, el número de E / S digitales se establece con num_dio.
-El número de E / S analógicas se establece con num_aio. El valor predeterminado es 4 cada uno.
+Opcionalmente, el número de E/S digitales se establece con num_dio.
+El número de E/S analógicas se establece con num_aio. El valor predeterminado es 4 cada uno.
 
-Pin y nombres de parámetros que comienzan con 'axis.L' y joint.N '
+Los nombres de parámetros y pines que comienzan con 'axis.L' y joint.N '
 son leídos y actualizados por la función de controlador de movimiento.
 
-El movimiento se carga con el comando motmod. Un pariente debe ser cargado
-antes del movimiento
+Motion se carga con el comando motmod. Una cinematica debe ser cargada
+antes de motion
 
 ----
-loadrt motmod [base_period_nsec = period] [servo_period_nsec = period]
-[traj_period_nsec = punto] [num_joints = [0-9] ([num_dio = 1-64] num_aio = 1-16]) ([unlock_joints_mask = 0xNN])
+loadrt motmod [base_period_nsec=period] [servo_period_nsec=period] 
+[traj_period_nsec=period] [num_joints=[0-9] ([num_dio=1-64] num_aio=1-16]) ([unlock_joints_mask=0xNN])
 ----
 
 * 'base_period_nsec = 50000': el período de la tarea 'Base' en nanosegundos.
   Este es el hilo más rápido en la máquina.
 
 [NOTA]
-En los sistemas servo, generalmente no hay razón para
-'base_period_nsec' será más pequeño que 'servo_period_nsec'.
-En máquinas con generación de pasos de software, el 'base_period_nsec'
-determina el número máximo de pasos por segundo. En ausencia de
-longitud de paso larga y requisitos de espacio de paso, el paso máximo absoluto
-la tasa es un paso por 'base_period_nsec'. Por lo tanto, se muestra el 'base_period_nsec'
+En los sistemas servo, generalmente no hay razón para que
+'base_period_nsec' sea más pequeño que 'servo_period_nsec'.
+En máquinas con generación de pasos software, 'base_period_nsec'
+determina el número máximo de pasos por segundo. En ausencia de una
+longitud de paso larga y otros requisitos de espacio entre pasos, la tasa máxima absoluta de pasos
+es un paso por 'base_period_nsec'. Por lo tanto, el 'base_period_nsec' mostrado
 arriba da una velocidad de paso máxima absoluta de 20,000 pasos por
-segundo. 50,000 ns (50 us) es un valor bastante conservador. los
-el valor utilizable más pequeño está relacionado con el resultado de la Prueba de latencia, el
+segundo. 50,000 ns (50 us) es un valor bastante conservador.
+El valor utilizable más pequeño está relacionado con el resultado de la Prueba de latencia, la
 longitud de paso necesaria, y la velocidad del procesador.
-Elegir un 'base_period_nsec' que sea demasiado bajo puede conducir a la "Inesperada
-mensaje de retraso en tiempo real ", bloqueos o reinicios espontáneos.
+Elegir un 'base_period_nsec' demasiado bajo puede conducir a mensajes como "Retraso en tiempo real inesperado",
+bloqueos o reinicios espontáneos.
 
 * 'servo_period_nsec = 1000000': este es el período de tarea 'Servo' en
-  nanosegundos Este valor se redondeará a un múltiplo entero de
+  nanosegundos. Este valor se redondeará a un múltiplo entero de
   'base_period_nsec'. Este período se usa incluso en sistemas basados ​​en
-  Motores paso a paso.
+  motores paso a paso.
 +
-Esta es la velocidad a la que se calculan las nuevas posiciones del motor, siguiendo
-se verifica el error, se actualizan los valores de salida PID, etc.
+Esta es la velocidad a la que se calculan las nuevas posiciones del motor, se verifica
+el error de seguimiento, se actualizan los valores de salida PID, etc.
 La mayoría de los sistemas no necesitarán cambiar este valor. Es la tasa de actualización
 del planificador de movimiento de bajo nivel.
 
-* 'traj_period_nsec = 100000' - Este es el 'Planificador de trayectoria'
-  período de tarea en nanosegundos. Este valor se redondeará a un entero
-  múltiplo de 'servo_period_nsec'. Excepto para máquinas con inusual
-  cinemática (p. ej., hexapodos) no hay razón para aumentar este valor
-  que 'servo_period_nsec'.
+* 'traj_period_nsec = 100000' - Este es el período de la  tarea 'Planificador de trayectoria'
+  en nanosegundos. Este valor se redondeará a un entero
+  múltiplo de 'servo_period_nsec'. Excepto para máquinas con cinemática inusual
+  (p. ej., hexapodos) no hay razón para aumentar este valor por encima de
+  'servo_period_nsec'.
 
 === Opciones
 
-Si la cantidad de E / S digital necesaria es mayor que el valor predeterminado de 4, usted
-puede agregar hasta 64 E / S digitales mediante la opción num_dio al cargar
-motmod.
+Si la cantidad de E/S digital necesaria es mayor que el valor predeterminado de 4, usted
+puede agregar hasta 64 E/S digitales mediante la opción num_dio al cargar motmod.
 
-Si el número de E / S analógicas necesarias es mayor que el valor predeterminado de 4, usted
-puede agregar hasta 16 E / S analógicas utilizando la opción num_aio al cargar
-motmod.
+Si el número de E/S analógicas necesarias es mayor que el valor predeterminado de 4, usted
+puede agregar hasta 16 E/S analógicas utilizando la opción num_aio al cargar motmod.
 
-El parámetro unlock_joints_mask se usa para crear pines para una unión utilizada
-como un indexador de bloqueo (típicamente un rotativo). Los bits de máscara seleccionan el
-articulación (es) El LSB de la máscara selecciona la unión 0. Ejemplo:
-   unlock_joints_mask = 0x38 selecciona uniones 3,4,5
+El parámetro unlock_joints_mask se usa para crear pines para una articulacion utilizada
+como indexador con bloqueo (típicamente rotativa). Los bits de máscara seleccionan la(s)
+articulación(es). El LSB de la máscara selecciona la articulación 0. Ejemplo:
+   unlock_joints_mask = 0x38 selecciona uniones 3,4,5 (0x38=111000 binario)
 
-[[sec: pines de movimiento]]
-=== Pines (((movimiento (pines HAL))))
+[[sec:motion-pins]]
+=== Pines (((motion (pines HAL))))
 
-Estos pines, parámetros y funciones son creados por el tiempo real
-módulo 'motmod'.
+Los siguientes pines, parámetros y funciones son creados por el módulo de tiempo real 'motmod'. 
 
 * 'motion.adaptive-feed' -
-     (flotante, adentro) Cuando la alimentación adaptativa está habilitada con 'M52 P1', el
+     (float, in) Cuando la alimentación adaptativa está habilitada con 'M52 P1',
     la velocidad ordenada se multiplica por este valor. Este efecto es
-     multiplicativo con el valor de anulación de alimentación de nivel NML y
+    multiplicativo con el valor de ajuste de alimentación de nivel NML y
     'motion.feed-hold'. A partir de la versión 2.9 de LinuxCNC es posible
-    use un valor de alimentación adaptativo negativo para ejecutar la ruta del código G en reversa.
+    usar un valor de alimentación adaptativo negativo para ejecutar la ruta de código G en reversa.
 
 * 'motion.analog-in-00' -
-     (flotante, in) Estos pines (00, 01, 02, 03 o más si están configurados) son
+     (float, in) Estos pines (00, 01, 02, 03 o más si están configurados) son
     controlado por M66.
 
 * 'motion.analog-out-00' -
-     (flotante, fuera) Estos pines (00, 01, 02, 03 o más si están configurados) son
+     (float, out) Estos pines (00, 01, 02, 03 o más si están configurados) son
     controlado por M67 o M68.
 
 * 'motion.coord-error' -
      (bit, out) TRUE cuando el movimiento ha encontrado un error, como
-    exceder un límite suave
+    exceder un límite soft.
 
 * 'motion.coord-mode' -
      (bit, out) TRUE cuando el movimiento está en 'modo coordinado', en oposición a
     'modo teleop'
 
 * 'motion.current-vel' -
-    (flotante, fuera) La velocidad actual de la herramienta en unidades de usuario por segundo.
+    (float, out) La velocidad actual de la herramienta (avance) en unidades de usuario por segundo.
 
 * 'motion.digital-in-00' -
      (bit, in) Estos pines (00, 01, 02, 03 o más si están configurados) son
@@ -117,20 +114,20 @@ módulo 'motmod'.
     controlado por el 'M62-65'.
 
 * 'motion.distance-to-go' -
-    (flotante, fuera) La distancia restante en el movimiento actual.
+    (float, out) La distancia restante en el movimiento actual.
 
 * 'motion.enable' -
-     (bit, in) Si este bit se conduce FALSE, el movimiento se detiene, la máquina está
-    colocado en el estado 'máquina apagada' y se muestra un mensaje para
-    operador. Para movimiento normal, maneje este bit VERDADERO.
+     (bit, in) Si este bit se lleva a FALSE, el movimiento se detiene, la máquina está
+    colocada en el estado 'máquina apagada' y se muestra un mensaje para el
+    operador. Para movimiento normal, lleve este bit a TRUE.
 
 * 'motion.feed-hold' -
-     (bit, in) Cuando Feed Stop Control está habilitado con 'M53 P1', y esto
-    el bit es VERDADERO, la velocidad de avance se establece en 0.
+     (bit, in) Cuando Feed Stop Control está habilitado con 'M53 P1', y este
+    bit es TRUE, la velocidad de avance se establece en 0.
 
 * 'motion.feed-inhibit' -
      (bit, in) Cuando este bit es TRUE, la velocidad de avance se establece en 0.
-    Esto se retrasará durante los movimientos de sincronización del huso hasta el final del movimiento.
+    Esto se retrasará durante los movimientos de sincronización del husillo hasta el final del movimiento.
 
 * 'motion.in-position' -
     (bit, out) TRUE si la máquina está en posición.
@@ -139,11 +136,11 @@ módulo 'motmod'.
     (bit, out) TRUE cuando está en estado 'máquina encendida'.
 
 * 'motion.motion-type' -
-    (s32, out) Estos valores son de src / emc / nml_intf / motion_types.h
+    (s32, out) Estos valores son de src/emc/nml_intf/motion_types.h
 
  - 0: inactivo (sin movimiento)
 
- - 1: transversal
+ - 1: transverso
 
  - 2: alimentación lineal
 
@@ -153,168 +150,165 @@ módulo 'motmod'.
 
  - 5: sondeo
 
- - 6: indexación del eje giratorio
+ - 6: indexación de eje giratorio
 
 * 'motion.on-soft-limit' -
-    (bit, out) TRUE cuando la máquina está en un límite suave.
+    (bit, out) TRUE cuando la máquina está en un límite soft.
 
 * 'motion.probe-input' -
      (bit, in) 'G38.n' usa el valor en este pin para determinar cuándo
-    la sonda ha hecho contacto.
-    VERDADERO para el contacto de la sonda cerrado (en contacto),
-    FALSO para contacto de sonda abierto.
+    ha hecho contacto la sonda.
+    TRUE para contacto de sonda cerrado (en contacto),
+    FALSE para contacto de sonda abierto.
 
 * 'motion.program-line' -
-     (s32, out) La línea del programa actual durante la ejecución. Cero si no
-    corriendo o entre líneas mientras se camina solo.
+     (s32, out) La línea del programa actual durante la ejecución. Cero si no esta
+    corriendo un programa o entre líneas mientras en ejecucion linea a linea.
 
 * 'motion.requested-vel' -
-     (flotante, fuera) La velocidad actual solicitada en unidades de usuario por
+     (float, out) La velocidad actual solicitada en unidades de usuario por
     segundo. Este valor es la configuración de la palabra F del archivo de código G,
-    posiblemente reducido para acomodar la velocidad y aceleración de la máquina
-    límites El valor en este pin no refleja la anulación de alimentación o
-    Cualquier otro ajuste.
+    posiblemente reducido para acomodar la velocidad y aceleración a los límites de la máquina.
+    El valor en este pin no refleja el ajuste de alimentación o cualquier otro ajuste.
 
 * 'spindle.0.at-speed' -
-     (bit, in) El movimiento se detendrá hasta que este pin sea VERDADERO, debajo de
-    siguientes condiciones: antes del primer movimiento de alimentación después de cada huso
-    inicio o cambio de velocidad; antes del comienzo de cada cadena de
-    movimientos sincronizados por husillo; y si está en modo CSS, en cada avance rápido
-    transición. Esta entrada se puede utilizar para garantizar que el eje esté a la altura
-    velocidad antes de comenzar un corte, o que un husillo de torno en modo CSS tenga
-    disminuyó la velocidad después de un pase de orientación grande a pequeño antes de comenzar el siguiente
-    pasar al gran diámetro. Muchos VFD tienen una salida 'a velocidad'.
-    De lo contrario, es fácil generar esta señal con el 'HAL cercano'
-    componente, comparando las velocidades de husillo solicitadas y reales.
+     (bit, in) El movimiento se detendrá hasta que este pin sea TRUE, bajo las
+    siguientes condiciones: antes del primer movimiento de alimentación después de cada inicio de husillo
+    o cambio de velocidad; antes del comienzo de cada cadena de
+    movimientos sincronizados con husillo; y si está en modo CSS, en cada transición de avance a rápido.
+    Esta entrada se puede utilizar para garantizar que el eje esté a la
+    velocidad antes de comenzar un corte, o que un husillo de torno en modo CSS
+    disminuye la velocidad en un pase de refrentado desde una grande a una pequeña, antes de comenzar el siguiente
+    pase al diámetro grande. Muchos VFD tienen una salida 'a velocidad'.
+    Por otra parte, es fácil generar esta señal con el componente HAL 'near',
+    comparando las velocidades de husillo solicitadas y reales.
 
 * 'spindle.N.brake' -
     (bit, out) TRUE cuando se debe aplicar el freno del husillo.
 
-* 'husillo.N. adelante' -
+* 'spindle.N.forward' -
     (bit, out) TRUE cuando el eje debe girar hacia adelante.
 
 * 'spindle.N.index-enable' -
-     (bit, I / O) Para el correcto funcionamiento de los movimientos sincronizados del cabezal, esto
-    el pin debe estar conectado al pin de habilitación de índice del codificador del cabezal.
+     (bit, I/O) Para el correcto funcionamiento de los movimientos sincronizados del husillo, este
+    pin debe estar conectado al pin de habilitación de índice del codificador del husillo.
 
-* 'husillo.Inhibición N.' -
+* 'spindle.N.inhibit' -
      (bit, in) Cuando este bit es TRUE, la velocidad del cabezal se establece en 0.
 
 * 'spindle.N.on' -
-    (bit, out) TRUE cuando el eje debe girar.
+    (bit, out) TRUE cuando el husillo debe girar.
 
-* 'husillo.N.reverse' -
-    (bit, out) TRUE cuando el huso debe girar hacia atrás
+* 'spindle.N.reverse' -
+    (bit, out) TRUE cuando el husillo debe girar hacia atrás
 
 * 'spindle.N.revs' -
-     (flotante, adentro) Para el correcto funcionamiento de los movimientos sincronizados del husillo, esto
-    la señal debe estar conectada al pin de posición del codificador de husillo. los
-    la posición del codificador del husillo debe escalarse de modo que las revoluciones del husillo
-    aumenta en 1.0 por cada rotación del huso en el sentido de las agujas del reloj
-    ('M3') dirección.
+     (float, in) Para el correcto funcionamiento de los movimientos sincronizados del husillo, esta
+    señal debe estar conectada al pin de posición del codificador de husillo.
+    La posición del codificador del husillo debe escalarse de modo que spindle-revs
+    aumente en 1.0 por cada rotación del husillo en el sentido de las agujas del reloj
+    ('M3').
 
-* 'husillo.N.velocidad' -
-     (flotante, en) Retroalimentación de la velocidad real del husillo en rotaciones por segundo.
-    Esto lo utiliza el movimiento de avance por revolución ('G95'). Si su huso
-    el controlador del codificador no tiene salida de velocidad, usted
-     puede generar uno adecuado enviando la posición del huso a través de un
-    componente 'ddt'. Si no tiene un codificador de huso, puede hacer un bucle
+* 'spindle.N.speed-in' -
+     (float, in) Retroalimentación de la velocidad real del husillo en rotaciones por segundo.
+    Esto lo utiliza el movimiento de avance por revolución ('G95'). Si su controlador del codificador
+    del husillo no tiene salida de velocidad, usted
+    puede generar una adecuada enviando la posición del husillo a través de un
+    componente 'ddt'. Si no tiene un codificador de husillo, puede hacer un bucle
     atrás 'spindle.N.speed-out-rps'.
 
-* 'husillo.N.velocidad' -
-     (flotante, fuera) Velocidad de giro ordenada en rotaciones por minuto. Positivo
+* 'spindle.N.speed-out' -
+     (float, out) Velocidad de giro ordenada en rotaciones por minuto. Positivo
     para husillo hacia adelante ('M3'), negativo para husillo hacia atrás ('M4').
 
 * 'spindle.N.speed-out-abs' -
-     (flotante, fuera) Velocidad de giro ordenada en rotaciones por minuto. Esta voluntad
-    siempre sea un número positivo.
+     (float, out) Velocidad de giro ordenada en rotaciones por minuto. Esto
+    siempre será un número positivo.
 
 * 'spindle.N.speed-out-rps' -
-     (flotador, fuera) Velocidad del husillo ordenada en rotaciones por segundo. Positivo
+     (float, out) Velocidad del husillo ordenada en rotaciones por segundo. Positivo
     para husillo hacia adelante ('M3'), negativo para husillo hacia atrás ('M4').
 
 * 'spindle.N.speed-out-rps-abs' -
-     (flotador, fuera) Velocidad del husillo ordenada en rotaciones por segundo. Esta voluntad
-    siempre sea un número positivo.
+     (float, out) Velocidad del husillo ordenada en rotaciones por segundo. Esto
+    siempre será un número positivo.
 
 * 'motion.teleop-mode' -
      (bit, out) TRUE cuando el movimiento está en 'modo teleop', en lugar de
     'modo coordinado'
 
 * 'motion.tooloffset.x ... motion.tooloffset.w' -
-     (flotante, fuera, uno por eje) muestra el desplazamiento de la herramienta vigente;
+     (float, out, uno por eje) muestra el offset de la herramienta vigente;
      podría provenir de la tabla de herramientas ('G43' activo), o podría
      provienen del gcode ('G43.1' activo)
 
 * `spindle.N.orient-angle` -
-(flotante, hacia afuera) Orientación del husillo deseada para M19. Valor de la
-Parámetro de palabra M19 R más el valor del parámetro ini [RS274NGC] ORIENT_OFFSET.
+     (float, out) Orientación del husillo deseada para M19. Valor del
+     parámetro R de palabra M19 más el valor del parámetro ini [RS274NGC]ORIENT_OFFSET.
 
 * `spindle.N.orient-mode` -
-(s32, fuera) Modo de rotación del cabezal deseado M19. Predeterminado 0.
+     (s32, out) Modo de rotación del husillo deseado M19. Predeterminado 0.
 
-* `husillo.N.oriente` -
-(fuera, poco)
-Indica el inicio del ciclo de orientación del husillo. Establecido por M19. Autorizado por cualquiera de M3, M4, M5.
-Si la falla de orientación del husillo no es cero durante la orientación del husillo
-Es cierto, el comando M19 falla con un mensaje de error.
+* `spindle.N.orient` -
+     (out, bit)
+      Indica el inicio del ciclo de orientación del husillo. Establecido por M19. Autorizado por cualquiera de M3, M4, M5.
+     Si spindle-orient-fault no es cero durante spindle-orient true,
+     el comando M19 falla con un mensaje de error.
 
-* `spindle.N.is-orientado` -
-(in, bit) Reconoce el pin para orientar el husillo. Completa orientar
-ciclo. Si la orientación del eje era verdadera cuando la orientación del eje era
-afirmado, el pasador de orientación del husillo se borra y el
-se asegura el pasador con husillo bloqueado. Además, se afirma el pasador del freno del husillo.
+* `spindle.N.is-oriented` -
+     (in, bit) Pin de reconocimiento para orientacion del husillo. Completa el ciclo de orientacion.
+      Si spindle-orient es TRUE cuando spindle-is-oriented sea puesto,
+      el pin spindle-orient se borra y se establece el pin spindle-locked.
+      Además, se establece el pin spindle-brake.
 
 * `spindle.N.orient-fault` -
-(s32, in) Entrada de código de falla para el ciclo de orientación. Cualquier valor otro
-que cero hará que el ciclo de orientación se cancele.
+     (s32, in) Entrada de código de fallo para el ciclo de orientación. Cualquier valor diferente
+     a cero hará que el ciclo de orientación se cancele.
 
 * `spindle.N.lock` -
-(bit, fuera) El husillo orienta el pasador completo. Autorizado por cualquiera de M3, M4, M5.
+	 (bit, out) Pin de orientacion husillo completada. Limpiado por cualquiera de M3, M4, M5.
 
-Uso de pin HAL para husillo orientado M19
+. Uso de pin HAL para orientacion de husillo M19
 
-Conceptualmente, el huso se encuentra en uno de los siguientes modos:
+Conceptualmente, el husillo se encuentra en uno de los siguientes modos:
 
- - modo de rotación (el valor predeterminado)
- - buscando el modo de orientación deseado
- - modo completo de orientación.
+ - modo de rotación (valor predeterminado)
+ - modo de busqueda de la orientación deseada
+ - modo de orientación completada.
 
-Cuando se ejecuta un M19, el huso cambia a 'buscando el deseado
-orientación ', y se afirma el pin HAL `spindle.N.orient`. los
-la posición de destino deseada se especifica mediante el 'spindle.N.orient-angle' y
-`spindle.N.orient-fwd` pines y accionado por los parámetros M19 R y P.
+Cuando se ejecuta un M19, el husillo cambia a 'buscando orientación deseada',
+y se establece el pin HAL `spindle.N.orient`.
+La posición de destino deseada se especifica mediante los pines 'spindle.N.orient-angle' y
+`spindle.N.orient-fwd` a través de los parámetros M19 R y P.
 
-Se espera que la lógica de soporte de HAL reaccione al `spindle.N.orient`
-moviendo el husillo a la posición deseada. Cuando esto se completa, el
-Se espera que la lógica HAL reconozca esto afirmando el
-pasador `spindle.N.is-orientado`.
+Se espera que la lógica de soporte de HAL reaccione a `spindle.N.orient`
+moviendo el husillo a la posición deseada. Cuando esto se completa,
+se espera que la lógica HAL lo reconozca estableciendo el
+pin `spindle.N.is-orientado`.
 
-Motion luego reconoce esto desassertando el pin `spindle.N.orient`
-y afirma el pasador `spindle.N.locked` para indicar la orientación
-modo completo También levanta el pasador `spindle.N.brake`. El huso ahora
-está en modo 'orientación completa'.
+motion reconoce esto limpiando el pin `spindle.N.orient`
+y estableciendo el pin `spindle.N.locked` para indicar el modo de orientación completa.
+También limpia el pin `spindle.N.brake`. El husillo ahora está en modo 'orientación completa'.
 
-Si, durante `spindle.N.orient` es verdadero, y` spindle.N.está orientado` no
-pero afirmó que el pin `spindle.N.orient-fault` tiene un valor diferente a
-cero, el comando M19 se cancela, un mensaje que incluye el código de falla
-se muestra y la cola de movimiento se vacía. El huso vuelve a
-modo de rotación.
+Si mientras que `spindle.N.orient` es TRUE, y `spindle.N.is-oriented` no lo es aun
+pero el pin `spindle.N.orient-fault` tiene un valor diferente a
+cero, el comando M19 se cancela, se muestra un mensaje que incluye el código de fallo
+y la cola de movimiento se vacía. El husillo vuelve a modo de rotación.
 
-Además, cualquiera de los comandos M3, M4 o M5 cancela ya sea 'buscando
-orientación deseada 'u' orientación completa '. Esto esta indicado
-desassertando los pines 'spindle-orient' y 'spindle-bloqueado'.
+Además, cualquiera de los comandos M3, M4 o M5 cancela tanto 'busqueda
+de orientación deseada' como 'orientación completada'. Esto se indica
+limpiando los pines 'spindle-orient' y 'spindle-locked'.
 
 El pin `spindle-orient-mode` refleja la palabra M19 P y será
 interpretado de la siguiente manera:
 
- - 0: gire en sentido horario o antihorario para obtener el movimiento angular más pequeño
+ - 0: gire en sentido horario o antihorario; lo que de el movimiento angular más pequeño
  - 1: rotar siempre en sentido horario
- - 2: siempre gire en sentido antihorario
+ - 2: rotar siempre en sentido antihorario
 
-Se puede usar con el componente HAL `orientar` que proporciona un PID
-valor del comando basado en la posición del codificador del cabezal, `spindle-orient-angle`
-y "modo de husillo".
+Se puede usar con el componente HAL `orient` que proporciona un valor PID
+basado en la posición del codificador del husillo, `spindle-orient-angle`
+y "spindle-orient-mode".
 
 === Parámetros
 
@@ -340,16 +334,16 @@ cambio o eliminación en cualquier momento.
     (bit, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.debug-float-0' -
-    (flotante, RO) Esto se utiliza con fines de depuración.
+    (float, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.debug-float-1' -
-    (flotante, RO) Esto se utiliza con fines de depuración.
+    (float, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.debug-float-2' -
-    (flotante, RO) Esto se utiliza con fines de depuración.
+    (float, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.debug-float-3' -
-    (flotante, RO) Esto se utiliza con fines de depuración.
+    (float, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.debug-s32-0' -
     (s32, RO) Esto se utiliza con fines de depuración.
@@ -358,41 +352,41 @@ cambio o eliminación en cualquier momento.
     (s32, RO) Esto se utiliza con fines de depuración.
 
 * 'motion.servo.last-period' -
-     (u32, RO) El número de ciclos de CPU entre invocaciones del servo
-    hilo. Normalmente, este número dividido por la velocidad de la CPU da el tiempo
-    en segundos, y puede usarse para determinar si el movimiento en tiempo real
-    el controlador está cumpliendo sus limitaciones de tiempo
+     (u32, RO) El número de ciclos de CPU entre invocaciones del hilo servo.
+    Normalmente, este número dividido por la velocidad de la CPU da el tiempo
+    en segundos, y puede usarse para determinar si el controlador de movimiento en tiempo real
+    está cumpliendo sus limitaciones de tiempo
 
 * 'motion.servo.last-period-ns' -
-    (flotador, RO)
+    (float, RO)
 
 === Funciones
 
-Generalmente, estas funciones se agregan al servo-thread en el
+Generalmente, estas funciones se agregan a servo-thread en el
 orden que se muestra.
 
 * 'motion-command-handler' -
     Procesa comandos de movimiento provenientes del espacio del usuario
 
-* 'controlador de movimiento' -
+* 'motion-controller' -
     Ejecuta el controlador de movimiento LinuxCNC
 
-== Pernos y parámetros de eje y articulación
+== Pines y parámetros de eje y articulación
 
-Estos pines y parámetros son creados por el 'motmod' en tiempo real
-módulo. [En las máquinas de 'cinemática trivial', hay un uno a uno
-correspondencia entre articulaciones y ejes.]
-Son leídos y actualizados por la función 'controlador de movimiento'.
+Estos pines y parámetros son creados por el módulo 'motmod' en tiempo real.
+[En las máquinas de 'cinemática trivial', hay correspondencia uno a uno
+entre articulaciones y ejes.]
+Son leídos y actualizados por la función 'motion-controller'.
 
 Consulte la página de manual de movimiento 'motion (9)' para obtener detalles sobre los pines y los parámetros.
 
 == iocontrol
 
-iocontrol: acepta comandos de E / S NML, interactúa con HAL en el espacio de usuario.
+iocontrol - acepta comandos de E/S NML, interactúa con HAL en espacio de usuario.
 
-Las señales se activan y desactivan en el espacio de usuario, si tiene estrictas
-requisitos de tiempo o simplemente necesita más E / S, considere usar el tiempo real
-E / S sincronizada proporcionada por << sec: motion, motion >> en su lugar.
+Las señales se activan y desactivan en espacio de usuario. Si tiene estrictos
+requisitos de tiempo o simplemente necesita más E/S, considere usar
+E/S sincronizada en tiempo real proporcionada por <<sec:motion,motion>> en su lugar.
 
 === Pines (((iocontrol (HAL pins))))
 
@@ -400,35 +394,34 @@ E / S sincronizada proporcionada por << sec: motion, motion >> en su lugar.
     (bit, out) TRUE cuando se solicita refrigerante de inundación.
 
 * 'iocontrol.0.coolant-mist' -
-    (bit, out) TRUE cuando se solicita niebla refrigerante.
+    (bit, out) TRUE cuando se solicita refrigerante de niebla.
 
 * 'iocontrol.0.emc-enable-in' -
-     (bit, in) Se debe conducir FALSO cuando se produce una condición de parada de emergencia externa
-    existe
+     (bit, in) Se debe poner en FALSE cuando se produce una condición E-stop externa
 
 * 'iocontrol.0.lube' -
-    (bit, out) TRUE cuando se ordena el lubricante.
+    (bit, out) TRUE cuando se ordena lubricacion.
 
 * 'iocontrol.0.lube_level' -
-    (bit, in) Se debe conducir VERDADERO cuando el nivel de lubricación es lo suficientemente alto.
+    (bit, in) Se debe poner TRUE cuando el nivel de lubricación es suficiente.
 
 * 'iocontrol.0.tool-change' -
     (bit, out) TRUE cuando se solicita un cambio de herramienta.
 
 * 'iocontrol.0.tool-changed' -
-    (bit, in) Se debe conducir VERDADERO cuando se completa un cambio de herramienta.
+    (bit, in) Se debe poner TRUE cuando se completa un cambio de herramienta.
 
 * 'iocontrol.0.tool-number' -
     (s32, out) El número de herramienta actual.
 
 * 'iocontrol.0.tool-prep-number' -
-    (s32, out) El número de la siguiente herramienta, de la palabra T RS274NGC.
+    (s32, out) El número de la siguiente herramienta, de la palabra T de RS274NGC.
 
 * 'iocontrol.0.tool-prepare' -
-    (bit, out) TRUE cuando se solicita una herramienta de preparación.
+    (bit, out) TRUE cuando se solicita una preparación de herramienta.
 
 * 'iocontrol.0.tool-ready' -
-    (bit, in) Se debe conducir VERDADERO cuando se completa una preparación de herramienta.
+    (bit, in) Se debe poner TRUE cuando se completa una preparación de herramienta.
 
 * 'iocontrol.0.user-enable-out' -
     (bit, out) FALSE cuando existe una condición interna de paro de emergencia.
@@ -443,66 +436,66 @@ Una serie de configuraciones ini están disponibles como pines de entrada hal.
 
 === Pines (((configuraciones ini (pines HAL))))
 
-N se refiere a un número conjunto, L se refiere a una letra de eje
+N se refiere a un número de articulacion, L se refiere a una letra de eje.
 
-* 'ini.N.ferror' - (flotante, en) [JOINT_N] FERROR
+* 'ini.N.ferror' - (float, in) [JOINT_N]FERROR
 
-* 'ini.N.min_ferror' - (flotante, en) [JOINT_N] MIN_FERROR
+* 'ini.N.min_ferror' - (float, in) [JOINT_N]MIN_FERROR
 
-* 'ini.N.backlash' - (flotante, en) [JOINT_N] BACKLASH
+* 'ini.N.backlash' - (float, in) [JOINT_N]BACKLASH
 
-* 'ini.N.min_limit' - (flotante, en) [JOINT_N] MIN_LIMIT
+* 'ini.N.min_limit' - (float, in) [JOINT_N]MIN_LIMIT
 
-* 'ini.N.max_limit' - (flotante, en) [JOINT_N] MAX_LIMIT
+* 'ini.N.max_limit' - (float, in) [JOINT_N]MAX_LIMIT
 
-* 'ini.N.max_velocity' - (flotante, en) [JOINT_N] MAX_VELOCITY
+* 'ini.N.max_velocity' - (float, in) [JOINT_N]MAX_VELOCITY
 
-* 'ini.N.max_acceleration' - (float, in) [JOINT_N] MAX_ACCELERATION
+* 'ini.N.max_acceleration' - (float, in) [JOINT_N]MAX_ACCELERATION
 
-* 'ini.N.home' - (flotante, en) [JOINT_N] INICIO
+* 'ini.N.home' - (float, in) [JOINT_N]HOME
 
-* 'ini.N.home_offset' - (flotante, en) [JOINT_N] HOME_OFFSET
+* 'ini.N.home_offset' - (float, in) [JOINT_N]HOME_OFFSET
 
-* 'ini.N.home_offset' - (s32, in) [JOINT_N] HOME_SEQUENCE
+* 'ini.N.home_offset' - (s32, in) [JOINT_N]HOME_SEQUENCE
 
-* 'ini.L.min_limit' - (flotante, en) [AXIS_L] MIN_LIMIT
+* 'ini.L.min_limit' - (float, in) [AXIS_L]MIN_LIMIT
 
-* 'ini.L.max_limit' - (flotante, en) [AXIS_L] MAX_LIMIT
+* 'ini.L.max_limit' - (float, in) [AXIS_L]MAX_LIMIT
 
-* 'ini.L.max_velocity' - (flotante, in) [AXIS_L] MAX_VELOCITY
+* 'ini.L.max_velocity' - (float, in) [AXIS_L]MAX_VELOCITY
 
-* 'ini.L.max_acceleration' - (flotante, in) [AXIS_L] MAX_ACCELERATION
+* 'ini.L.max_acceleration' - (float, in) [AXIS_L]MAX_ACCELERATION
 
 [NOTA]
-Los pines min_limit y max_limit por eje se honran continuamente después de la referencia.
-Los pines ferror por eje y min_ferror se respetan cuando la máquina está encendida y
+Los pines por eje min_limit y max_limit se respetan continuamente después de homing.
+Los pines por eje ferror y min_ferror se respetan cuando la máquina está encendida pero
 no en posición
 Los pines max_velocity y max_acceleration por eje se muestrean cuando
-la máquina está encendida y motion_state es libre (referenciado o trote) pero no
-muestreado cuando se está ejecutando un programa (modo automático) o en modo mdi. Por consiguiente,
+la máquina está encendida y motion_state es libre (homing o jog) pero no se
+muestrean cuando se está ejecutando un programa (modo auto) o en modo mdi. Por consiguiente,
 cambiar los valores de los pines cuando se ejecuta un programa no tendrá efecto hasta
-el programa se detiene y motion_state vuelve a estar libre.
+el programa se detenga y motion_state vuelva a estar libre.
 
 
-* 'ini.traj_arc_blend_enable' - (bit, in) [TRAJ] ARC_BLEND_ENABLE
+* 'ini.traj_arc_blend_enable' - (bit, in) [TRAJ]ARC_BLEND_ENABLE
 
-* 'ini.traj_arc_blend_fallback_enable' - (bit, in) [TRAJ] ARC_BLEND_FALLBACK_ENABLE
+* 'ini.traj_arc_blend_fallback_enable' - (bit, in) [TRAJ]ARC_BLEND_FALLBACK_ENABLE
 
-* 'ini.traj_arc_blend_gap_cycles' - (flotante, en) [TRAJ] ARC_BLEND_GAP_CYCLES
+* 'ini.traj_arc_blend_gap_cycles' - (float, in) [TRAJ]ARC_BLEND_GAP_CYCLES
 
-* 'ini.traj_arc_blend_optimization_depth' - (flotante, en) [TRAJ] ARC_BLEND_OPTIMIZATION_DEPTH
+* 'ini.traj_arc_blend_optimization_depth' - (float, in) [TRAJ]ARC_BLEND_OPTIMIZATION_DEPTH
 
-* 'ini.traj_arc_blend_ramp_freq' - (flotante, en) [TRAJ] ARC_BLEND_RAMP_FREQ
+* 'ini.traj_arc_blend_ramp_freq' - (float, in) [TRAJ]ARC_BLEND_RAMP_FREQ
 
 [NOTA]
-Los pines traj_arc_blend se muestrean continuamente pero cambian los valores de los pines
+Los pines traj_arc_blend se muestrean continuamente pero cambiar los valores de los pines
 mientras un programa se está ejecutando puede no tener efecto inmediato debido a la cola
 de comandos.
 
-* 'ini.traj_default_acceleration' - (flotante, en) [TRAJ] DEFAULT_ACCELERATION
+* 'ini.traj_default_acceleration' - (float, in) [TRAJ]DEFAULT_ACCELERATION
 
-* 'ini.traj_default_velocity' - (flotante, en) [TRAJ] DEFAULT_VELOCITY
+* 'ini.traj_default_velocity' - (float, in) [TRAJ]DEFAULT_VELOCITY
 
-* 'ini.traj_max_acceleration' - (flotante, en) [TRAJ] MAX_ACCELERATION
+* 'ini.traj_max_acceleration' - (float, in) [TRAJ]MAX_ACCELERATION
 
 

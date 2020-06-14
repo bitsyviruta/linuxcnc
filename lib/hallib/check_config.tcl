@@ -1,11 +1,11 @@
 # check_config.tcl
-# Usage: tclsh path_to_this_file inifilename
-# if a check fails, print message and exit 1
-#
-# checks:
-#   1) mandatory items per ::mandatory_items list
-#   2) if trivkins, check consistency of [JOINT_] and [AXIS_]
-#      MIN_LIMIT and MAX_LIMIT
+# Uso: tclsh path_to_this_file inifilename
+# si falla un chequeo, imprime el mensaje y sale con 1
+# #
+# chequeos:
+# 	1) elementos obligatorios por lista ::mandatory_items
+# 	2) si trivkins, verifica la consistencia de [JOINT_] y [AXIS_]
+#      MIN_LIMIT y MAX_LIMIT
 #----------------------------------------------------------------------
 set ::mandatory_items {KINS KINEMATICS
                        KINS JOINTS
@@ -21,7 +21,7 @@ set ::DEFAULT_AXIS_MIN_LIMIT -1e99
 set ::DEFAULT_AXIS_MAX_LIMIT +1e99
 #----------------------------------------------------------------------
 proc warnings msg {
-  puts "\n$::progname: ($::kins(module) kinematics) WARNING:"
+  puts "\n$::progname: ($::kins(module) kinematics) AVISO:"
   foreach m $msg {puts "  $m"}
   puts ""
 } ;# warnings
@@ -37,7 +37,7 @@ proc check_mandatory_items {} {
   foreach {section item} $::mandatory_items {
     if ![info exists ::[set section]($item) ] {
       set section [string trim $section :]
-      lappend emsg "Missing \[$section\]$item="
+      lappend emsg "No encontrado \[$section\]$item="
     }
   }
   if [info exists emsg] {
@@ -45,36 +45,36 @@ proc check_mandatory_items {} {
   }
 } ;# check_mandatory_items
 
-proc uniq {list_name} {  ;# make list unique
+proc uniq {list_name} {  ;# hacer lista unica
   foreach item $list_name { set tmp($item) "" }
   return [array names tmp]
 } ;# uniq
 
 proc joints_for_trivkins {coords} {
   # ref: src/emc/kinematics/trivkins.c
-  # order of coord letters determines assigned joint number
+  # el orden de letras de coordenada determina el numero de articulacion asignada
   if {"$coords" == ""} {set coords {X Y Z A B C U V W}}
   set i 0
   foreach a [string toupper $coords] {
-     # assign to consecutive joints:
+     # asignar a articulaciones consecutivas:
      lappend ::kins(jointidx,$a) $i
      incr i
   }
 } ;# joints_for_trivkins
 
 proc consistent_coords_for_trivkins {trivcoords} {
-  set m {" " "" "\t" ""} ;# mapping to remove whitespace
+  set m {" " "" "\t" ""} ;# mapeo para remover espacios en blanco
   set trivcoords [string map $m $trivcoords]
   if {"$trivcoords" == "XYZABCUVW"} {
-     return ;# unspecified trivkins coordinates
-             # allows use of any coordinates
+     return ;# coordenadas trivkins inespecificas
+             # permiten el uso de cualquier coordenada
   }
   set trajcoords ""
   if [info exists ::TRAJ(COORDINATES)] {
     set trajcoords [string map $m [lindex $::TRAJ(COORDINATES) 0]]
   }
   if {[string toupper "$trivcoords"] != [string toupper "$trajcoords"]} {
-    lappend ::wmsg "INCONSISTENT coordinates specifications:
+    lappend ::wmsg "Especificacion de coordenadas INCONSISTENTE:
                trivkins coordinates=$trivcoords
                \[TRAJ\]COORDINATES=$trajcoords"
   }
@@ -84,20 +84,20 @@ proc validate_identity_kins_limits {} {
   set emsg ""
   for {set j 0} {$j < $::KINS(JOINTS)} {incr j} {
     if {![info exists ::JOINT_[set j](MAX_VELOCITY)] } {
-      lappend ::wmsg "Unspecified \[JOINT_$j\]MAX_VELOCITY,     default used: $::DEFAULT_JOINT_MAX_VELOCITY"
+      lappend ::wmsg "Sin especificar \[JOINT_$j\]MAX_VELOCITY,     por defecto: $::DEFAULT_JOINT_MAX_VELOCITY"
     }
     if {![info exists ::JOINT_[set j](MAX_ACCELERATION)] } {
-      lappend ::wmsg "Unspecified \[JOINT_$j\]MAX_ACCELERATION, default used: $::DEFAULT_JOINT_MAX_ACCELERATION"
+      lappend ::wmsg "Sin especificar \[JOINT_$j\]MAX_ACCELERATION, por defecto: $::DEFAULT_JOINT_MAX_ACCELERATION"
     }
   }
   foreach c [uniq $::kins(coordinates)] {
     # array test avoids superfluous messages when coordinates= not specified
     if [array exists ::AXIS_[set c]] {
       if {![info exists ::AXIS_[set c](MAX_VELOCITY)] } {
-        lappend ::wmsg "Unspecified \[AXIS_$c\]MAX_VELOCITY,     default used: $::DEFAULT_AXIS_MAX_VELOCITY"
+        lappend ::wmsg "Sin especificar \[AXIS_$c\]MAX_VELOCITY,     por defecto: $::DEFAULT_AXIS_MAX_VELOCITY"
       }
       if {![info exists ::AXIS_[set c](MAX_ACCELERATION)] } {
-        lappend ::wmsg "Unspecified \[AXIS_$c\]MAX_ACCELERATION, default used: $::DEFAULT_AXIS_MAX_ACCELERATION"
+        lappend ::wmsg "Sin especificar \[AXIS_$c\]MAX_ACCELERATION, por defecto: $::DEFAULT_AXIS_MAX_ACCELERATION"
       }
     }
 
@@ -117,7 +117,7 @@ proc validate_identity_kins_limits {} {
          set clim [set  ::AXIS_[set c](MIN_LIMIT)]
          if {$jlim > $clim} {
            if $missing_axis_min_limit {
-             lappend ::wmsg "Unspecified \[AXIS_$c\]MIN_LIMIT,        default used: $::DEFAULT_AXIS_MIN_LIMIT"
+             lappend ::wmsg "Sin especificar \[AXIS_$c\]MIN_LIMIT,        por defecto: $::DEFAULT_AXIS_MIN_LIMIT"
            }
            lappend emsg "\[JOINT_$j\]MIN_LIMIT > \[AXIS_$c\]MIN_LIMIT ($jlim > $clim)"
          }
@@ -127,7 +127,7 @@ proc validate_identity_kins_limits {} {
          set clim [set  ::AXIS_[set c](MAX_LIMIT)]
          if {$jlim < $clim} {
            if $missing_axis_max_limit {
-             lappend ::wmsg "Unspecified \[AXIS_$c\]MAX_LIMIT,        default used: $::DEFAULT_AXIS_MAX_LIMIT"
+             lappend ::wmsg "Sin especificar \[AXIS_$c\]MAX_LIMIT,        por defecto: $::DEFAULT_AXIS_MAX_LIMIT"
            }
            lappend emsg "\[JOINT_$j\]MAX_LIMIT < \[AXIS_$c\]MAX_LIMIT ($jlim < $clim)"
          }
@@ -150,8 +150,8 @@ proc check_extrajoints {} {
     }
   }
   if [info exists ::num_extrajoints] {
-     lappend ::wmsg [format "Extra joints specified=%d\n \
-\[KINS\]JOINTS=%d must accomodate kinematic joints *plus* extra joints " \
+     lappend ::wmsg [format "Articulaciones Extra especificadas=%d\n \
+\[KINS\]JOINTS=%d debe acomodar articulaciones cinematicas*mas* articulaciones extra " \
                      $::num_extrajoints $::KINS(JOINTS)]
   }
 } ;#check_extrajoints
@@ -162,10 +162,10 @@ package require Linuxcnc ;# parse_ini
 set ::progname [file rootname [file tail [info script]]]
 set inifile [lindex $::argv 0]
 if ![file exists $inifile]   {
-  err_exit [list "No such file <$inifile>"]
+  err_exit [list "No existe el archivo <$inifile>"]
 }
 if ![file readable $inifile] {
-   err_exit [list "File not readable <$inifile>"]
+   err_exit [list "Archivo no legible <$inifile>"]
 }
 parse_ini $inifile
 
@@ -174,18 +174,18 @@ check_mandatory_items
 set kins_kinematics [lindex $::KINS(KINEMATICS) end]
 set ::kins(module)  [lindex $kins_kinematics 0]
 
-# parameters specified as parm=value --> ::kins(parm)=value
+# parametros especificados como parm=value --> ::kins(parm)=value
 foreach item $kins_kinematics {
   if {[string first = $item] >= 0} {
     set l [split $item =]
     set ::kins([lindex $l 0]) [lindex $l 1]
   } else {
     if {"$item" != $::kins(module)} {
-      puts "Unknown \[KINS\]KINEMATICS item: <$item>"
+      puts "Desconocido \[KINS\]KINEMATICS item: <$item>"
     }
   }
 }
-# coordinates --> ::kins(coordinates) (all if not specified)
+# coordinates --> ::kins(coordinates) (todas, si no se especifica)
 if [info exists ::kins(coordinates)] {
   set ::kins(coordinates) [split $::kins(coordinates) ""]
   set ::kins(coordinates) [string toupper $::kins(coordinates)]
@@ -193,11 +193,11 @@ if [info exists ::kins(coordinates)] {
   set ::kins(coordinates) {X Y Z A B C U V W}
 }
 
-# list of joints for each coord --> ::kins(jointidx,coordinateletter)
+# lista de articulaciones para cada coordenada --> ::kins(jointidx,coordinateletter)
 switch $::kins(module) {
   trivkins {joints_for_trivkins $::kins(coordinates)}
   default  {
-    puts "$::progname: Unchecked: \[KINS\]KINEMATICS=$::KINS(KINEMATICS)"
+    puts "$::progname: Sin chequeo: \[KINS\]KINEMATICS=$::KINS(KINEMATICS)"
     exit 0
   }
 }

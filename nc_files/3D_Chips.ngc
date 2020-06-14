@@ -4,6 +4,12 @@
 ( block with the zero point at the center top of the block )
 ( and Cutter is assumed to be a 10mm ball nose )
 ( and feedrate is 450 mm/min )
+(Este programa es propiedad de Rab Gordon, Gary Drew y Paul Corner)
+(Se publica aquí bajo una GPL sin ninguna garantía.)
+(Con los factores de escala establecidos en 1.0, la pieza se corta desde un)
+(bloque de 100x100x50mm con el punto cero en la parte superior central del bloque)
+(Se supone que el cortador es una punta esférica de 10 mm)
+(y la velocidad de avance es de 450 mm/min)
 
 #<xscale> = 1.0
 #<yscale> = 1.0

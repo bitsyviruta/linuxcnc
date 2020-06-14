@@ -13,67 +13,56 @@
 
 /*
 
-Misc ramblings:
+Divagaciones varias:
 
-The terms axis and joint are used inconsistently throughout EMC.
-For all new code, the usages are as follows:
+	Los términos eje y articulación se usan de manera inconsistente en EMC. 
+	Para todos los códigos nuevos, los usos son los siguientes:
 
-    axis - one of the nine degrees of freedom, x, y, z, a, b, c, u, v, w
-	these refer to axes in Cartesian space, which may or
-	may not match up with joints (see below). On Cartesian
-	machines they do match up, but for hexapods, robots, and
-	other non-Cartesian machines they don't.
-    joint - one of the physical degrees of freedom of the machine
-	these might be linear (leadscrews) or rotary (rotary
-	tables, robot arm joints).  There can be any number of
-	joints.  The kinematics code is responsible for translating
-	from axis space to joint space and back.
+	axis: uno de los nueve grados de libertad, x, y, z, a, b, c, u, v, w
+	Estos se refieren a ejes en el espacio cartesiano, que pueden o no coincidir con las articulaciones (ver más abajo).
+	En las máquinas cartesianas sí coinciden, pero para los hexapodos, robots y otras máquinas no cartesianas no.
+	joint: uno de los grados físicos de libertad de la máquina; articulaciones
+	Estos pueden ser lineales (tornillos de avance) o rotativos (mesas giratorias, juntas de brazo de robot).
+	Puede haber cualquier cantidad de articulaciones.
+	El código cinemático es responsable de traducir del espacio del eje al espacio de la articulación y viceversa.
 
-There are three main kinds of data needed by the motion controller
+	El controlador de movimiento necesita tres tipos principales de datos
 
-1) data shared with higher level stuff - commands, status, etc.
-2) data that is local to the motion controller
-3) data shared with lower level stuff - hal pins
+	1) datos compartidos con cosas de nivel superior: comandos, estado, etc.
+	2) datos que son locales para el controlador de movimiento
+	3) datos compartidos con cosas de nivel inferior - pines hal
 
-In addition, some internal data (2) should be shared for trouble
-shooting purposes, even though it is "internal" to the motion
-controller.  Depending on the type of data, it can either be
-treated as type (1), and made available to the higher level
-code, or it can be treated as type (3), and made available to
-the hal, so that halscope can monitor it.
+	Además, algunos datos internos (2) deben compartirse para resolver problemas, aunque sean "internos"
+	para el controlador de movimiento.
+	Dependiendo del tipo de datos, puede tratarse como tipo (1) y ponerse a disposición del código de nivel
+	superior, o pueden tratarse como tipo (3) y ponerse a disposición de HAL para que halscope pueda monitorearlos.
 
-This file should ONLY contain structures and declarations for
-type (1) items - those that are shared with higher level code.
+	Este archivo SOLO debe contener estructuras y declaraciones para elementos de tipo (1); aquellos que se
+	comparten con código de nivel superior.
 
-Type (2) items should be declared in mot_priv.h, along
-with type (3) items.
+	Los elementos tipo (2) deben declararse en mot_priv.h, junto con los elementos tipo (3).
 
-In the interest of retaining my sanity, I'm not gonna attempt
-to move everything to its proper location yet....
+	En aras de mantener mi cordura, no voy a intentar mover todo a su ubicación correcta todavía ...
 
-However, all new items will be defined in the proper place,
-and some existing items may be moved from one struct definition
-to another.
-
+	Sin embargo, todos los elementos nuevos se definirán en el lugar adecuado, y algunos elementos existentes
+	se pueden mover de una definición de estructura a otra.
 */
 
-/* the following line can be used to control where some of the
-   "internal" motion controller data is stored.  By default,
-   it is stored in staticlly allocated kernel memory.  However,
-   if STRUCTS_IN_SHMEM is defined, it will be stored in the
-   emcmotStruct shared memory area, for debugging purposes.
+/* La siguiente línea se puede utilizar para controlar dónde se almacenan algunos de los 
+	datos "internos" del controlador de movimiento. 
+	Por defecto, se almacena en la memoria kernel asignada estáticamente. Sin embargo, si
+	se define STRUCTS_IN_SHMEM, se almacenará en el área de memoria compartida emcmotStruct,
+	con fines de depuración.
 */
-
 #define STRUCTS_IN_SHMEM
-
 
 
 #ifndef MOTION_H
 #define MOTION_H
 
 #include "posemath.h"		/* PmCartesian, PmPose, pmCartMag() */
-#include "emcpos.h"		/* EmcPose */
-#include "cubic.h"		/* CUBIC_STRUCT, CUBIC_COEFF */
+#include "emcpos.h"			/* EmcPose */
+#include "cubic.h"			/* CUBIC_STRUCT, CUBIC_COEFF */
 #include "emcmotcfg.h"		/* EMCMOT_MAX_JOINTS */
 #include "kinematics.h"
 #include "simple_tp.h"
@@ -81,9 +70,9 @@ to another.
 #include <stdarg.h>
 #include "rtapi_bool.h"
 
-// define a special value to denote an invalid motion ID 
-// NB: do not ever generate a motion id of  MOTION_INVALID_ID
-// this should be really be tested for in command.c 
+// definicion de un valor especial para denotar una ID de movimiento no válida
+// NB: nunca genere una ID de movimiento de MOTION_INVALID_ID
+// esto debería probarse realmente en command.c
 
 #define MOTION_INVALID_ID INT_MIN
 #define MOTION_ID_VALID(x) ((x) != MOTION_INVALID_ID)

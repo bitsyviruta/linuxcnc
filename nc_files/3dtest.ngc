@@ -1,5 +1,7 @@
-n099	(This is a test plot nc program to be run on backplot)
-n100	(Author Ray Henry 10-Feb-2000)
+(This is a test plot nc program to be run on backplot)
+(Author Ray Henry 10-Feb-2000)
+(Este es un programa nc de prueba de ploteo que se ejecutará en el fondo grafico)
+(Autor Ray Henry 10-feb-2000)
 n101	g20
 n102	g0 x0 y0 z0 f30
 n103	x1 y1(start xy circle)

@@ -1,3 +1,9 @@
+(espiral por aproximacion de arcos -g2 modal- de 16 vueltas, dividida en 1000 arcos)
+(son 360x16 = 5760 grados. Cada arco abarca 5,76 grados)
+(g2 usa formato radio. Variando el radio, cada arco esta mas proximo)
+(al centro que el anterior; exactamente 0,002 unidades.)
+(las unidades en el codigo son de pulgada)
+
 g20 g64
 s3400 m3
 g0z1

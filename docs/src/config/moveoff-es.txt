@@ -1,72 +1,70 @@
-﻿= Componente de traslado
+﻿= Componente moveoff
 
-[[cha: traslado]]
+[[cha:moveoff]]
+El componente Hal moveoff es un método exclusivo de Hal
+para implementar offsets. Ver la página de manual ('$ man moveoff')
+para limitaciones y advertencias IMPORTANTES.
 
-El componente Hal de desplazamiento es un método exclusivo de Hal
-para implementar compensaciones. Ver la página de manual ('$ man moveoff')
-para las limitaciones y advertencias IMPORTANTES.
+El componente moveoff se utiliza para offsets de posiciones articulares utilizando conexiones Hal personalizadas.
+Implementar una funcionalidad offset-mientras-programa-parado es
+soportada con conexiones apropiadas para los pines de entrada. Se soportan nueve articulaciones.
 
-El componente de desplazamiento se utiliza para compensar las posiciones conjuntas utilizando Hal personalizado
-conexiones Implementar una funcionalidad offset-while-program-is-paused es
-compatible con conexiones apropiadas para los pines de entrada. Nueve articulaciones son
-soportado.
-
-Los valores de los pines de desplazamiento del eje (offset-in-M) se aplican continuamente (respetando
+Los valores de los pines de offset de eje (offset-in-M) se aplican continuamente (respetando
 límites de valor, velocidad y aceleración) a los pines de salida
-(offset-current-M, pos-plusoffset-M, fb-minusoffset-M) cuando ambos permiten la entrada
-los pines (aplicar-compensaciones y mover-habilitar) son VERDADEROS. Las dos entradas habilitadoras son
-Anded internamente. Se establece un 'pin de advertencia' y se emite un mensaje si el
-el pin apply-offsets se desassertó mientras se aplican los offsets. El pin de advertencia
-permanece VERDADERO hasta que se eliminen las compensaciones o se establezca el pin de aplicar compensaciones.
+(offset-current-M, pos-plusoffset-M, fb-minusoffset-M) cuando ambos pines (apply-offsets y move-enable) de
+entrada de habilitacion son TRUE. Las dos entradas habilitadoras estan
+asociadas con un AND internamente. Si el pin apply-offsets se desassertó mientras se aplican los offsets, se
+activa un 'pin de advertencia' y se emite un mensaje . El pin de advertencia
+permanece TRUE hasta que se eliminen los offsets o se establezca el pin apply-offsets.
 
-Normalmente, el pin de habilitación de movimiento está conectado a controles externos y el
-el pin apply-offsets está conectado a halui.program.is-paused (solo para compensaciones
-mientras está en pausa) o establecido en VERDADERO (para compensaciones aplicadas continuamente).
+Normalmente, el pin move-enable está conectado a controles externos y el
+el pin apply-offsets está conectado a halui.program.is-paused (solo para offsets
+mientras se está en pausa) o establecido en TRUE (para offsets aplicados continuamente).
 
-Las compensaciones aplicadas se 'devuelven automáticamente' a cero (respetando los límites)
+Los offsets aplicados se 'devuelven automáticamente' a cero (respetando los límites)
 cuando cualquiera de las entradas de habilitación está desactivada. El valor cero
-la tolerancia se especifica mediante el valor del pin de entrada epsilon.
+de tolerancia se especifica mediante el valor epsilon del pin de entrada.
 
-Los puntos de referencia se registran cuando el componente de desplazamiento está habilitado. Los puntos de referencia son
-gestionado con los waypoint-sample-secs y los pines de umbral de waypoint. Cuando el
-el pin de habilitación de retroceso es VERDADERO, la ruta de retorno automático sigue la grabación
-waypoints Cuando la memoria disponible para waypoints se agota, las compensaciones son
-congelado y se afirma el pin de límite de waypoint. Esta restricción aplica
-independientemente del estado del pin de habilitación de retroceso. Un pin de habilitación debe ser
-desassertado para permitir un retorno al original (posición sin desplazamiento).
+Los puntos de referencia se registran cuando el componente moveoff está habilitado. Los puntos de referencia son
+gestionado con los pines waypoint-sample-secs y waypoint-threshold. Cuando el
+el pin backtrack-enable es TRUE, la ruta de retorno automático sigue la grabación de
+waypoints. Cuando la memoria disponible para waypoints se agota, los offsets son
+congelados y se afirma el pin waypoint-limit. Esta restricción se aplica
+independientemente del estado del pin backtrack-enable. Un pin de habilitación debe ser
+desassertado para permitir un retorno al original (posición sin offset).
 
-Retroceder a través de puntos de ruta resulta en tasas de movimiento 'más lentas' a medida que
-los movimientos son punto a punto respetando la velocidad y la configuración de aceleración. los
-Los pasadores de límite de velocidad y aceleración se pueden gestionar dinámicamente para controlar
-compensaciones en todo momento.
+Retroceder a través de puntos de ruta resulta en tasas de movimiento 'más lentas' en la medida que
+los movimientos son punto a punto respetando la velocidad y la configuración de aceleración.
+Los pines de límite de velocidad y aceleración se pueden gestionar dinámicamente para controlar
+offsets en todo momento.
 
-Cuando backtrack-enable es FALSE, el movimiento de retorno automático es * NOT *
-coordinado, cada eje vuelve a cero a su propio ritmo. Si una ruta controlada
-se desea en esta condición, cada eje debe devolverse manualmente a cero
+Cuando backtrack-enable es FALSE, el movimiento de retorno automático *NO* es
+coordinado; cada eje vuelve a cero a su propio ritmo. Si se desea una ruta controlada
+en esta condición, cada eje debe devolverse manualmente a cero
 antes de desassertar un pin de habilitación.
 
-Se evalúan los segundos de muestra de waypoint, umbral de waypoint y pines epsilon
+Los pines waypoint-sample-secs, waypoint-threshold, y epsilon se evalúan
 solo cuando el componente está inactivo.
 
-El pin de salida aplicado por desplazamiento se proporciona para indicar el estado actual a un
-GUI para que se pueda gestionar la reanudación del programa. Si el desplazamiento (s) no es cero
-cuando se desascribe el pin apply-offsets (por ejemplo, cuando se reanuda un programa
-cuando se compensa durante una pausa), las compensaciones se devuelven a cero (respetando
+El pin de salida offsets-applied se proporciona para indicar el estado actual a una
+GUI para que se pueda gestionar la reanudación del programa. Si el offset(s) no es cero
+cuando se desactiva el pin apply-offsets (por ejemplo, cuando se reanuda un programa
+tras offsets durante una pausa), los offsets se devuelven a cero (respetando
 límites) y se emite un mensaje de 'Error'.
 
 [PRECAUCIÓN]
-Si las compensaciones están habilitadas y aplicadas y la máquina está apagada para cualquier
-razón, cualquier lógica Hal 'externa' que maneje los pines habilitadores y el
-las entradas offset-en-M son responsables de su estado cuando la máquina está
-posteriormente se volvió a encender.
+Si loa offsets están habilitados y aplicados y la máquina está apagada por cualquier
+razón, cualquier lógica Hal 'externa' que maneje los pines habilitadores y 
+las entradas offset-en-M es responsable de su estado cuando la máquina
+se vuelva a encender posteriormente.
 
-LinuxCNC generalmente no conoce este medio de compensación de Hal-only
-ni disponible en las pantallas de vista previa de la GUI. * No se proporciona protección * para
-movimientos compensados ​​que exceden los límites suaves administrados por LinuxCNC. Desde límites suaves
-no se cumplen, un movimiento de compensación puede encontrar límites duros (o * CRASH * si
-no hay interruptores de límite). Uso de las entradas offset-min-M y offset-max-M
-Se recomienda limitar el viaje. Disparar un límite duro se apagará
-la máquina - vea * Precaución * arriba.
+LinuxCNC generalmente no conoce este medio de offsets solo-Hal
+ni está disponible en las pantallas de vista previa de las GUI. *No se proporciona protección* para
+movimientos con offset ​​que exceden los límites soft administrados por LinuxCNC. Ya que los límites soft
+no se cumplen, un movimiento de offset puede encontrar límites fisicos (o un *CRASH* si
+no hay interruptores de límite). Se recomienda limitar la carrera con el uso de las entradas
+offset-min-M y offset-max-M. Disparar un límite fisico apagará
+la máquina - vea *Precaución* arriba.
 
 Los valores de desplazamiento en M pueden establecerse con configuraciones inifile, controladas por una GUI,
 o gestionado por otros componentes y conexiones Hal. Los valores fijos pueden ser
@@ -86,8 +84,8 @@ riesgos antes de su uso en hardware.
 Configuraciones Sim que demuestran el componente y un
 gui (moveoff_gui) se encuentran en:
 
-* configs / sim / axis / moveoff (axis-ui)
-* configs / sim / touchy / ngcgui (touchy-ui)
+* configs/sim/axis/moveoff (axis-ui)
+* configs/sim/touchy/ngcgui (touchy-ui)
 
 
 == Modificar una configuración existente

@@ -1,10 +1,13 @@
 (this is the program describing entry moves for)
 (radius compensation in Figure 3 of the Handbook)
 (http://linuxcnc.org/docs/2.7/html/gcode/tool-compensation.html)
+(este es el programa que describe los movimientos de entrada para)
+(compensación de radio en la Figura 3 del Manual)
 
 g20 f60
 
 (first, no compensation so we can see the part outline)
+(primero, sin compensación para que podamos ver el perfil de la pieza)
 g0 z1
 g0 x1 y5
 g1 z0
@@ -19,6 +22,7 @@ g1 x1.4 y2.8
 g2 x2 y3 i.6 j-.8
 
 (with compensation)
+(con compensación a izquierdas, g41)
 t4 m6
 g0 z1
 g0 x1 y5

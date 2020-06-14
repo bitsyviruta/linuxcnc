@@ -1,6 +1,6 @@
 loadusr -W hal_manualtoolchange
 
-# in case they were linked already
+# en caso de que ya estuvieran conectados...
 unlinkp iocontrol.0.tool-change
 unlinkp iocontrol.0.tool-changed
 

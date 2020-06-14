@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """\
-This script decodes hex floats (e.g., in dmesg) into real floats.  In the
-future maybe it will do other emc2-specific dmesg decoding.
+Este script decodifica floats hexadecimales (por ejemplo, en dmesg) en floats reales. En el
+futuro tal vez hará otra decodificación dmesg específica de Linuxcnc.
 
-Usage:
-	dmesg | decode_dmesg
-    cat /var/log/kern.log | decode_dmesg > output.txt
+Uso:
+dmesg | decode_dmesg
+cat /var/log/kern.log | decode_dmesg > output.txt
 """
 
 import re

@@ -1,8 +1,5 @@
-To use gladevcp in a run in place environment just source scripts/rip-environment
-and it will set all paths.
+Para usar gladevcp en un entorno de ejecución en el lugar, simplemente scripts/rip-environment establecerá todas las rutas.
 
-To install it system-wide you must link files from ./share/glade3/ 
-to /usr/share/glade3 system folder.
+Para instalarlo en todo el sistema, debe vincular los archivos desde ./share/glade3/ a la carpeta de sistema /usr/share/glade3.
 
-When using gladevcp widgets in python programs you need to import
-gladevcp.makepins.
+Cuando use widgets gladevcp en programas Python, debe importar gladevcp.makepins.
